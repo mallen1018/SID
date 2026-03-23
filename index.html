@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SID - Vendor Portal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'DM Sans', 'Segoe UI', system-ui, -apple-system, sans-serif;
+    color: #1a1a2e;
+    line-height: 1.6;
+    background: #fff;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  a { text-decoration: none; color: inherit; }
+
+  /* ====== NAV ====== */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(255,255,255,0.95);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(0,0,0,0.06);
+    padding: 0 40px;
+    height: 64px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .nav-logo { display: flex; align-items: center; gap: 10px; }
+  .nav-logo-text { font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 22px; color: #3d3450; letter-spacing: -0.02em; }
+  .nav-links { display: flex; gap: 32px; align-items: center; }
+  .nav-links a { font-size: 12px; color: #555; font-weight: 600; transition: color 0.2s; letter-spacing: 1.2px; text-transform: uppercase; }
+  .nav-links a:hover { color: #7860a8; }
+  .nav-cta {
+    background: linear-gradient(135deg, #5cb88a, #48a878);
+    color: #fff !important; padding: 9px 22px; border-radius: 8px;
+    font-weight: 600; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .nav-cta:hover { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(92,184,138,0.35); }
+
+  /* ====== HERO ====== */
+  .hero {
+    padding: 120px 40px 60px;
+    text-align: center;
+    background: linear-gradient(160deg, #faf8fd 0%, #f0ecf6 30%, #e8f0fa 70%, #f8fafc 100%);
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; top: -200px; right: -200px;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(120,96,168,0.08) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+  .hero-content { position: relative; z-index: 1; max-width: 640px; margin: 0 auto; }
+  .hero h1 {
+    font-family: 'Outfit', sans-serif;
+    font-size: 38px; font-weight: 700; line-height: 1.2;
+    color: #1a1a2e; margin-bottom: 18px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .hero h1 span { color: #7860a8; }
+  .hero-sub {
+    font-size: 16px; color: #64748b; max-width: 500px;
+    margin: 0 auto 36px; line-height: 1.75;
+    letter-spacing: -0.01em;
+  }
+
+  /* ====== ACTION CARDS ====== */
+  .action-cards {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 20px; max-width: 820px; margin: 0 auto;
+  }
+  .action-card {
+    background: #fff; border-radius: 16px; padding: 28px 22px;
+    text-align: center; border: 1px solid #ece8f4;
+    box-shadow: 0 4px 20px rgba(120,96,168,0.06);
+    transition: transform 0.2s, box-shadow 0.2s;
+    display: flex; flex-direction: column; align-items: center;
+  }
+  .action-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(120,96,168,0.12);
+  }
+  .action-icon {
+    width: 52px; height: 52px; border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 14px;
+  }
+  .action-card h3 { font-family: 'Outfit', sans-serif; font-size: 13px; font-weight: 700; color: #1a1a2e; margin-bottom: 8px; letter-spacing: 0.1em; text-transform: uppercase; }
+  .action-card p { font-size: 13px; color: #64748b; line-height: 1.7; margin-bottom: 16px; flex: 1; letter-spacing: -0.01em; }
+  .action-btn {
+    display: inline-block; padding: 10px 24px; border-radius: 10px;
+    font-size: 11px; font-weight: 700; transition: all 0.2s; cursor: pointer;
+    letter-spacing: 1px; text-transform: uppercase;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .action-btn.purple { background: linear-gradient(135deg, #7860a8, #9b7ed8); color: #fff; }
+  .action-btn.purple:hover { box-shadow: 0 4px 16px rgba(120,96,168,0.35); transform: translateY(-1px); }
+  .action-btn.green { background: linear-gradient(135deg, #5cb88a, #48a878); color: #fff; }
+  .action-btn.green:hover { box-shadow: 0 4px 16px rgba(92,184,138,0.35); transform: translateY(-1px); }
+  .action-btn.blue { background: linear-gradient(135deg, #4a80c8, #3b6db5); color: #fff; }
+  .action-btn.blue:hover { box-shadow: 0 4px 16px rgba(74,128,200,0.35); transform: translateY(-1px); }
+
+  /* ====== SECTIONS ====== */
+  section { padding: 70px 40px; }
+  .section-inner { max-width: 1040px; margin: 0 auto; }
+  .section-label {
+    text-align: center; font-size: 11px; font-weight: 600;
+    color: #9b7ed8; letter-spacing: 3px; text-transform: uppercase;
+    margin-bottom: 12px;
+    font-family: 'DM Sans', sans-serif;
+    font-variant: small-caps;
+  }
+  .section-title {
+    font-family: 'Outfit', sans-serif;
+    text-align: center; font-size: 24px; font-weight: 700;
+    color: #1a1a2e; margin-bottom: 14px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .section-subtitle {
+    text-align: center; font-size: 15px; color: #64748b;
+    max-width: 520px; margin: 0 auto 40px;
+    line-height: 1.7; letter-spacing: -0.01em;
+  }
+
+  /* ====== HOW IT WORKS ====== */
+  .how-it-works { background: #fff; }
+  .steps-row {
+    display: flex; gap: 20px; justify-content: center;
+    flex-wrap: wrap; margin-bottom: 20px;
+  }
+  .step-card {
+    flex: 1; min-width: 200px; max-width: 280px;
+    text-align: center;
+  }
+  .step-number {
+    width: 40px; height: 40px; border-radius: 50%;
+    background: linear-gradient(135deg, #7860a8, #9b7ed8);
+    color: #fff; font-weight: 800; font-size: 16px;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 14px;
+  }
+  .step-card h3 { font-family: 'Outfit', sans-serif; font-size: 13px; font-weight: 700; color: #1a1a2e; margin-bottom: 6px; letter-spacing: 0.08em; text-transform: uppercase; }
+  .step-card p { font-size: 13px; color: #64748b; line-height: 1.7; letter-spacing: -0.01em; }
+
+  /* WIDGET STYLES */
+  .mockup-showcase {
+    display: flex; gap: 32px; justify-content: center;
+    flex-wrap: wrap; margin-top: 40px;
+  }
+  .mockup-item { text-align: center; }
+  .mockup-label {
+    font-size: 12px; font-weight: 700; color: #7860a8;
+    letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 10px;
+  }
+  .widget-mockup {
+    width: 260px; border-radius: 16px; overflow: hidden;
+    box-shadow: 0 4px 20px rgba(80,60,120,0.18), 0 12px 40px rgba(100,80,140,0.10);
+    border: 1px solid #ddd8ec;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-size: 13px; user-select: none; text-align: left;
+  }
+  .widget-header {
+    background: linear-gradient(135deg, #c4b5e3 0%, #d8c8f0 50%, #e0d0f5 100%);
+    padding: 10px 14px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .widget-header-left { display: flex; align-items: center; gap: 8px; }
+  .widget-header-title { font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 14px; color: #3d3450; }
+  .widget-header-sub { font-size: 9px; color: #5d5070; margin-top: 1px; }
+  .widget-collapse {
+    background: rgba(255,255,255,0.5); border: none; color: #3d3450;
+    width: 24px; height: 24px; border-radius: 6px; font-size: 13px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .widget-body { background: #f0ecf6; padding: 12px 14px; }
+  .widget-btn-start {
+    width: 100%; padding: 9px 0; border: none; border-radius: 10px;
+    background: linear-gradient(135deg, #b8e6d0, #98d4b8);
+    color: #fff; font-size: 13px; font-weight: 700;
+  }
+  .widget-btn-stop {
+    width: 100%; padding: 9px 0; border: none; border-radius: 10px;
+    background: linear-gradient(135deg, #f5cfc0, #edb5a0);
+    color: #fff; font-size: 13px; font-weight: 700;
+  }
+  .widget-status { text-align: center; font-size: 11px; color: #5d5478; margin-top: 8px; }
+  .widget-progress-wrap {
+    margin-top: 10px; background: #ddd8ec; border-radius: 20px; height: 7px; overflow: hidden;
+  }
+  .widget-progress-fill { height: 100%; border-radius: 20px; }
+  .widget-progress-fill.active { background: linear-gradient(90deg, #b8a8d8, #c8b8e8); }
+  .widget-progress-fill.done { background: linear-gradient(90deg, #b8e6d0, #98d4b8); }
+  .widget-progress-text { text-align: center; font-size: 9px; color: #7a7094; margin-top: 3px; }
+  .widget-stats {
+    display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; margin-top: 10px;
+  }
+  .widget-stat {
+    background: #faf8fd; border-radius: 8px; padding: 6px 8px; text-align: center;
+    border: 1px solid #ddd8ec;
+  }
+  .widget-stat-val { font-size: 16px; font-weight: 700; line-height: 1.2; }
+  .widget-stat-val.mint { color: #5cb88a; }
+  .widget-stat-val.peach { color: #d08060; }
+  .widget-stat-val.lav { color: #7860a8; }
+  .widget-stat-label { font-size: 8px; color: #7a7094; text-transform: uppercase; letter-spacing: 0.4px; margin-top: 1px; }
+  .widget-divider { height: 1px; background: #ddd8ec; margin: 10px 0 6px; }
+  .widget-btn-zip {
+    width: 100%; padding: 7px 0; border: none; border-radius: 10px;
+    background: linear-gradient(135deg, #fce4ec, #f4d4de);
+    color: #6b2d4a; font-size: 11px; font-weight: 600;
+  }
+  .widget-btn-all {
+    width: 100%; padding: 5px 0; margin-top: 5px; border: none; border-radius: 10px;
+    background: linear-gradient(135deg, #f8f3e2, #f2ebd0);
+    color: #6b5a2e; font-size: 10px;
+  }
+  .widget-btn-history {
+    width: 100%; padding: 5px 0; margin-top: 5px; border: none; border-radius: 10px;
+    background: linear-gradient(135deg, #e8e0f5, #ddd4ee);
+    color: #5a4880; font-size: 10px;
+  }
+
+  /* ====== UPLOAD SECTION ====== */
+  .upload-section { background: linear-gradient(180deg, #faf8fd 0%, #f0ecf6 100%); }
+
+  /* ====== ZIP CONTENTS ====== */
+  .zip-section { background: linear-gradient(180deg, #f8fafc 0%, #fff 100%); }
+  .zip-visual {
+    max-width: 480px; margin: 0 auto;
+    background: #faf8fd; border-radius: 16px; border: 1px solid #ece8f4;
+    overflow: hidden;
+  }
+  .zip-header {
+    background: linear-gradient(135deg, #e8e0f5, #d8cef0);
+    padding: 14px 20px;
+    display: flex; align-items: center; gap: 10px;
+    font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 14px; color: #3d3450;
+  }
+  .zip-tree { padding: 16px 20px; font-size: 13px; color: #334155; }
+  .zip-tree-item {
+    padding: 8px 0; border-bottom: 1px solid #ece8f4;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .zip-tree-item:last-child { border-bottom: none; }
+  .zip-tree-icon { font-size: 18px; flex-shrink: 0; width: 24px; text-align: center; }
+  .zip-tree-label { flex: 1; }
+  .zip-tree-label strong { color: #1a1a2e; }
+  .zip-tree-label span { display: block; font-size: 11px; color: #94a3b8; margin-top: 1px; }
+
+  /* ====== FOOTER ====== */
+  footer {
+    background: #1a1a2e;
+    color: #94a3b8;
+    padding: 40px 40px 28px;
+    text-align: center;
+  }
+  .footer-logo { font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 24px; color: #fff; margin-bottom: 6px; letter-spacing: -0.02em; }
+  .footer-sub { font-size: 13px; color: #64748b; margin-bottom: 20px; }
+  .footer-links { display: flex; gap: 28px; justify-content: center; margin-bottom: 24px; }
+  .footer-links a { font-size: 11px; color: #94a3b8; transition: color 0.2s; letter-spacing: 1px; text-transform: uppercase; font-weight: 500; }
+  .footer-links a:hover { color: #c4b5e3; }
+  .footer-divider { height: 1px; background: rgba(255,255,255,0.08); margin-bottom: 16px; }
+  .footer-copy { font-size: 11px; color: #475569; }
+
+  /* ====== RESPONSIVE ====== */
+  @media (max-width: 768px) {
+    nav { padding: 0 20px; }
+    .nav-links a:not(.nav-cta) { display: none; }
+    .hero { padding: 100px 20px 50px; }
+    .hero h1 { font-size: 28px; }
+    section { padding: 50px 20px; }
+    .action-cards { grid-template-columns: 1fr; max-width: 340px; }
+    .steps-row { flex-direction: column; align-items: center; }
+    .mockup-showcase { flex-direction: column; align-items: center; }
+    .section-title { font-size: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ====== NAV ====== -->
+<nav>
+  <div class="nav-logo">
+    <svg width="32" height="32" viewBox="0 0 100 100">
+      <path d="M38 12 Q36 2 32 5 Q34 10 38 14Z" fill="#7a5c3a"/>
+      <path d="M50 8 Q50 -2 46 2 Q48 7 50 12Z" fill="#7a5c3a"/>
+      <path d="M62 12 Q64 2 68 5 Q66 10 62 14Z" fill="#7a5c3a"/>
+      <ellipse cx="50" cy="52" rx="38" ry="40" fill="#d4a96a"/>
+      <ellipse cx="50" cy="58" rx="28" ry="28" fill="#e8c88a"/>
+      <ellipse cx="38" cy="46" rx="10" ry="11" fill="white"/>
+      <ellipse cx="62" cy="46" rx="10" ry="11" fill="white"/>
+      <circle cx="39" cy="46" r="6" fill="#3b8ed0"/>
+      <circle cx="63" cy="46" r="6" fill="#3b8ed0"/>
+      <circle cx="40" cy="45" r="3" fill="#1a1a2e"/>
+      <circle cx="64" cy="45" r="3" fill="#1a1a2e"/>
+      <circle cx="41" cy="43" r="1.5" fill="white"/>
+      <circle cx="65" cy="43" r="1.5" fill="white"/>
+      <ellipse cx="50" cy="60" rx="8" ry="6" fill="#8b6baa"/>
+      <path d="M43 68 Q50 76 57 68" stroke="#7a5c3a" stroke-width="2" fill="none" stroke-linecap="round"/>
+      <circle cx="30" cy="60" r="5" fill="#e8a0a0" opacity="0.3"/>
+      <circle cx="70" cy="60" r="5" fill="#e8a0a0" opacity="0.3"/>
+      <ellipse cx="18" cy="38" rx="8" ry="10" fill="#d4a96a"/>
+      <ellipse cx="18" cy="38" rx="5" ry="7" fill="#e8c88a"/>
+      <ellipse cx="82" cy="38" rx="8" ry="10" fill="#d4a96a"/>
+      <ellipse cx="82" cy="38" rx="5" ry="7" fill="#e8c88a"/>
+    </svg>
+    <div>
+      <div class="nav-logo-text">SID</div>
+      <div style="font-size:10px;color:#64748b;font-weight:500;letter-spacing:0.3px;margin-top:-2px;">Vendor Portal</div>
+    </div>
+  </div>
+  <div class="nav-links">
+    <a href="mailto:mallen@wallstjobs.com">Contact</a>
+    <a href="#how-it-works">How It Works</a>
+    <a href="#upload" class="nav-cta">Upload Files</a>
+  </div>
+</nav>
+
+<!-- ====== HERO ====== -->
+<div class="hero">
+  <div class="hero-content">
+    <div style="margin-bottom:20px;">
+      <!-- SID waving -->
+      <svg width="340" height="170" viewBox="-75 -15 280 150">
+        <!-- Diamond sparkles — SID center is x=65. viewBox: -75 to 205, centered on 65 -->
+        <!-- LEFT: Far outer (distance ~120+) — large sparkles -->
+        <polygon points="-55,25 -52,15 -49,25 -40,28 -49,31 -52,41 -55,31 -64,28" fill="#c4b5e3" opacity="0.65"/>
+        <polygon points="-60,68 -57,60 -54,68 -47,70 -54,72 -57,80 -60,72 -67,70" fill="#b8e6d0" opacity="0.45"/>
+        <polygon points="-48,100 -46,94 -44,100 -39,102 -44,104 -46,110 -48,104 -53,102" fill="#d4c8ed" opacity="0.35"/>
+        <!-- LEFT: Mid (distance ~70-90) — medium sparkles -->
+        <polygon points="-15,10 -13,3 -11,10 -4,12 -11,14 -13,21 -15,14 -22,12" fill="#b8e6d0" opacity="0.6"/>
+        <polygon points="-22,50 -20,44 -18,50 -13,52 -18,54 -20,60 -22,54 -27,52" fill="#c4b5e3" opacity="0.5"/>
+        <polygon points="-10,82 -8,76 -6,82 -1,84 -6,86 -8,92 -10,86 -15,84" fill="#f5cfc0" opacity="0.4"/>
+        <!-- LEFT: Near (distance ~40-55) — small sparkles -->
+        <polygon points="15,15 16,12 17,15 19,16 17,17 16,20 15,17 13,16" fill="#e8c0d8" opacity="0.45"/>
+        <polygon points="8,45 9,42 10,45 12,46 10,47 9,50 8,47 6,46" fill="#d4c8ed" opacity="0.4"/>
+        <polygon points="20,72 21,69 22,72 24,73 22,74 21,77 20,74 18,73" fill="#b8e6d0" opacity="0.35"/>
+        <polygon points="12,100 13,97 14,100 16,101 14,102 13,105 12,102 10,101" fill="#c4b5e3" opacity="0.3"/>
+        <!-- RIGHT: Far outer (distance ~120+) — large sparkles -->
+        <polygon points="181,21 184,11 187,21 196,24 187,27 184,37 181,27 172,24" fill="#b8e6d0" opacity="0.65"/>
+        <polygon points="187,65 190,57 193,65 200,67 193,69 190,77 187,69 180,67" fill="#c4b5e3" opacity="0.45"/>
+        <polygon points="178,98 180,92 182,98 187,100 182,102 180,108 178,102 173,100" fill="#f5cfc0" opacity="0.35"/>
+        <!-- RIGHT: Mid (distance ~70-90) — medium sparkles -->
+        <polygon points="143,8 145,1 147,8 154,10 147,12 145,19 143,12 136,10" fill="#c4b5e3" opacity="0.6"/>
+        <polygon points="150,48 152,42 154,48 159,50 154,52 152,58 150,52 145,50" fill="#b8e6d0" opacity="0.5"/>
+        <polygon points="138,80 140,74 142,80 147,82 142,84 140,90 138,84 133,82" fill="#d4c8ed" opacity="0.4"/>
+        <!-- RIGHT: Near (distance ~40-55) — small sparkles -->
+        <polygon points="113,13 114,10 115,13 117,14 115,15 114,18 113,15 111,14" fill="#e8c0d8" opacity="0.45"/>
+        <polygon points="120,43 121,40 122,43 124,44 122,45 121,48 120,45 118,44" fill="#f5cfc0" opacity="0.4"/>
+        <polygon points="108,70 109,67 110,70 112,71 110,72 109,75 108,72 106,71" fill="#d4c8ed" opacity="0.35"/>
+        <polygon points="116,98 117,95 118,98 120,99 118,100 117,103 116,100 114,99" fill="#b8e6d0" opacity="0.3"/>
+        <path d="M53 22 Q51 12 47 15 Q49 20 53 24Z" fill="#7a5c3a"/>
+        <path d="M65 18 Q65 8 61 12 Q63 17 65 22Z" fill="#7a5c3a"/>
+        <path d="M77 22 Q79 12 83 15 Q81 20 77 24Z" fill="#7a5c3a"/>
+        <ellipse cx="65" cy="62" rx="38" ry="40" fill="#d4a96a"/>
+        <ellipse cx="65" cy="68" rx="28" ry="28" fill="#e8c88a"/>
+        <ellipse cx="31" cy="42" rx="8" ry="10" fill="#d4a96a"/>
+        <ellipse cx="31" cy="42" rx="5" ry="7" fill="#e8c88a"/>
+        <ellipse cx="99" cy="42" rx="8" ry="10" fill="#d4a96a"/>
+        <ellipse cx="99" cy="42" rx="5" ry="7" fill="#e8c88a"/>
+        <ellipse cx="53" cy="56" rx="10" ry="11" fill="white"/>
+        <ellipse cx="77" cy="56" rx="10" ry="11" fill="white"/>
+        <circle cx="54" cy="56" r="6" fill="#3b8ed0"/>
+        <circle cx="78" cy="56" r="6" fill="#3b8ed0"/>
+        <circle cx="55" cy="54" r="3" fill="#1a1a2e"/>
+        <circle cx="79" cy="54" r="3" fill="#1a1a2e"/>
+        <circle cx="56.5" cy="52.5" r="1.5" fill="white"/>
+        <circle cx="80.5" cy="52.5" r="1.5" fill="white"/>
+        <ellipse cx="65" cy="68" rx="8" ry="6" fill="#8b6baa"/>
+        <path d="M55 76 Q65 88 75 76" stroke="#7a5c3a" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <circle cx="41" cy="70" r="5" fill="#e8a0a0" opacity="0.3"/>
+        <circle cx="89" cy="70" r="5" fill="#e8a0a0" opacity="0.3"/>
+      </svg>
+    </div>
+    <h1>SID's ready.<br><span>Let's get to work.</span></h1>
+    <p class="hero-sub">Run SID, download your resumes, and upload your ZIPs right here.</p>
+
+    <!-- 3 ACTION CARDS -->
+    <div class="action-cards" id="quickstart">
+      <div class="action-card">
+        <div class="action-icon" style="background:linear-gradient(135deg,#e8e0f5,#d8cef0);">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#7860a8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/><line x1="21.17" y1="8" x2="12" y2="8"/><line x1="3.95" y1="6.06" x2="8.54" y2="14"/><line x1="10.88" y1="21.94" x2="15.46" y2="14"/></svg>
+        </div>
+        <h3>1. Install SID</h3>
+        <p>Add the Chrome extension to your browser. Takes under a minute.</p>
+        <a href="#" class="action-btn purple" onclick="alert('Chrome Web Store link coming soon!');return false;">Add to Chrome</a>
+      </div>
+      <div class="action-card">
+        <div class="action-icon" style="background:linear-gradient(135deg,#dde8f8,#c8d8f0);">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#4a80c8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+        </div>
+        <h3>2. Read the Guide</h3>
+        <p>Your complete guide to the workflow, from start to upload.</p>
+        <a href="SID_Vendor_SOP.html" target="_blank" class="action-btn blue">Open Guide</a>
+      </div>
+      <div class="action-card">
+        <div class="action-icon" style="background:linear-gradient(135deg,#d4f0e0,#b8e6d0);">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#5cb88a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+        </div>
+        <h3>3. Upload ZIPs</h3>
+        <p>Send your daily ZIP files directly to Melissa.</p>
+        <a href="#upload" class="action-btn green">Go to Upload</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ====== HOW IT WORKS ====== -->
+<section class="how-it-works" id="how-it-works">
+  <div class="section-inner">
+    <div class="section-label">How SID Works</div>
+    <div class="section-title">Three steps to download resumes</div>
+    <div class="section-subtitle">SID lives in your browser and appears automatically when you're on the Indeed employer dashboard.</div>
+
+    <div class="steps-row">
+      <div class="step-card">
+        <div class="step-number">1</div>
+        <h3>Open a Job's Candidates</h3>
+        <p>Go to the Indeed employer dashboard, open a job posting, and click on a candidate's name. SID appears in the corner.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-number">2</div>
+        <h3>Click Start</h3>
+        <p>Hit the green Start button. SID processes every candidate automatically &mdash; downloading resumes and logging details.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-number">3</div>
+        <h3>Download Your ZIP</h3>
+        <p>When the progress bar turns green, click Download Zip or Download All Today to grab your organized files.</p>
+      </div>
+    </div>
+
+    <!-- WIDGET MOCKUPS -->
+    <div class="mockup-showcase">
+      <!-- READY -->
+      <div class="mockup-item">
+        <div class="mockup-label">Ready</div>
+        <div class="widget-mockup">
+          <div class="widget-header">
+            <div class="widget-header-left">
+              <svg width="30" height="30" viewBox="0 0 100 100">
+                <path d="M38 12 Q36 2 32 5 Q34 10 38 14Z" fill="#7a5c3a"/><path d="M50 8 Q50 -2 46 2 Q48 7 50 12Z" fill="#7a5c3a"/><path d="M62 12 Q64 2 68 5 Q66 10 62 14Z" fill="#7a5c3a"/>
+                <ellipse cx="50" cy="52" rx="38" ry="40" fill="#d4a96a"/><ellipse cx="50" cy="58" rx="28" ry="28" fill="#e8c88a"/>
+                <ellipse cx="38" cy="46" rx="10" ry="11" fill="white"/><ellipse cx="62" cy="46" rx="10" ry="11" fill="white"/>
+                <circle cx="39" cy="46" r="6" fill="#3b8ed0"/><circle cx="63" cy="46" r="6" fill="#3b8ed0"/>
+                <circle cx="40" cy="45" r="3" fill="#1a1a2e"/><circle cx="64" cy="45" r="3" fill="#1a1a2e"/>
+                <circle cx="41" cy="43" r="1.5" fill="white"/><circle cx="65" cy="43" r="1.5" fill="white"/>
+                <ellipse cx="50" cy="60" rx="8" ry="6" fill="#8b6baa"/>
+                <path d="M43 68 Q50 76 57 68" stroke="#7a5c3a" stroke-width="2" fill="none" stroke-linecap="round"/>
+              </svg>
+              <div>
+                <div class="widget-header-title">SID</div>
+                <div class="widget-header-sub">Smart Indeed Downloader</div>
+              </div>
+            </div>
+            <div class="widget-collapse">&ndash;</div>
+          </div>
+          <div class="widget-body">
+            <button class="widget-btn-start">Start</button>
+            <div class="widget-status">Ready</div>
+            <div class="widget-progress-wrap"><div class="widget-progress-fill" style="width:0%"></div></div>
+            <div class="widget-stats">
+              <div class="widget-stat"><div class="widget-stat-val mint">0</div><div class="widget-stat-label">Processed</div></div>
+              <div class="widget-stat"><div class="widget-stat-val peach">0</div><div class="widget-stat-label">Skipped</div></div>
+              <div class="widget-stat"><div class="widget-stat-val lav">--</div><div class="widget-stat-label">Time Left</div></div>
+            </div>
+            <div class="widget-divider"></div>
+            <button class="widget-btn-history">Job History</button>
+          </div>
+        </div>
+      </div>
+      <!-- RUNNING -->
+      <div class="mockup-item">
+        <div class="mockup-label">Running</div>
+        <div class="widget-mockup">
+          <div class="widget-header">
+            <div class="widget-header-left">
+              <svg width="30" height="30" viewBox="0 0 100 100">
+                <path d="M38 12 Q36 2 32 5 Q34 10 38 14Z" fill="#7a5c3a"/><path d="M50 8 Q50 -2 46 2 Q48 7 50 12Z" fill="#7a5c3a"/><path d="M62 12 Q64 2 68 5 Q66 10 62 14Z" fill="#7a5c3a"/>
+                <ellipse cx="50" cy="52" rx="38" ry="40" fill="#d4a96a"/><ellipse cx="50" cy="58" rx="28" ry="28" fill="#e8c88a"/>
+                <ellipse cx="38" cy="46" rx="10" ry="11" fill="white"/><ellipse cx="62" cy="46" rx="10" ry="11" fill="white"/>
+                <circle cx="39" cy="46" r="6" fill="#3b8ed0"/><circle cx="63" cy="46" r="6" fill="#3b8ed0"/>
+                <circle cx="40" cy="45" r="3" fill="#1a1a2e"/><circle cx="64" cy="45" r="3" fill="#1a1a2e"/>
+                <circle cx="41" cy="43" r="1.5" fill="white"/><circle cx="65" cy="43" r="1.5" fill="white"/>
+                <ellipse cx="50" cy="60" rx="8" ry="6" fill="#8b6baa"/>
+                <path d="M43 68 Q50 76 57 68" stroke="#7a5c3a" stroke-width="2" fill="none" stroke-linecap="round"/>
+              </svg>
+              <div>
+                <div class="widget-header-title">SID</div>
+                <div class="widget-header-sub">Smart Indeed Downloader</div>
+              </div>
+            </div>
+            <div class="widget-collapse">&ndash;</div>
+          </div>
+          <div class="widget-body">
+            <button class="widget-btn-stop">Stop</button>
+            <div class="widget-status">Downloading resume 18 of 47...</div>
+            <div class="widget-progress-wrap"><div class="widget-progress-fill active" style="width:38%"></div></div>
+            <div class="widget-progress-text">18 of 47 (38%)</div>
+            <div class="widget-stats">
+              <div class="widget-stat"><div class="widget-stat-val mint">15</div><div class="widget-stat-label">Processed</div></div>
+              <div class="widget-stat"><div class="widget-stat-val peach">3</div><div class="widget-stat-label">Skipped</div></div>
+              <div class="widget-stat"><div class="widget-stat-val lav">0:22</div><div class="widget-stat-label">Time Left</div></div>
+            </div>
+            <div class="widget-divider"></div>
+            <button class="widget-btn-zip">Download Zip</button>
+            <button class="widget-btn-history">Job History</button>
+          </div>
+        </div>
+      </div>
+      <!-- DONE -->
+      <div class="mockup-item">
+        <div class="mockup-label">Done</div>
+        <div class="widget-mockup">
+          <div class="widget-header">
+            <div class="widget-header-left">
+              <svg width="30" height="30" viewBox="0 0 100 100">
+                <path d="M38 12 Q36 2 32 5 Q34 10 38 14Z" fill="#7a5c3a"/><path d="M50 8 Q50 -2 46 2 Q48 7 50 12Z" fill="#7a5c3a"/><path d="M62 12 Q64 2 68 5 Q66 10 62 14Z" fill="#7a5c3a"/>
+                <ellipse cx="50" cy="52" rx="38" ry="40" fill="#d4a96a"/><ellipse cx="50" cy="58" rx="28" ry="28" fill="#e8c88a"/>
+                <ellipse cx="38" cy="46" rx="10" ry="11" fill="white"/><ellipse cx="62" cy="46" rx="10" ry="11" fill="white"/>
+                <circle cx="39" cy="46" r="6" fill="#3b8ed0"/><circle cx="63" cy="46" r="6" fill="#3b8ed0"/>
+                <circle cx="40" cy="45" r="3" fill="#1a1a2e"/><circle cx="64" cy="45" r="3" fill="#1a1a2e"/>
+                <circle cx="41" cy="43" r="1.5" fill="white"/><circle cx="65" cy="43" r="1.5" fill="white"/>
+                <ellipse cx="50" cy="60" rx="8" ry="6" fill="#8b6baa"/>
+                <path d="M43 68 Q50 76 57 68" stroke="#7a5c3a" stroke-width="2" fill="none" stroke-linecap="round"/>
+              </svg>
+              <div>
+                <div class="widget-header-title">SID</div>
+                <div class="widget-header-sub">Smart Indeed Downloader</div>
+              </div>
+            </div>
+            <div class="widget-collapse">&ndash;</div>
+          </div>
+          <div class="widget-body">
+            <button class="widget-btn-start">Start</button>
+            <div class="widget-status">Done! 44 resumes ready &middot; 44 reviewed</div>
+            <div class="widget-progress-wrap"><div class="widget-progress-fill done" style="width:100%"></div></div>
+            <div class="widget-progress-text">47 of 47 (100%)</div>
+            <div class="widget-stats">
+              <div class="widget-stat"><div class="widget-stat-val mint">44</div><div class="widget-stat-label">Processed</div></div>
+              <div class="widget-stat"><div class="widget-stat-val peach">3</div><div class="widget-stat-label">Skipped</div></div>
+              <div class="widget-stat">
+                <div class="widget-stat-val" style="color:#5cb88a"><svg width="18" height="18" viewBox="0 0 20 20" fill="none" style="vertical-align:middle"><circle cx="10" cy="10" r="9" fill="#e6f5ec" stroke="#5cb88a" stroke-width="1.5"/><path d="M6 10.5l2.5 2.5 5.5-5.5" stroke="#5cb88a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                <div class="widget-stat-label">Time Left</div>
+              </div>
+            </div>
+            <div class="widget-divider"></div>
+            <button class="widget-btn-zip">Download Zip</button>
+            <button class="widget-btn-all">Download All Today &nbsp;<span style="opacity:0.7">1 job &middot; 44 resumes</span></button>
+            <button class="widget-btn-history">Job History</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ====== WHAT'S IN THE ZIP ====== -->
+<section class="zip-section">
+  <div class="section-inner">
+    <div class="section-label">Output</div>
+    <div class="section-title">What's in the ZIP</div>
+    <div class="section-subtitle">Everything organized and ready to go. You don't need to rename or rearrange anything.</div>
+    <div class="zip-visual">
+      <div class="zip-header">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3d3450" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+        SID_Download_2026-03-22.zip
+      </div>
+      <div class="zip-tree">
+        <div class="zip-tree-item">
+          <div class="zip-tree-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#7860a8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+          </div>
+          <div class="zip-tree-label"><strong>Resumes/</strong><span>PDF files named with candidate name, city, email, phone</span></div>
+        </div>
+        <div class="zip-tree-item">
+          <div class="zip-tree-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5cb88a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+          </div>
+          <div class="zip-tree-label"><strong>CSV/</strong><span>Spreadsheet per job with candidate details (name, email, phone, location)</span></div>
+        </div>
+        <div class="zip-tree-item">
+          <div class="zip-tree-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#d08060" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          </div>
+          <div class="zip-tree-label"><strong>Master_CSV.csv</strong><span>All candidates across all jobs, duplicates removed</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ====== UPLOAD FILES ====== -->
+<section class="upload-section" id="upload">
+  <div class="section-inner">
+    <!-- SID happy closed eyes -->
+    <div style="text-align:center;margin-bottom:16px;">
+      <svg width="56" height="56" viewBox="0 0 100 100">
+        <path d="M38 12 Q36 2 32 5 Q34 10 38 14Z" fill="#7a5c3a"/>
+        <path d="M50 8 Q50 -2 46 2 Q48 7 50 12Z" fill="#7a5c3a"/>
+        <path d="M62 12 Q64 2 68 5 Q66 10 62 14Z" fill="#7a5c3a"/>
+        <ellipse cx="50" cy="52" rx="38" ry="40" fill="#d4a96a"/>
+        <ellipse cx="50" cy="58" rx="28" ry="28" fill="#e8c88a"/>
+        <ellipse cx="18" cy="38" rx="8" ry="10" fill="#d4a96a"/><ellipse cx="18" cy="38" rx="5" ry="7" fill="#e8c88a"/>
+        <ellipse cx="82" cy="38" rx="8" ry="10" fill="#d4a96a"/><ellipse cx="82" cy="38" rx="5" ry="7" fill="#e8c88a"/>
+        <path d="M30 45 Q38 39 46 45" stroke="#1a1a2e" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <path d="M54 45 Q62 39 70 45" stroke="#1a1a2e" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <ellipse cx="50" cy="60" rx="8" ry="6" fill="#8b6baa"/>
+        <path d="M43 68 Q50 76 57 68" stroke="#7a5c3a" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <circle cx="30" cy="60" r="5" fill="#e8a0a0" opacity="0.4"/>
+        <circle cx="70" cy="60" r="5" fill="#e8a0a0" opacity="0.4"/>
+      </svg>
+    </div>
+    <div class="section-label">File Delivery</div>
+    <div class="section-title">Upload Your ZIP Files</div>
+    <div class="section-subtitle">After downloading your resumes with SID, upload the ZIP file here.<br>It goes directly to Melissa.</div>
+    <div style="max-width:560px;margin:0 auto;background:#fff;border-radius:20px;padding:32px 36px;box-shadow:0 4px 24px rgba(120,96,168,0.08);border:1px solid #ece8f4;">
+      <!-- UploadThingy Widget -->
+      <script>window.UPLOADTHINGY_API_URL = 'https://app.uploadthingy.com';</script>
+      <div id="uploadthingy-widget" data-domain="sid.rocks"></div>
+      <script src="https://app.uploadthingy.com/static/js/uploadthingy-widget.js"></script>
+      <!-- Hide Message field, keep Name and Email -->
+      <style>
+        /* Hide message field (the one with textarea) */
+        #uploadthingy-widget .ut-form-group:has(textarea) { display: none !important; }
+        /* Style the widget to match the site */
+        #uploadthingy-widget { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; }
+        #uploadthingy-widget input,
+        #uploadthingy-widget textarea {
+          border-radius: 10px !important;
+          border: 2px solid #ece8f4 !important;
+          padding: 10px 14px !important;
+          font-size: 14px !important;
+          transition: border-color 0.2s !important;
+        }
+        #uploadthingy-widget input:focus,
+        #uploadthingy-widget textarea:focus {
+          border-color: #7860a8 !important;
+          outline: none !important;
+        }
+        #uploadthingy-widget label {
+          font-weight: 600 !important;
+          color: #1a1a2e !important;
+          font-size: 14px !important;
+        }
+        /* Style the upload button to match site purple */
+        #uploadthingy-widget button[type="submit"],
+        #uploadthingy-widget .ut-submit-btn {
+          background: linear-gradient(135deg, #7860a8, #9b7ed8) !important;
+          border: none !important;
+          border-radius: 12px !important;
+          padding: 12px 32px !important;
+          font-size: 15px !important;
+          font-weight: 700 !important;
+          cursor: pointer !important;
+          transition: transform 0.2s, box-shadow 0.2s !important;
+        }
+        #uploadthingy-widget button[type="submit"]:hover,
+        #uploadthingy-widget .ut-submit-btn:hover {
+          transform: translateY(-2px) !important;
+          box-shadow: 0 4px 16px rgba(120,96,168,0.35) !important;
+        }
+        /* Style the drop zone */
+        #uploadthingy-widget .ut-dropzone {
+          border: 2px dashed #d4c8ed !important;
+          border-radius: 16px !important;
+          transition: border-color 0.2s !important;
+        }
+        #uploadthingy-widget .ut-dropzone:hover {
+          border-color: #7860a8 !important;
+        }
+        /* Hide the 100MB limit text */
+        .ut-dropzone-text:last-of-type {
+          display: none !important;
+        }
+      </style>
+    </div>
+    <!-- Company field injected after widget loads -->
+    <script>
+      (function() {
+        var attempts = 0;
+        var interval = setInterval(function() {
+          var widget = document.getElementById('uploadthingy-widget');
+          var groups = widget ? widget.querySelectorAll('.ut-form-group') : [];
+          var emailGroup = groups.length >= 2 ? groups[1] : null;
+          if (emailGroup && !document.getElementById('company-field-added')) {
+            var companyGroup = document.createElement('div');
+            companyGroup.className = 'ut-form-group';
+            companyGroup.id = 'company-field-added';
+            companyGroup.innerHTML = '<label style="font-weight:600;color:#1a1a2e;font-size:14px;display:block;margin-bottom:6px;">Company</label><input type="text" placeholder="Enter your company" style="width:100%;border-radius:10px;border:2px solid #ece8f4;padding:10px 14px;font-size:14px;transition:border-color 0.2s;font-family:inherit;" onfocus="this.style.borderColor=\'#7860a8\'" onblur="this.style.borderColor=\'#ece8f4\'">';
+            emailGroup.parentNode.insertBefore(companyGroup, emailGroup.nextSibling);
+            clearInterval(interval);
+          }
+          if (++attempts > 50) clearInterval(interval);
+        }, 200);
+      })();
+    </script>
+  </div>
+</section>
+
+<!-- ====== FOOTER ====== -->
+<footer>
+  <div style="margin-bottom:12px;">
+    <svg width="40" height="40" viewBox="0 0 100 100">
+      <path d="M38 12 Q36 2 32 5 Q34 10 38 14Z" fill="#7a5c3a"/>
+      <path d="M50 8 Q50 -2 46 2 Q48 7 50 12Z" fill="#7a5c3a"/>
+      <path d="M62 12 Q64 2 68 5 Q66 10 62 14Z" fill="#7a5c3a"/>
+      <ellipse cx="50" cy="52" rx="38" ry="40" fill="#d4a96a"/>
+      <ellipse cx="50" cy="58" rx="28" ry="28" fill="#e8c88a"/>
+      <ellipse cx="18" cy="38" rx="8" ry="10" fill="#d4a96a"/><ellipse cx="18" cy="38" rx="5" ry="7" fill="#e8c88a"/>
+      <ellipse cx="82" cy="38" rx="8" ry="10" fill="#d4a96a"/><ellipse cx="82" cy="38" rx="5" ry="7" fill="#e8c88a"/>
+      <line x1="30" y1="46" x2="46" y2="46" stroke="#7a7094" stroke-width="2" stroke-linecap="round"/>
+      <line x1="54" y1="46" x2="70" y2="46" stroke="#7a7094" stroke-width="2" stroke-linecap="round"/>
+      <ellipse cx="50" cy="60" rx="8" ry="6" fill="#8b6baa"/>
+      <path d="M43 68 Q50 74 57 68" stroke="#7a5c3a" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+      <circle cx="30" cy="60" r="5" fill="#e8a0a0" opacity="0.3"/>
+      <circle cx="70" cy="60" r="5" fill="#e8a0a0" opacity="0.3"/>
+    </svg>
+  </div>
+  <div class="footer-logo">SID</div>
+  <div class="footer-sub">Smart Indeed Downloader &mdash; Vendor Portal</div>
+  <div class="footer-links">
+    <a href="#quickstart">Quick Start</a>
+    <a href="#how-it-works">How It Works</a>
+    <a href="#upload">Upload Files</a>
+    <a href="SID_Vendor_SOP.html" target="_blank">Full Guide</a>
+    <a href="mailto:mallen@wallstjobs.com">Contact Melissa</a>
+  </div>
+  <div class="footer-divider"></div>
+  <div class="footer-copy">&copy; 2026 SID - Smart Indeed Downloader. For authorized vendors only. &nbsp;|&nbsp; mallen@wallstjobs.com</div>
+</footer>
+
+</body>
+</html>
