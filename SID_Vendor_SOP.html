@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SID - Smart Indeed Downloader | Vendor Guide</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M38 12Q36 2 32 5Q34 10 38 14Z' fill='%237a5c3a'/%3E%3Cpath d='M50 8Q50-2 46 2Q48 7 50 12Z' fill='%237a5c3a'/%3E%3Cpath d='M62 12Q64 2 68 5Q66 10 62 14Z' fill='%237a5c3a'/%3E%3Cellipse cx='50' cy='52' rx='38' ry='40' fill='%23d4a96a'/%3E%3Cellipse cx='50' cy='58' rx='28' ry='28' fill='%23e8c88a'/%3E%3Cellipse cx='38' cy='46' rx='10' ry='11' fill='white'/%3E%3Cellipse cx='62' cy='46' rx='10' ry='11' fill='white'/%3E%3Ccircle cx='39' cy='46' r='6' fill='%233b8ed0'/%3E%3Ccircle cx='63' cy='46' r='6' fill='%233b8ed0'/%3E%3Ccircle cx='40' cy='45' r='3' fill='%231a1a2e'/%3E%3Ccircle cx='64' cy='45' r='3' fill='%231a1a2e'/%3E%3Ccircle cx='41' cy='43' r='1.5' fill='white'/%3E%3Ccircle cx='65' cy='43' r='1.5' fill='white'/%3E%3Cellipse cx='50' cy='60' rx='8' ry='6' fill='%238b6baa'/%3E%3Cpath d='M43 68Q50 76 57 68' stroke='%237a5c3a' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3Cellipse cx='18' cy='38' rx='8' ry='10' fill='%23d4a96a'/%3E%3Cellipse cx='82' cy='38' rx='8' ry='10' fill='%23d4a96a'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -264,7 +265,7 @@
     <h2>1. What Is SID?</h2>
     <div class="section-line"></div>
     <p>SID is a Chrome extension that automatically downloads candidate resumes from your Indeed employer dashboard. It saves you from clicking into each candidate one by one.</p>
-    <p>You press <strong>Start</strong>, SID grabs all the resumes, and then you download everything as a single ZIP file. Your job is to run SID every day and upload those files at <strong><a href="https://sid.rocks" style="color:#7860a8;">sid.rocks</a></strong>.</p>
+    <p>You press <strong>Start</strong>, SID grabs all the resumes, and then you download everything as a single ZIP file. The best practice is to <strong>run SID on a job posting once it's closed</strong> and you're ready to save all the resumes at once. Each day, close your finished postings, run SID on them, and upload the files at <strong><a href="https://sid.rocks" style="color:#7860a8;">sid.rocks</a></strong>.</p>
   </div>
 
   <!-- ========== SECTION 2: INSTALL ========== -->
@@ -291,7 +292,7 @@
 
     <!-- READY STATE -->
     <h3>When You First Open a Job (Ready State)</h3>
-    <p>After you go to a job's <strong>Candidates</strong> page and <strong>click on the first candidate's name</strong> to enter the individual candidate view, SID will appear in the top-right corner. It's waiting for you to press Start.</p>
+    <p>After you go to a job's <strong>Candidates</strong> page, make sure you're on the <strong>"All"</strong> tab so SID processes every candidate. Then <strong>click on the first candidate's name</strong> to enter the individual candidate view &mdash; SID will appear in the top-right corner, waiting for you to press Start.</p>
     <div class="mockup-wrap">
       <div class="widget-mockup">
         <div class="widget-header">
@@ -335,6 +336,8 @@
             <div class="widget-stat"><div class="widget-stat-val peach">0</div><div class="widget-stat-label">Skipped</div></div>
             <div class="widget-stat"><div class="widget-stat-val lav">--</div><div class="widget-stat-label">Time Left</div></div>
           </div>
+          <div class="widget-divider"></div>
+          <button class="widget-btn-history">Job History</button>
         </div>
       </div>
     </div>
@@ -377,6 +380,9 @@
             <div class="widget-stat"><div class="widget-stat-val peach">3</div><div class="widget-stat-label">Skipped</div></div>
             <div class="widget-stat"><div class="widget-stat-val lav">0:22</div><div class="widget-stat-label">Time Left</div></div>
           </div>
+          <div class="widget-divider"></div>
+          <button class="widget-btn-zip">Download Zip</button>
+          <button class="widget-btn-history">Job History</button>
         </div>
       </div>
     </div>
@@ -387,13 +393,8 @@
     <p>The progress bar turns green, you'll hear a chime, and the download buttons appear. The status shows a summary like <strong>"Done! 44 resumes ready &middot; 44 reviewed"</strong> (and if any were skipped, it will say why). This is where you grab your files.</p>
 
     <h3>How "Marking as Reviewed" Works</h3>
-    <p>After SID finishes downloading resumes, it automatically marks each processed candidate as <strong>"Reviewed"</strong> in Indeed. This is important because:</p>
-    <ul>
-      <li>After a successful run, the <strong>New</strong> tab on the job posting should show <strong>0</strong> &mdash; meaning all new candidates have been processed.</li>
-      <li>If new applicants come in <em>after</em> SID already ran, they'll show up in the <strong>New</strong> tab. You can easily see how many new candidates are waiting.</li>
-      <li>You can run SID again on just the <strong>New</strong> tab to grab only the new ones, or run it on <strong>All</strong> &mdash; either way, SID will skip the ones it already downloaded and only process the new candidates.</li>
-    </ul>
-    <div class="tip-box"><strong>TIP:</strong> The New tab count is a quick way to check if there's anything new to download. If it says 0, you're all caught up on that job.</div>
+    <p>As SID processes each candidate, it automatically marks them as <strong>"Reviewed"</strong> in Indeed. This is just how SID keeps track &mdash; after a successful run on a closed posting, all candidates will show as Reviewed and you're done.</p>
+    <p>If you have an <strong>ongoing posting</strong> (not yet closed), the Reviewed status becomes more useful: candidates who apply after SID ran will appear in the <strong>"New"</strong> tab, so you can easily see who's new. See the <strong>"If You Have an Ongoing Posting"</strong> section below for how to handle that.</p>
     <div class="mockup-wrap">
       <div class="widget-mockup">
         <div class="widget-header">
@@ -420,25 +421,21 @@
         </div>
         <div class="widget-body">
           <button class="widget-btn-start">Start</button>
-          <div class="widget-status">Done! 44 resumes ready &middot; 44 reviewed &middot; 2 no resume &middot; 1 intl</div>
-          <div style="text-align:center;margin-top:4px"><span style="font-size:10px;color:#7860a8;cursor:pointer;border-bottom:1px dotted #7860a8">redo all</span></div>
+          <div class="widget-status">Done! 44 resumes ready &middot; 44 reviewed</div>
           <div class="widget-progress-wrap"><div class="widget-progress-fill done" style="width:100%"></div></div>
           <div class="widget-progress-text">47 of 47 (100%)</div>
           <div class="widget-stats">
+            <div class="widget-stat"><div class="widget-stat-val mint">44</div><div class="widget-stat-label">Processed</div></div>
+            <div class="widget-stat"><div class="widget-stat-val peach">3</div><div class="widget-stat-label">Skipped</div></div>
             <div class="widget-stat">
-              <div class="widget-stat-val mint">44</div><div class="widget-stat-label">Processed</div>
-            </div>
-            <div class="widget-stat">
-              <div class="widget-stat-val peach">3</div><div class="widget-stat-label">Skipped</div>
-            </div>
-            <div class="widget-stat">
-              <div class="widget-stat-val" style="color:#5cb88a"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" style="vertical-align:middle"><circle cx="10" cy="10" r="9" fill="#e6f5ec" stroke="#5cb88a" stroke-width="1.5"/><path d="M6 10.5l2.5 2.5 5.5-5.5" stroke="#5cb88a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="widget-stat-label">Time Left</div>
+              <div class="widget-stat-val" style="color:#5cb88a"><svg width="18" height="18" viewBox="0 0 20 20" fill="none" style="vertical-align:middle"><circle cx="10" cy="10" r="9" fill="#e6f5ec" stroke="#5cb88a" stroke-width="1.5"/><path d="M6 10.5l2.5 2.5 5.5-5.5" stroke="#5cb88a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+              <div class="widget-stat-label">Time Left</div>
             </div>
           </div>
           <div class="widget-divider"></div>
           <button class="widget-btn-zip">Download Zip</button>
-          <button class="widget-btn-all">Download All Today <span style="opacity:0.7;margin-left:4px">1 job &middot; 44 resumes</span></button>
-          <button class="widget-btn-history">Job History &#9660;</button>
+          <button class="widget-btn-all">Download All Today &nbsp;<span style="opacity:0.7">1 job &middot; 44 resumes</span></button>
+          <button class="widget-btn-history">Job History</button>
         </div>
       </div>
     </div>
@@ -510,8 +507,15 @@
       <tr><td><strong>Job History</strong></td><td>Shows past jobs so you can re-download any of them.</td><td>Use if you need to re-download something from a previous day. Data older than 7 days is automatically cleaned up.</td></tr>
     </table>
 
-    <h3>What Happens When New Candidates Apply to a Job You Already Ran</h3>
-    <p>SID remembers which candidates it already downloaded. So if you go back to the same job the next day (or later the same day) and new people have applied, you'll see a message like this:</p>
+    <h3>If You Have an Ongoing Posting (Not Yet Closed)</h3>
+    <p>Most of the time, you'll run SID once on a closed posting and you're done &mdash; that's the simplest approach. But sometimes a posting stays open for a while and you need to save resumes as they come in. Here's how that works:</p>
+
+    <p><strong>Use the "New" tab.</strong> On Indeed's Candidates page, the <strong>"New"</strong> tab shows only candidates who haven't been reviewed yet &mdash; meaning anyone who applied since you last ran SID. Navigate to the New tab, click the first candidate's name, and run SID. It will download just those new candidates.</p>
+
+    <div class="important-box"><strong>NEW TAB GLITCH:</strong> There is a known Indeed glitch (not a SID issue) where the very last candidate on the <strong>"New"</strong> tab stays marked as New even though the resume downloads fine. If this happens, just click on that last candidate and manually change their status to <strong>"Reviewing"</strong> &mdash; it's a quick click. This only happens on the New tab.</div>
+
+    <h3>What About the "All" Tab on a Job You Already Ran?</h3>
+    <p>If you go back to the <strong>"All"</strong> tab on a job you already ran, SID remembers what it downloaded and will show something like this:</p>
     <div class="mockup-wrap">
       <div style="width:280px;border-radius:10px;overflow:hidden;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:13px;background:#f0ecf6;padding:14px 16px;border:1px solid #ddd8ec;">
         <button style="width:100%;padding:10px 0;border:none;border-radius:10px;background:linear-gradient(135deg,#b8e6d0,#98d4b8);color:#fff;font-size:14px;font-weight:700;">Start</button>
@@ -519,11 +523,11 @@
         <div style="text-align:center;margin-top:4px"><span style="font-size:10px;color:#7860a8;cursor:pointer;border-bottom:1px dotted #7860a8">redo all</span></div>
       </div>
     </div>
-    <p>This means SID will <strong>skip the 44 it already has</strong> and only download resumes from candidates who applied since the last time you ran it. This is the normal behavior and exactly what you want &mdash; just click <strong>Start</strong> and let it run.</p>
+    <p>This means SID will skip the 44 it already has and only grab new candidates. <strong>However</strong>, SID's job history auto-deletes after 7 days, so this memory only works if you last ran the job within the past week (and haven't manually cleared your history). For ongoing postings where you're saving resumes daily, the <strong>"New"</strong> tab is more reliable since it's based on Indeed's status, not SID's memory.</p>
+
+    <div class="tip-box"><strong>BOTTOM LINE:</strong> Close the posting first and run SID once on "All" &mdash; that's the easiest and most reliable approach. For ongoing postings, use the <strong>"New"</strong> tab daily and just watch for the last-candidate glitch.</div>
 
     <p><strong>What about "redo all"?</strong> If for some reason you need to re-download <em>every</em> candidate from scratch (for example, if Melissa asks you to), click the small <strong>"redo all"</strong> link under the status message. It will reset the job so SID processes all candidates again. <strong>You almost never need to do this</strong> &mdash; it's just there in case.</p>
-
-    <div class="tip-box"><strong>TIP:</strong> This is why you should run SID every day &mdash; it only picks up what's new, so it's fast. If you skip a few days, SID will still catch everything when you come back, it just takes longer because there are more new candidates to process.</div>
 
     <div class="important-box"><strong>TIMEZONE NOTE &mdash; PLEASE READ:</strong> SID runs on <strong>U.S. Eastern Time (EST/EDT)</strong>. "Download All Today" bundles every job you ran during <strong>the same Eastern Time calendar day</strong> (midnight to midnight EST). This matters if you're working from a different timezone like IST.
     <br><br>
@@ -536,17 +540,20 @@
   <div class="section page-break">
     <h2>4. Your Daily Workflow</h2>
     <div class="section-line"></div>
-    <p>Here's the typical daily routine. Most vendors close the previous day's job postings in the morning, download those resumes, and upload them at <strong><a href="https://sid.rocks" style="color:#7860a8;">sid.rocks</a></strong> &mdash; then new jobs go up for the current day.</p>
+    <p>Here's the typical daily routine. The best practice is to <strong>run SID on a posting once it's closed</strong> and you're saving all the resumes at once. Most vendors close the previous day's postings in the morning, run SID on those closed jobs, upload the files at <strong><a href="https://sid.rocks" style="color:#7860a8;">sid.rocks</a></strong>, and then new jobs go up for the current day.</p>
 
     <div class="steps">
       <div class="step"><div class="step-num">1</div><div class="step-text"><strong>Log into Indeed</strong> &mdash; Go to <strong>employers.indeed.com</strong> and sign in.</div></div>
-      <div class="step"><div class="step-num">2</div><div class="step-text"><strong>Open a job's candidates</strong> &mdash; Click into the job posting you need to process and go to the <strong>Candidates</strong> tab. You'll see the list of all applicants.</div></div>
-      <div class="step"><div class="step-num">3</div><div class="step-text"><strong>Click the first candidate's name</strong> &mdash; This opens the individual candidate view where you can see their resume and details. The SID widget will appear in the top-right corner.</div></div>
-      <div class="step"><div class="step-num">4</div><div class="step-text"><strong>Click Start</strong> on the SID widget. Let it run until it finishes (the progress bar will turn green). You don't need to click any other candidates &mdash; SID goes through all of them automatically. You can switch to other Chrome tabs while it runs; just keep the Indeed tab open.</div></div>
-      <div class="step"><div class="step-num">5</div><div class="step-text"><strong>Repeat for each job</strong> &mdash; Navigate to the next job's candidates, click the first name, and click Start again. SID tracks each job separately.</div></div>
-      <div class="step"><div class="step-num">6</div><div class="step-text"><strong>Download your files</strong> &mdash; After you've done all your jobs, either click <strong>"Download All Today"</strong> to get one ZIP with everything, or click <strong>"Download Zip"</strong> after each job to download them one at a time. Either way works.</div></div>
-      <div class="step"><div class="step-num">7</div><div class="step-text"><strong>Upload the ZIP(s)</strong> &mdash; Go to <strong><a href="https://sid.rocks" style="color:#7860a8;">sid.rocks</a></strong> and upload your ZIP file directly. See Section 5 below.</div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-text"><strong>Close the job posting</strong> (if not already closed) &mdash; Once all the candidates have come in and the posting has run its course, close it. This ensures all resumes are finalized and ready for download.</div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-text"><strong>Open the job's candidates</strong> &mdash; Click into the closed posting and go to the <strong>Candidates</strong> tab. Make sure you're on the <strong>"All"</strong> tab so SID processes everyone.</div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-text"><strong>Click the first candidate's name</strong> &mdash; This opens the individual candidate view where you can see their resume and details. The SID widget will appear in the top-right corner.</div></div>
+      <div class="step"><div class="step-num">5</div><div class="step-text"><strong>Click Start</strong> on the SID widget. Let it run until it finishes (the progress bar will turn green). You don't need to click any other candidates &mdash; SID goes through all of them automatically. You can switch to other Chrome tabs while it runs; just keep the Indeed tab open.</div></div>
+      <div class="step"><div class="step-num">6</div><div class="step-text"><strong>Repeat for each job</strong> &mdash; Navigate to the next closed job's candidates, click the first name, and click Start again. SID tracks each job separately.</div></div>
+      <div class="step"><div class="step-num">7</div><div class="step-text"><strong>Download your files</strong> &mdash; After you've done all your jobs, either click <strong>"Download All Today"</strong> to get one ZIP with everything, or click <strong>"Download Zip"</strong> after each job to download them one at a time. Either way works.</div></div>
+      <div class="step"><div class="step-num">8</div><div class="step-text"><strong>Upload the ZIP(s)</strong> &mdash; Go to <strong><a href="https://sid.rocks" style="color:#7860a8;">sid.rocks</a></strong> and upload your ZIP file directly. See Section 5 below.</div></div>
     </div>
+
+    <div class="important-box"><strong>WHY RUN SID ON CLOSED POSTINGS?</strong> Running SID on a closed job ensures all candidates are accounted for in a single pass. There is a known Indeed glitch where running SID on the <strong>"New"</strong> tab leaves the last candidate still marked as New (not Reviewed) &mdash; the resume still downloads, but the status doesn't update. Running on closed postings avoids this entirely. If you do need to run SID on an open posting with New candidates, just manually change that last candidate's status to "Reviewing" afterward &mdash; it's a quick fix.</div>
 
     <div class="important-box"><strong>WHERE DO DOWNLOADS GO?</strong> ZIP files from SID save to whatever folder Chrome uses for downloads &mdash; usually your <strong>Downloads</strong> folder. To keep things organized, create a dedicated folder (e.g. <strong>"SID Files"</strong>) on your computer and either move your SID downloads there after each session, or change your Chrome download location to that folder. This makes it much easier to find files when you need to upload them.</div>
 
@@ -636,6 +643,10 @@
       <div class="problem">The widget is covering something on the page</div>
       <div class="solution">You can <strong>drag it</strong> anywhere by clicking and holding the purple header bar. You can also click the <strong>&ndash;</strong> button to minimize it down to just the header.</div>
     </div>
+    <div class="issue">
+      <div class="problem">I ran SID on "New" candidates and the last one still shows as New</div>
+      <div class="solution">This is a known Indeed glitch, not a SID issue. The resume was still downloaded &mdash; only the status didn't update for that last candidate. Just click on that candidate and manually change their status to <strong>"Reviewing"</strong>. To avoid this entirely, run SID on <strong>closed postings</strong> instead of the New tab (see Section 4).</div>
+    </div>
 
     <p style="margin-top: 14px;">If you're still stuck, email <strong>mallen@wallstjobs.com</strong> with a screenshot and a description of the problem.</p>
   </div>
@@ -645,11 +656,11 @@
     <h2>8. Expectations</h2>
     <div class="section-line"></div>
     <ul>
-      <li>Run SID for <strong>every job posting</strong> assigned to you, every business day.</li>
+      <li>Run SID on <strong>every closed job posting</strong> assigned to you, every business day. Close the posting first, then run SID to grab all resumes at once.</li>
       <li>Upload your ZIP file at <strong><a href="https://sid.rocks" style="color:#7860a8;">sid.rocks</a></strong> by end of day.</li>
       <li>Before uploading, quickly check that the ZIP has files in it (open it and make sure there are PDFs inside).</li>
       <li>If Indeed is down or SID has a major problem, <strong>email Melissa right away</strong>.</li>
-      <li>If you miss a day, just run SID the next day &mdash; it picks up new candidates automatically.</li>
+      <li>If you miss a day, just close and run SID the next day &mdash; nothing is lost. SID grabs all candidates regardless of when you run it.</li>
     </ul>
   </div>
 
