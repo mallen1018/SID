@@ -49,6 +49,10 @@
     background: linear-gradient(135deg, #7860a8, #9b7ed8); color: #fff;
   }
   .action.guide:hover { box-shadow: 0 6px 24px rgba(120,96,168,0.35); transform: translateY(-2px); }
+  .action.install {
+    background: linear-gradient(135deg, #4a80c8, #3b6db5); color: #fff;
+  }
+  .action.install:hover { box-shadow: 0 6px 24px rgba(74,128,200,0.35); transform: translateY(-2px); }
 
   .divider { height: 1px; background: #ece8f4; margin: 24px 0; }
 
@@ -76,13 +80,16 @@
     </div>
     <div class="welcome">Welcome</div>
     <h1>Appy Pie</h1>
-    <p class="subtitle">Your SID vendor portal. Upload resume files and access the guide from here.</p>
+    <p class="subtitle">Your SID vendor portal. Install the extension, read the guide, and upload your files.</p>
 
-    <a href="https://jobosaurus-my.sharepoint.com/:f:/g/personal/mallen_wallstjobs_com/IgCB3NnQGwDLQ4nW80BiFIXTAUpyVwQzPUiDQx7VAsq2XXc" target="_blank" class="action upload">
-      Upload ZIP Files
+    <a href="#" class="action install" onclick="alert('Chrome Web Store link coming soon!');return false;">
+      Install SID Extension
     </a>
     <a href="https://sid.rocks/SID_Vendor_SOP.html" target="_blank" class="action guide">
       Open SID Guide
+    </a>
+    <a href="https://jobosaurus-my.sharepoint.com/:f:/g/personal/mallen_wallstjobs_com/IgCB3NnQGwDLQ4nW80BiFIXTAUpyVwQzPUiDQx7VAsq2XXc" target="_blank" class="action upload">
+      Upload ZIP Files
     </a>
 
     <div class="divider"></div>

@@ -624,88 +624,14 @@
     </div>
     <div class="section-label">File Delivery</div>
     <div class="section-title">Upload Your ZIP Files</div>
-    <div class="section-subtitle">After downloading your resumes with SID, upload the ZIP file here.<br>It goes directly to Melissa.</div>
-    <div style="max-width:560px;margin:0 auto;background:#fff;border-radius:20px;padding:32px 36px;box-shadow:0 4px 24px rgba(120,96,168,0.08);border:1px solid #ece8f4;">
-      <!-- UploadThingy Widget -->
-      <script>window.UPLOADTHINGY_API_URL = 'https://app.uploadthingy.com';</script>
-      <div id="uploadthingy-widget" data-domain="sidvp.com"></div>
-      <script src="https://app.uploadthingy.com/static/js/uploadthingy-widget.js"></script>
-      <!-- Hide Message field, keep Name and Email -->
-      <style>
-        /* Hide message field (the one with textarea) */
-        #uploadthingy-widget .ut-form-group:has(textarea) { display: none !important; }
-        /* Style the widget to match the site */
-        #uploadthingy-widget { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; }
-        #uploadthingy-widget input,
-        #uploadthingy-widget textarea {
-          border-radius: 10px !important;
-          border: 2px solid #ece8f4 !important;
-          padding: 10px 14px !important;
-          font-size: 14px !important;
-          transition: border-color 0.2s !important;
-        }
-        #uploadthingy-widget input:focus,
-        #uploadthingy-widget textarea:focus {
-          border-color: #7860a8 !important;
-          outline: none !important;
-        }
-        #uploadthingy-widget label {
-          font-weight: 600 !important;
-          color: #1a1a2e !important;
-          font-size: 14px !important;
-        }
-        /* Style the upload button to match site purple */
-        #uploadthingy-widget button[type="submit"],
-        #uploadthingy-widget .ut-submit-btn {
-          background: linear-gradient(135deg, #7860a8, #9b7ed8) !important;
-          border: none !important;
-          border-radius: 12px !important;
-          padding: 12px 32px !important;
-          font-size: 15px !important;
-          font-weight: 700 !important;
-          cursor: pointer !important;
-          transition: transform 0.2s, box-shadow 0.2s !important;
-        }
-        #uploadthingy-widget button[type="submit"]:hover,
-        #uploadthingy-widget .ut-submit-btn:hover {
-          transform: translateY(-2px) !important;
-          box-shadow: 0 4px 16px rgba(120,96,168,0.35) !important;
-        }
-        /* Style the drop zone */
-        #uploadthingy-widget .ut-dropzone {
-          border: 2px dashed #d4c8ed !important;
-          border-radius: 16px !important;
-          transition: border-color 0.2s !important;
-        }
-        #uploadthingy-widget .ut-dropzone:hover {
-          border-color: #7860a8 !important;
-        }
-        /* Hide the 100MB limit text */
-        .ut-dropzone-text:last-of-type {
-          display: none !important;
-        }
-      </style>
+    <div class="section-subtitle">After downloading your resumes with SID, upload the ZIP file using the personal upload link Melissa provided you.<br>No account or sign-in needed.</div>
+    <div style="max-width:560px;margin:0 auto;text-align:center;">
+      <div style="background:#fff;border-radius:16px;padding:28px 32px;box-shadow:0 4px 24px rgba(120,96,168,0.08);border:1px solid #ece8f4;">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#7860a8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom:12px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+        <p style="font-size:15px;color:#1a1a2e;font-weight:600;margin-bottom:6px;">Use your personal upload link</p>
+        <p style="font-size:13.5px;color:#64748b;margin:0;">Melissa will send you a unique link when you get started. Click it, select your ZIP file, and upload. That's it!</p>
+      </div>
     </div>
-    <!-- Company field injected after widget loads -->
-    <script>
-      (function() {
-        var attempts = 0;
-        var interval = setInterval(function() {
-          var widget = document.getElementById('uploadthingy-widget');
-          var groups = widget ? widget.querySelectorAll('.ut-form-group') : [];
-          var emailGroup = groups.length >= 2 ? groups[1] : null;
-          if (emailGroup && !document.getElementById('company-field-added')) {
-            var companyGroup = document.createElement('div');
-            companyGroup.className = 'ut-form-group';
-            companyGroup.id = 'company-field-added';
-            companyGroup.innerHTML = '<label style="font-weight:600;color:#1a1a2e;font-size:14px;display:block;margin-bottom:6px;">Company</label><input type="text" placeholder="Enter your company" style="width:100%;border-radius:10px;border:2px solid #ece8f4;padding:10px 14px;font-size:14px;transition:border-color 0.2s;font-family:inherit;" onfocus="this.style.borderColor=\'#7860a8\'" onblur="this.style.borderColor=\'#ece8f4\'">';
-            emailGroup.parentNode.insertBefore(companyGroup, emailGroup.nextSibling);
-            clearInterval(interval);
-          }
-          if (++attempts > 50) clearInterval(interval);
-        }, 200);
-      })();
-    </script>
   </div>
 </section>
 
