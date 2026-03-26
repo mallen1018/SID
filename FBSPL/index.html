@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FBSPL – SID Portal</title>
+<title>FBSPL - SID Vendor Portal</title>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M38 12Q36 2 32 5Q34 10 38 14Z' fill='%237a5c3a'/%3E%3Cpath d='M50 8Q50-2 46 2Q48 7 50 12Z' fill='%237a5c3a'/%3E%3Cpath d='M62 12Q64 2 68 5Q66 10 62 14Z' fill='%237a5c3a'/%3E%3Cellipse cx='50' cy='52' rx='38' ry='40' fill='%23d4a96a'/%3E%3Cellipse cx='50' cy='58' rx='28' ry='28' fill='%23e8c88a'/%3E%3Cellipse cx='38' cy='46' rx='10' ry='11' fill='white'/%3E%3Cellipse cx='62' cy='46' rx='10' ry='11' fill='white'/%3E%3Ccircle cx='39' cy='46' r='6' fill='%233b8ed0'/%3E%3Ccircle cx='63' cy='46' r='6' fill='%233b8ed0'/%3E%3Ccircle cx='40' cy='45' r='3' fill='%231a1a2e'/%3E%3Ccircle cx='64' cy='45' r='3' fill='%231a1a2e'/%3E%3Ccircle cx='41' cy='43' r='1.5' fill='white'/%3E%3Ccircle cx='65' cy='43' r='1.5' fill='white'/%3E%3Cellipse cx='50' cy='60' rx='8' ry='6' fill='%238b6baa'/%3E%3Cpath d='M43 68Q50 76 57 68' stroke='%237a5c3a' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3Cellipse cx='18' cy='38' rx='8' ry='10' fill='%23d4a96a'/%3E%3Cellipse cx='82' cy='38' rx='8' ry='10' fill='%23d4a96a'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,47 +12,47 @@
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
     font-family: 'DM Sans', 'Segoe UI', system-ui, sans-serif;
-    color: #1a1a2e; line-height: 1.7;
+    color: #1a1a2e; line-height: 1.6; background: #fff;
     -webkit-font-smoothing: antialiased;
     min-height: 100vh;
     display: flex; flex-direction: column; align-items: center; justify-content: center;
     background: linear-gradient(160deg, #faf8fd 0%, #f0ecf6 30%, #e8f0fa 70%, #f8fafc 100%);
     padding: 40px 20px;
   }
+  a { text-decoration: none; color: inherit; }
+
   .card {
-    background: #fff; border-radius: 24px; padding: 56px 40px;
+    background: #fff; border-radius: 24px; padding: 48px 40px;
     max-width: 480px; width: 100%; text-align: center;
     box-shadow: 0 8px 40px rgba(120,96,168,0.10), 0 2px 12px rgba(0,0,0,0.04);
     border: 1px solid #ece8f4;
   }
-  .sid-face { margin-bottom: 12px; }
-  .welcome {
-    font-family: 'Outfit', sans-serif; font-size: 14px;
-    text-transform: uppercase; letter-spacing: 0.15em;
-    color: #9b7ed8; font-weight: 600; margin-bottom: 4px;
-  }
+  .sid-face { margin-bottom: 20px; }
+  .welcome { font-size: 13px; color: #9b7ed8; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 8px; }
   h1 {
     font-family: 'Outfit', sans-serif; font-size: 28px; font-weight: 700;
     color: #1a1a2e; margin-bottom: 8px; letter-spacing: 0.04em;
   }
-  .subtitle {
-    font-size: 15px; color: #64748b; margin-bottom: 28px; line-height: 1.7;
-  }
+  .subtitle { font-size: 15px; color: #64748b; margin-bottom: 36px; line-height: 1.7; }
+
   .action {
-    display: block; padding: 14px 20px; border-radius: 12px;
-    font-size: 15px; font-weight: 700; text-decoration: none;
-    text-align: center; margin-bottom: 12px;
-    transition: all 0.2s ease; cursor: pointer;
-    font-family: 'DM Sans', sans-serif;
+    display: block; width: 100%; padding: 16px 24px; border-radius: 14px;
+    font-size: 14px; font-weight: 700; font-family: 'DM Sans', sans-serif;
+    letter-spacing: 0.5px; transition: all 0.2s; cursor: pointer;
+    border: none; margin-bottom: 14px;
   }
   .action.upload {
-    background: linear-gradient(135deg, #5cb88a, #48a878); color: #fff;
+    background: linear-gradient(135deg, #78cca0, #64bc90); color: #fff;
   }
-  .action.upload:hover { box-shadow: 0 6px 24px rgba(92,184,138,0.35); transform: translateY(-2px); }
+  .action.upload:hover { box-shadow: 0 6px 24px rgba(120,204,160,0.35); transform: translateY(-2px); }
   .action.guide {
-    background: linear-gradient(135deg, #7860a8, #9b7ed8); color: #fff;
+    background: linear-gradient(135deg, #9b7ed8, #b89ae8); color: #fff;
   }
-  .action.guide:hover { box-shadow: 0 6px 24px rgba(120,96,168,0.35); transform: translateY(-2px); }
+  .action.guide:hover { box-shadow: 0 6px 24px rgba(155,126,216,0.35); transform: translateY(-2px); }
+  .action.install {
+    background: linear-gradient(135deg, #6a9cd8, #5b8dcf); color: #fff;
+  }
+  .action.install:hover { box-shadow: 0 6px 24px rgba(106,156,216,0.35); transform: translateY(-2px); }
 
   .divider { height: 1px; background: #ece8f4; margin: 24px 0; }
 
@@ -80,13 +80,16 @@
     </div>
     <div class="welcome">Welcome</div>
     <h1>FBSPL</h1>
-    <p class="subtitle">Your SID vendor portal. Upload resume files and access the guide from here.</p>
+    <p class="subtitle">Your SID vendor portal. Install the extension, read the guide, and upload your files.</p>
 
+    <a href="#" class="action install" onclick="alert('Chrome Web Store link coming soon!');return false;">
+      Install SID Extension
+    </a>
+    <a href="https://sid.rocks/FBSPL/guide.html" target="_blank" class="action guide">
+      Open SID Guide
+    </a>
     <a href="https://jobosaurus-my.sharepoint.com/:f:/g/personal/mallen_wallstjobs_com/IgAQAkLWz04gQIx-W-6lgkeSAXisYkAu9c0UU_1ieyVdsgI" target="_blank" class="action upload">
       Upload ZIP Files
-    </a>
-    <a href="https://sid.rocks/SID_Vendor_SOP.html" target="_blank" class="action guide">
-      Open SID Guide
     </a>
 
     <div class="divider"></div>
