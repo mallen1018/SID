@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Install SID Extension</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M38 12Q36 2 32 5Q34 10 38 14Z' fill='%237a5c3a'/%3E%3Cpath d='M50 8Q50-2 46 2Q48 7 50 12Z' fill='%237a5c3a'/%3E%3Cpath d='M62 12Q64 2 68 5Q66 10 62 14Z' fill='%237a5c3a'/%3E%3Cellipse cx='50' cy='52' rx='38' ry='40' fill='%23d4a96a'/%3E%3Cellipse cx='50' cy='58' rx='28' ry='28' fill='%23e8c88a'/%3E%3Cellipse cx='38' cy='46' rx='10' ry='11' fill='white'/%3E%3Cellipse cx='62' cy='46' rx='10' ry='11' fill='white'/%3E%3Ccircle cx='39' cy='46' r='6' fill='%233b8ed0'/%3E%3Ccircle cx='63' cy='46' r='6' fill='%233b8ed0'/%3E%3Ccircle cx='40' cy='45' r='3' fill='%231a1a2e'/%3E%3Ccircle cx='64' cy='45' r='3' fill='%231a1a2e'/%3E%3Ccircle cx='41' cy='43' r='1.5' fill='white'/%3E%3Ccircle cx='65' cy='43' r='1.5' fill='white'/%3E%3Cellipse cx='50' cy='60' rx='8' ry='6' fill='%238b6baa'/%3E%3Cpath d='M43 68Q50 76 57 68' stroke='%237a5c3a' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3Cellipse cx='18' cy='38' rx='8' ry='10' fill='%23d4a96a'/%3E%3Cellipse cx='82' cy='38' rx='8' ry='10' fill='%23d4a96a'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'DM Sans', 'Segoe UI', system-ui, sans-serif;
+    color: #1a1a2e; line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+    display: flex; flex-direction: column; align-items: center;
+    background: linear-gradient(160deg, #faf8fd 0%, #f0ecf6 30%, #e8f0fa 70%, #f8fafc 100%);
+    padding: 40px 20px;
+  }
+  a { color: #7860a8; font-weight: 600; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  .card {
+    background: #fff; border-radius: 24px; padding: 48px 40px;
+    max-width: 600px; width: 100%;
+    box-shadow: 0 8px 40px rgba(120,96,168,0.10), 0 2px 12px rgba(0,0,0,0.04);
+    border: 1px solid #ece8f4;
+  }
+  .sid-face { text-align: center; margin-bottom: 16px; }
+  h1 {
+    font-family: 'Outfit', sans-serif; font-size: 26px; font-weight: 700;
+    color: #1a1a2e; margin-bottom: 6px; text-align: center; letter-spacing: 0.04em;
+  }
+  .subtitle { font-size: 15px; color: #64748b; margin-bottom: 32px; text-align: center; }
+
+  .download-btn {
+    display: block; width: 100%; padding: 16px 24px; border-radius: 14px;
+    font-size: 15px; font-weight: 700; font-family: 'DM Sans', sans-serif;
+    letter-spacing: 0.5px; transition: all 0.2s; cursor: pointer;
+    border: none; text-align: center; color: #fff;
+    background: linear-gradient(135deg, #6a9cd8, #5b8dcf);
+    margin-bottom: 32px;
+  }
+  .download-btn:hover { box-shadow: 0 6px 24px rgba(106,156,216,0.35); transform: translateY(-2px); text-decoration: none; color: #fff; }
+
+  .steps { counter-reset: step; }
+  .step {
+    counter-increment: step;
+    display: flex; gap: 16px; margin-bottom: 24px;
+    align-items: flex-start;
+  }
+  .step-num {
+    flex-shrink: 0; width: 36px; height: 36px; border-radius: 50%;
+    background: linear-gradient(135deg, #9b7ed8, #b89ae8);
+    color: #fff; font-weight: 700; font-size: 15px;
+    display: flex; align-items: center; justify-content: center;
+    margin-top: 2px;
+  }
+  .step-content { flex: 1; }
+  .step-content strong { color: #1a1a2e; }
+  .step-content .detail { font-size: 13px; color: #64748b; margin-top: 4px; }
+
+  .browser-tabs { display: flex; gap: 8px; margin-bottom: 24px; justify-content: center; }
+  .tab {
+    padding: 10px 24px; border-radius: 10px; font-weight: 600; font-size: 14px;
+    cursor: pointer; transition: all 0.2s; border: 2px solid #ece8f4;
+    background: #fff; color: #64748b;
+  }
+  .tab.active { border-color: #7860a8; color: #7860a8; background: #f8f5fd; }
+  .tab:hover { border-color: #9b7ed8; }
+
+  .browser-content { display: none; }
+  .browser-content.active { display: block; }
+
+  .note {
+    background: #f8f6fc; border-radius: 12px; padding: 16px 20px;
+    font-size: 13px; color: #64748b; margin-top: 24px; line-height: 1.7;
+    border: 1px solid #ece8f4;
+  }
+  .note strong { color: #7860a8; }
+
+  .footer { margin-top: 32px; font-size: 12px; color: #b0a8c0; text-align: center; }
+  .footer a { color: #9b7ed8; }
+</style>
+</head>
+<body>
+  <div class="card">
+    <div class="sid-face">
+      <svg width="56" height="56" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+        <path d="M38 12Q36 2 32 5Q34 10 38 14Z" fill="#7a5c3a"/><path d="M50 8Q50-2 46 2Q48 7 50 12Z" fill="#7a5c3a"/><path d="M62 12Q64 2 68 5Q66 10 62 14Z" fill="#7a5c3a"/>
+        <ellipse cx="50" cy="52" rx="38" ry="40" fill="#d4a96a"/><ellipse cx="50" cy="58" rx="28" ry="28" fill="#e8c88a"/>
+        <ellipse cx="38" cy="46" rx="10" ry="11" fill="white"/><ellipse cx="62" cy="46" rx="10" ry="11" fill="white"/>
+        <circle cx="39" cy="46" r="6" fill="#3b8ed0"/><circle cx="63" cy="46" r="6" fill="#3b8ed0"/>
+        <circle cx="40" cy="45" r="3" fill="#1a1a2e"/><circle cx="64" cy="45" r="3" fill="#1a1a2e"/>
+        <circle cx="41" cy="43" r="1.5" fill="white"/><circle cx="65" cy="43" r="1.5" fill="white"/>
+        <ellipse cx="50" cy="60" rx="8" ry="6" fill="#8b6baa"/>
+        <path d="M43 68Q50 76 57 68" stroke="#7a5c3a" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <ellipse cx="18" cy="38" rx="8" ry="10" fill="#d4a96a"/><ellipse cx="82" cy="38" rx="8" ry="10" fill="#d4a96a"/>
+      </svg>
+    </div>
+    <h1>Install SID Extension</h1>
+    <p class="subtitle">Takes about 30 seconds. Pick your browser below.</p>
+
+    <a href="https://sid.rocks/ext/SID_Extension.zip" class="download-btn" download>
+      Download SID Extension
+    </a>
+
+    <div class="browser-tabs">
+      <div class="tab active" onclick="switchTab('chrome')">Google Chrome</div>
+      <div class="tab" onclick="switchTab('edge')">Microsoft Edge</div>
+    </div>
+
+    <div id="chrome-steps" class="browser-content active">
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-content">
+            <strong>Download &amp; unzip</strong> the file above. You should see a folder called <strong>SID_Extension</strong> (or similar) with files inside it.
+            <div class="detail">On Mac, double-click the ZIP to unzip. On Windows, right-click → "Extract All."</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-content">
+            Open Chrome and go to <strong><a href="chrome://extensions" onclick="copyUrl('chrome://extensions');return false;">chrome://extensions</a></strong>
+            <div class="detail">Type or paste <strong>chrome://extensions</strong> into the address bar and press Enter.</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-content">
+            Turn on <strong>Developer mode</strong> using the toggle in the top-right corner of the page.
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-content">
+            Click <strong>"Load unpacked"</strong> in the top-left corner.
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">5</div>
+          <div class="step-content">
+            Select the <strong>unzipped SID folder</strong> (the folder with the files inside, not the ZIP itself) and click "Select Folder."
+            <div class="detail">You should see SID appear in your extensions list with the SID icon.</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">6</div>
+          <div class="step-content">
+            <strong>Done!</strong> Go to Indeed and SID will be running. You can close the extensions tab.
+            <div class="detail">You may see a small banner about developer mode extensions — just dismiss it.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="edge-steps" class="browser-content">
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-content">
+            <strong>Download &amp; unzip</strong> the file above. You should see a folder called <strong>SID_Extension</strong> (or similar) with files inside it.
+            <div class="detail">On Mac, double-click the ZIP to unzip. On Windows, right-click → "Extract All."</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-content">
+            Open Edge and go to <strong><a href="edge://extensions" onclick="copyUrl('edge://extensions');return false;">edge://extensions</a></strong>
+            <div class="detail">Type or paste <strong>edge://extensions</strong> into the address bar and press Enter.</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-content">
+            Turn on <strong>Developer mode</strong> using the toggle in the bottom-left corner of the page.
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-content">
+            Click <strong>"Load unpacked"</strong> in the top area of the page.
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">5</div>
+          <div class="step-content">
+            Select the <strong>unzipped SID folder</strong> (the folder with the files inside, not the ZIP itself) and click "Select Folder."
+            <div class="detail">You should see SID appear in your extensions list with the SID icon.</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">6</div>
+          <div class="step-content">
+            <strong>Done!</strong> Go to Indeed and SID will be running. You can close the extensions tab.
+            <div class="detail">You may see a small banner about developer mode extensions — just dismiss it.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="note">
+      <strong>Note:</strong> Don't delete the unzipped folder after installing — Chrome/Edge needs it to stay where it is. If you move or delete the folder, the extension will stop working and you'll need to reload it.
+    </div>
+  </div>
+  <div class="footer">Powered by <a href="https://sid.rocks">sid.rocks</a></div>
+
+<script>
+function switchTab(browser) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.browser-content').forEach(c => c.classList.remove('active'));
+  if (browser === 'chrome') {
+    document.querySelectorAll('.tab')[0].classList.add('active');
+    document.getElementById('chrome-steps').classList.add('active');
+  } else {
+    document.querySelectorAll('.tab')[1].classList.add('active');
+    document.getElementById('edge-steps').classList.add('active');
+  }
+}
+function copyUrl(url) {
+  navigator.clipboard.writeText(url).then(() => {
+    alert('Copied! Paste this into your address bar:\n\n' + url);
+  }).catch(() => {
+    prompt('Copy this and paste it into your address bar:', url);
+  });
+}
+</script>
+</body>
+</html>
