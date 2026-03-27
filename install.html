@@ -20,32 +20,59 @@
     padding: 40px 20px;
   }
   .card {
-    background: #fff; border-radius: 24px; padding: 56px 40px;
-    max-width: 480px; width: 100%; text-align: center;
+    background: #fff; border-radius: 24px; padding: 48px 40px;
+    max-width: 520px; width: 100%; text-align: center;
     box-shadow: 0 8px 40px rgba(120,96,168,0.10), 0 2px 12px rgba(0,0,0,0.04);
     border: 1px solid #ece8f4;
   }
-  .sid-face { margin-bottom: 20px; }
+  .sid-face { margin-bottom: 16px; }
   h1 {
-    font-family: 'Outfit', sans-serif; font-size: 26px; font-weight: 700;
-    color: #1a1a2e; margin-bottom: 12px; letter-spacing: 0.04em;
+    font-family: 'Outfit', sans-serif; font-size: 24px; font-weight: 700;
+    color: #1a1a2e; margin-bottom: 8px; letter-spacing: 0.04em;
   }
-  .message {
-    font-size: 16px; color: #64748b; line-height: 1.8; margin-bottom: 24px;
+  .subtitle { font-size: 14px; color: #94a3b8; margin-bottom: 24px; }
+  .download-btn {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: #7860a8; color: #fff; font-size: 16px; font-weight: 700;
+    padding: 14px 32px; border-radius: 12px; text-decoration: none;
+    transition: all 0.2s; border: none; cursor: pointer;
+    font-family: 'Outfit', sans-serif; letter-spacing: 0.02em;
+    margin-bottom: 28px;
   }
-  .contact {
-    font-size: 14px; color: #94a3b8;
+  .download-btn:hover { background: #6a50a0; transform: translateY(-1px); box-shadow: 0 4px 16px rgba(120,96,168,0.25); }
+  .download-btn svg { width: 20px; height: 20px; }
+  .steps { text-align: left; margin: 0 auto; max-width: 420px; }
+  .steps-title {
+    font-family: 'Outfit', sans-serif; font-size: 15px; font-weight: 700;
+    color: #1a1a2e; margin-bottom: 12px; text-align: center;
   }
+  .step {
+    display: flex; gap: 12px; align-items: flex-start; margin-bottom: 14px;
+  }
+  .step-num {
+    width: 26px; height: 26px; border-radius: 50%; background: #f0ecf6;
+    color: #7860a8; font-family: 'Outfit', sans-serif; font-size: 13px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .step-text { font-size: 13.5px; color: #4a4a6a; line-height: 1.6; }
+  .step-text strong { color: #1a1a2e; }
+  .note {
+    margin-top: 20px; padding: 12px 16px; border-radius: 10px;
+    background: #f8f6fc; border: 1px solid #ece8f4;
+    font-size: 12.5px; color: #64748b; text-align: center;
+  }
+  .contact { font-size: 13px; color: #94a3b8; margin-top: 20px; }
   .contact a { color: #7860a8; font-weight: 600; text-decoration: none; }
   .contact a:hover { text-decoration: underline; }
-  .footer { margin-top: 32px; font-size: 12px; color: #b0a8c0; }
+  .footer { margin-top: 28px; font-size: 12px; color: #b0a8c0; }
   .footer a { color: #9b7ed8; font-weight: 600; text-decoration: none; }
 </style>
 </head>
 <body>
   <div class="card">
     <div class="sid-face">
-      <svg width="56" height="56" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+      <svg width="52" height="52" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
         <path d="M38 12Q36 2 32 5Q34 10 38 14Z" fill="#7a5c3a"/><path d="M50 8Q50-2 46 2Q48 7 50 12Z" fill="#7a5c3a"/><path d="M62 12Q64 2 68 5Q66 10 62 14Z" fill="#7a5c3a"/>
         <ellipse cx="50" cy="52" rx="38" ry="40" fill="#d4a96a"/><ellipse cx="50" cy="58" rx="28" ry="28" fill="#e8c88a"/>
         <ellipse cx="38" cy="46" rx="10" ry="11" fill="white"/><ellipse cx="62" cy="46" rx="10" ry="11" fill="white"/>
@@ -57,13 +84,48 @@
         <ellipse cx="18" cy="38" rx="8" ry="10" fill="#d4a96a"/><ellipse cx="82" cy="38" rx="8" ry="10" fill="#d4a96a"/>
       </svg>
     </div>
-    <h1>SID Extension</h1>
-    <p class="message">
-      The SID browser extension is coming soon.<br>
-      Melissa will send you install instructions when it's ready.
-    </p>
+    <h1>Install SID Extension</h1>
+    <p class="subtitle">Works with Google Chrome and Microsoft Edge</p>
+
+    <a href="https://sid.rocks/ext/SID_Extension.zip" download class="download-btn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      Download SID Extension
+    </a>
+
+    <div class="steps">
+      <div class="steps-title">Setup Instructions</div>
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-text">Click the download button above to save the <strong>SID_Extension.zip</strong> file.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-text"><strong>Unzip</strong> the file. You should see a folder with the extension files inside.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-text">Open your browser and go to <strong>chrome://extensions</strong> (Chrome) or <strong>edge://extensions</strong> (Edge).</div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-text">Turn on <strong>Developer mode</strong> using the toggle in the top-right corner.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">5</div>
+        <div class="step-text">Click <strong>"Load unpacked"</strong> and select the unzipped folder.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">6</div>
+        <div class="step-text">You should see the SID extension appear. <strong>Pin it</strong> to your toolbar for easy access.</div>
+      </div>
+    </div>
+
+    <div class="note">
+      When an update is available, just download the new ZIP, replace the folder, and click the refresh icon on the extensions page.
+    </div>
+
     <p class="contact">
-      Questions? Email <a href="mailto:mallen@wallstjobs.com">Melissa</a>.
+      Need help? Email <a href="mailto:mallen@wallstjobs.com?subject=SID%20Extension%20-%20Help">Melissa</a>
     </p>
   </div>
   <div class="footer">Powered by <a href="https://sid.rocks">sid.rocks</a></div>
