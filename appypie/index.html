@@ -1,8 +1,261 @@
 <!DOCTYPE html>
-<html><head>
-<meta http-equiv="refresh" content="0; url=https://sid.rocks/AppyPie">
-<link rel="canonical" href="https://sid.rocks/AppyPie">
-<title>Redirecting...</title>
-</head><body>
-<p>Redirecting to <a href="https://sid.rocks/AppyPie">sid.rocks/AppyPie</a>...</p>
-</body></html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Appy Pie - SID Vendor Portal</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M38 12Q36 2 32 5Q34 10 38 14Z' fill='%237a5c3a'/%3E%3Cpath d='M50 8Q50-2 46 2Q48 7 50 12Z' fill='%237a5c3a'/%3E%3Cpath d='M62 12Q64 2 68 5Q66 10 62 14Z' fill='%237a5c3a'/%3E%3Cellipse cx='50' cy='52' rx='38' ry='40' fill='%23d4a96a'/%3E%3Cellipse cx='50' cy='58' rx='28' ry='28' fill='%23e8c88a'/%3E%3Cellipse cx='38' cy='46' rx='10' ry='11' fill='white'/%3E%3Cellipse cx='62' cy='46' rx='10' ry='11' fill='white'/%3E%3Ccircle cx='39' cy='46' r='6' fill='%233b8ed0'/%3E%3Ccircle cx='63' cy='46' r='6' fill='%233b8ed0'/%3E%3Ccircle cx='40' cy='45' r='3' fill='%231a1a2e'/%3E%3Ccircle cx='64' cy='45' r='3' fill='%231a1a2e'/%3E%3Ccircle cx='41' cy='43' r='1.5' fill='white'/%3E%3Ccircle cx='65' cy='43' r='1.5' fill='white'/%3E%3Cellipse cx='50' cy='60' rx='8' ry='6' fill='%238b6baa'/%3E%3Cpath d='M43 68Q50 76 57 68' stroke='%237a5c3a' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3Cellipse cx='18' cy='38' rx='8' ry='10' fill='%23d4a96a'/%3E%3Cellipse cx='82' cy='38' rx='8' ry='10' fill='%23d4a96a'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-gradient-1: #faf8fd; --bg-gradient-2: #f0ecf6;
+    --bg-gradient-3: #e8f0fa; --bg-gradient-4: #f8fafc;
+    --card-bg: #fff; --card-border: #ece8f4;
+    --card-shadow-1: rgba(120,96,168,0.10); --card-shadow-2: rgba(0,0,0,0.04);
+    --text-primary: #1a1a2e; --text-secondary: #64748b; --text-muted: #94a3b8;
+    --accent: #9b7ed8; --divider: #ece8f4;
+    --footer-text: #b0a8c0; --help-link: #7860a8;
+    --checklist-bg: #f8f6fc; --checklist-border: #ece8f4;
+    --check-done: #5cb88a; --check-pending: #d0d5dd;
+  }
+  html.dark {
+    --bg-gradient-1: #1a1a2e; --bg-gradient-2: #1e1e35;
+    --bg-gradient-3: #1a2235; --bg-gradient-4: #1a1a2e;
+    --card-bg: #252540; --card-border: #3a3a5c;
+    --card-shadow-1: rgba(0,0,0,0.30); --card-shadow-2: rgba(0,0,0,0.15);
+    --text-primary: #e8e6f0; --text-secondary: #a0a8bc; --text-muted: #7a8296;
+    --accent: #b89ae8; --divider: #3a3a5c;
+    --footer-text: #6a6a8c; --help-link: #b89ae8;
+    --checklist-bg: #2a2a48; --checklist-border: #3a3a5c;
+    --check-done: #5cb88a; --check-pending: #4a4a6c;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'DM Sans', 'Segoe UI', system-ui, sans-serif;
+    color: var(--text-primary); line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    background: linear-gradient(160deg, var(--bg-gradient-1) 0%, var(--bg-gradient-2) 30%, var(--bg-gradient-3) 70%, var(--bg-gradient-4) 100%);
+    padding: 40px 20px; transition: background 0.3s, color 0.3s;
+  }
+  a { text-decoration: none; color: inherit; }
+  .announcement {
+    position: fixed; top: 0; left: 0; right: 0;
+    background: linear-gradient(135deg, #7860a8, #9b7ed8);
+    color: #fff; text-align: center;
+    padding: 10px 40px; font-size: 13px; font-weight: 600;
+    letter-spacing: 0.3px; z-index: 100;
+    transform: translateY(-100%);
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .announcement.visible { transform: translateY(0); }
+  .announcement .close-btn {
+    position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
+    background: none; border: none; color: rgba(255,255,255,0.7);
+    font-size: 18px; cursor: pointer; padding: 4px 8px; transition: color 0.2s;
+  }
+  .announcement .close-btn:hover { color: #fff; }
+  .dark-toggle {
+    position: fixed; top: 14px; right: 14px; z-index: 101;
+    background: var(--card-bg); border: 1px solid var(--card-border);
+    border-radius: 50%; width: 38px; height: 38px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; font-size: 18px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08); transition: all 0.3s;
+  }
+  .dark-toggle:hover { transform: scale(1.1); }
+  .card {
+    background: var(--card-bg); border-radius: 24px; padding: 48px 40px;
+    max-width: 480px; width: 100%; text-align: center;
+    box-shadow: 0 8px 40px var(--card-shadow-1), 0 2px 12px var(--card-shadow-2);
+    border: 1px solid var(--card-border);
+    transition: background 0.3s, border-color 0.3s, box-shadow 0.3s;
+  }
+  .sid-face { margin-bottom: 20px; display: inline-block; }
+  .welcome { font-size: 13px; color: var(--accent); font-weight: 600; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 8px; }
+  h1 {
+    font-family: 'Outfit', sans-serif; font-size: 28px; font-weight: 700;
+    color: var(--text-primary); margin-bottom: 8px; letter-spacing: 0.04em; transition: color 0.3s;
+  }
+  .subtitle { font-size: 15px; color: var(--text-secondary); margin-bottom: 28px; line-height: 1.7; transition: color 0.3s; }
+  .checklist {
+    background: var(--checklist-bg); border: 1px solid var(--checklist-border);
+    border-radius: 14px; padding: 18px 20px; margin-bottom: 24px; text-align: left;
+    transition: background 0.3s, border-color 0.3s;
+  }
+  .checklist-title { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: var(--accent); margin-bottom: 12px; }
+  .checklist-item { display: flex; align-items: center; gap: 10px; padding: 6px 0; font-size: 13px; color: var(--text-secondary); transition: color 0.3s; }
+  .checklist-item.done { color: var(--check-done); }
+  .checklist-item .check {
+    width: 20px; height: 20px; border-radius: 50%;
+    border: 2px solid var(--check-pending);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; transition: all 0.3s;
+  }
+  .checklist-item.done .check { background: var(--check-done); border-color: var(--check-done); }
+  .checklist-item.done .check::after { content: '\2713'; color: #fff; font-size: 12px; font-weight: 700; }
+  .checklist-item.done .label { text-decoration: line-through; opacity: 0.7; }
+  .progress-bar { height: 4px; background: var(--check-pending); border-radius: 2px; margin-top: 12px; overflow: hidden; }
+  .progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--check-done)); border-radius: 2px; transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
+  .checklist.completed { animation: checklistDone 0.6s 1.2s forwards; }
+  @keyframes checklistDone {
+    0% { opacity: 1; max-height: 200px; margin-bottom: 24px; padding: 18px 20px; }
+    100% { opacity: 0; max-height: 0; margin-bottom: 0; padding: 0 20px; overflow: hidden; }
+  }
+  .checklist.hidden { display: none; }
+  .action {
+    display: block; width: 100%; padding: 16px 24px; border-radius: 14px;
+    font-size: 14px; font-weight: 700; font-family: 'DM Sans', sans-serif;
+    letter-spacing: 0.5px; transition: all 0.2s; cursor: pointer;
+    border: none; margin-bottom: 14px;
+  }
+  .action.upload { background: linear-gradient(135deg, #78cca0, #64bc90); color: #fff; }
+  .action.upload:hover { box-shadow: 0 6px 24px rgba(120,204,160,0.35); transform: translateY(-2px); }
+  .action.guide { background: linear-gradient(135deg, #9b7ed8, #b89ae8); color: #fff; }
+  .action.guide:hover { box-shadow: 0 6px 24px rgba(155,126,216,0.35); transform: translateY(-2px); }
+  .action.install { background: linear-gradient(135deg, #6a9cd8, #5b8dcf); color: #fff; }
+  .action.install:hover { box-shadow: 0 6px 24px rgba(106,156,216,0.35); transform: translateY(-2px); }
+  .action.installed { background: linear-gradient(135deg, #6a9cd8, #5b8dcf); color: #fff; cursor: default; pointer-events: none; opacity: 0.9; }
+  .divider { height: 1px; background: var(--divider); margin: 24px 0; transition: background 0.3s; }
+  .help-text { font-size: 13px; color: var(--text-muted); line-height: 1.7; transition: color 0.3s; }
+  .help-text a { color: var(--help-link); font-weight: 600; transition: color 0.3s; }
+  .footer { margin-top: 32px; font-size: 12px; color: var(--footer-text); transition: color 0.3s; }
+  .footer a { color: var(--accent); font-weight: 600; }
+  @keyframes blink { 0%, 90%, 100% { transform: scaleY(1); } 95% { transform: scaleY(0.05); } }
+  .sid-svg .blink-group { animation: blink 4s ease-in-out infinite; }
+  .sid-svg .blink-group:nth-child(2) { animation-delay: 0.05s; }
+</style>
+</head>
+<body>
+<div class="announcement" id="announcement">
+  <span id="announcement-text"></span>
+  <button class="close-btn" id="closeAnn">&times;</button>
+</div>
+<div class="dark-toggle" id="darkToggle" title="Toggle dark mode">&#x1F319;</div>
+<div class="card">
+  <div class="sid-face">
+    <svg class="sid-svg" width="80" height="80" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+      <path d="M38 12Q36 2 32 5Q34 10 38 14Z" fill="#7a5c3a"/>
+      <path d="M50 8Q50-2 46 2Q48 7 50 12Z" fill="#7a5c3a"/>
+      <path d="M62 12Q64 2 68 5Q66 10 62 14Z" fill="#7a5c3a"/>
+      <ellipse cx="50" cy="52" rx="38" ry="40" fill="#d4a96a"/>
+      <ellipse cx="50" cy="58" rx="28" ry="28" fill="#e8c88a"/>
+      <ellipse cx="18" cy="38" rx="8" ry="10" fill="#d4a96a"/>
+      <ellipse cx="82" cy="38" rx="8" ry="10" fill="#d4a96a"/>
+      <g class="blink-group" style="transform-origin: 38px 46px">
+        <ellipse cx="38" cy="46" rx="10" ry="11" fill="white"/>
+        <circle class="pupil-l" cx="39" cy="46" r="6" fill="#3b8ed0"/>
+        <circle class="iris-l" cx="40" cy="45" r="3" fill="#1a1a2e"/>
+        <circle cx="41" cy="43" r="1.5" fill="white"/>
+      </g>
+      <g class="blink-group" style="transform-origin: 62px 46px">
+        <ellipse cx="62" cy="46" rx="10" ry="11" fill="white"/>
+        <circle class="pupil-r" cx="63" cy="46" r="6" fill="#3b8ed0"/>
+        <circle class="iris-r" cx="64" cy="45" r="3" fill="#1a1a2e"/>
+        <circle cx="65" cy="43" r="1.5" fill="white"/>
+      </g>
+      <ellipse cx="50" cy="60" rx="8" ry="6" fill="#8b6baa"/>
+      <path d="M43 68Q50 76 57 68" stroke="#7a5c3a" stroke-width="2" fill="none" stroke-linecap="round"/>
+    </svg>
+  </div>
+  <div class="welcome">Welcome</div>
+  <h1>Appy Pie</h1>
+  <p class="subtitle">Your SID vendor portal. Install the extension, read the guide, and upload your files.</p>
+  <div class="checklist" id="checklist">
+    <div class="checklist-title">Getting Started</div>
+    <div class="checklist-item" id="check-install"><div class="check"></div><span class="label">Install the SID extension</span></div>
+    <div class="checklist-item" id="check-guide"><div class="check"></div><span class="label">Read the vendor guide</span></div>
+    <div class="checklist-item" id="check-upload"><div class="check"></div><span class="label">Upload your first ZIP file</span></div>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width: 0%"></div></div>
+  </div>
+  <a href="https://sid.rocks/install" class="action install" id="installBtn">
+    Install SID Extension
+  </a>
+  <a href="https://sid.rocks/AppyPie/guide.html" target="_blank" class="action guide" id="guideBtn">
+    Open SID Guide
+  </a>
+  <a href="https://jobosaurus-my.sharepoint.com/:f:/g/personal/mallen_wallstjobs_com/IgCB3NnQGwDLQ4nW80BiFIXTAUpyVwQzPUiDQx7VAsq2XXc" target="_blank" class="action upload" id="uploadBtn">
+    Upload ZIP Files
+  </a>
+  <div class="divider"></div>
+  <p class="help-text">
+    No sign-in needed to upload. Just click, select your ZIP file, and you're done.<br>
+    Questions? Email <a href="mailto:mallen@wallstjobs.com?subject=SID%20Portal%20-%20Question">Melissa</a>.
+  </p>
+</div>
+<div class="footer">Powered by <a href="https://sid.rocks">sid.rocks</a></div>
+<script>
+// Dark Mode
+const toggle=document.getElementById('darkToggle');
+let dm=false;
+try{dm=localStorage.getItem('sid_dark')==='1';}catch(e){}
+if(dm){document.documentElement.classList.add('dark');toggle.textContent='\u2600\uFE0F';}
+toggle.addEventListener('click',()=>{
+  dm=!dm;document.documentElement.classList.toggle('dark',dm);
+  toggle.textContent=dm?'\u2600\uFE0F':'\uD83C\uDF19';
+  try{localStorage.setItem('sid_dark',dm?'1':'0');}catch(e){}
+});
+
+// Eye tracking
+const svg=document.querySelector('.sid-svg'),
+  pL=svg.querySelector('.pupil-l'),iL=svg.querySelector('.iris-l'),
+  pR=svg.querySelector('.pupil-r'),iR=svg.querySelector('.iris-r');
+document.addEventListener('mousemove',(e)=>{
+  const r=svg.getBoundingClientRect(),
+    dx=e.clientX-(r.left+r.width/2),dy=e.clientY-(r.top+r.height/2),
+    d=Math.sqrt(dx*dx+dy*dy),f=Math.min(d/200,1)*2.5,
+    a=Math.atan2(dy,dx),mx=Math.cos(a)*f,my=Math.sin(a)*f;
+  pL.setAttribute('cx',39+mx);pL.setAttribute('cy',46+my);
+  iL.setAttribute('cx',40+mx);iL.setAttribute('cy',45+my);
+  pR.setAttribute('cx',63+mx);pR.setAttribute('cy',46+my);
+  iR.setAttribute('cx',64+mx);iR.setAttribute('cy',45+my);
+});
+
+// Checklist
+const SK='sid_checklist_AppyPie';
+let ss={};try{ss=JSON.parse(localStorage.getItem(SK)||'{}');}catch(e){}
+let extOk=ss.install||false,guideOk=ss.guide||false,uploadOk=ss.upload||false,clDone=ss.completed||false;
+function save(){try{localStorage.setItem(SK,JSON.stringify({install:extOk,guide:guideOk,upload:uploadOk,completed:clDone}));}catch(e){}}
+function updCL(){
+  const el=document.getElementById('checklist'),items=[extOk,guideOk,uploadOk],
+    done=items.filter(Boolean).length,pct=Math.round(done/3*100);
+  if(clDone){el.classList.add('hidden');updBtn();return;}
+  document.getElementById('check-install').classList.toggle('done',extOk);
+  document.getElementById('check-guide').classList.toggle('done',guideOk);
+  document.getElementById('check-upload').classList.toggle('done',uploadOk);
+  document.getElementById('progressFill').style.width=pct+'%';
+  updBtn();
+  if(done===3){clDone=true;save();el.classList.add('completed');el.addEventListener('animationend',()=>el.classList.add('hidden'));}
+  save();
+}
+function updBtn(){
+  const b=document.getElementById('installBtn');
+  if(extOk){b.classList.add('installed');b.classList.remove('install');b.innerHTML='\u2713 SID Extension Installed';b.removeAttribute('href');b.onclick=e=>e.preventDefault();}
+  else{b.classList.remove('installed');b.classList.add('install');b.innerHTML='Install SID Extension';b.setAttribute('href','https://sid.rocks/install');b.onclick=null;}
+}
+function detectExt(){if(document.documentElement.dataset.sidInstalled==='true'||window.__SID_INSTALLED__){extOk=true;updCL();}}
+detectExt();setTimeout(detectExt,1500);
+document.getElementById('guideBtn').addEventListener('click',()=>{if(!guideOk){guideOk=true;updCL();}});
+document.getElementById('uploadBtn').addEventListener('click',()=>{if(!uploadOk){uploadOk=true;updCL();}});
+updCL();
+
+// Announcement
+function showAnn(text,id){
+  const dk='sid_dismissed_'+(id||'x');
+  try{if(localStorage.getItem(dk))return;}catch(e){}
+  const el=document.getElementById('announcement');
+  document.getElementById('announcement-text').textContent=text;
+  el.classList.add('visible');document.body.style.paddingTop='52px';
+  document.getElementById('closeAnn').onclick=()=>{
+    el.classList.remove('visible');document.body.style.paddingTop='';
+    try{localStorage.setItem(dk,'1');}catch(e){}
+  };
+}
+fetch('https://sid.rocks/announcements.json?'+Date.now())
+  .then(r=>r.json()).then(d=>{if(d.message)showAnn(d.message,d.id);}).catch(()=>{});
+</script>
+</body>
+</html>
