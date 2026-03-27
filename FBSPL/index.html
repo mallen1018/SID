@@ -171,7 +171,7 @@
     <div class="checklist-item" id="check-upload"><div class="check"></div><span class="label">Upload your first ZIP file</span></div>
     <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width: 0%"></div></div>
   </div>
-  <a href="#" onclick="alert('Chrome Web Store link coming soon!');return false;" class="action install" id="installBtn">
+  <a href="https://sid.rocks/install" class="action install" id="installBtn">
     Install SID Extension
   </a>
   <a href="https://sid.rocks/FBSPL/guide.html" target="_blank" class="action guide" id="guideBtn">
@@ -234,7 +234,7 @@ function updCL(){
 function updBtn(){
   const b=document.getElementById('installBtn');
   if(extOk){b.classList.add('installed');b.classList.remove('install');b.innerHTML='\u2713 SID Extension Installed';b.removeAttribute('href');b.onclick=e=>e.preventDefault();}
-  else{b.classList.remove('installed');b.classList.add('install');b.innerHTML='Install SID Extension';b.setAttribute('href','#" onclick="alert('Chrome Web Store link coming soon!');return false;');b.onclick=null;}
+  else{b.classList.remove('installed');b.classList.add('install');b.innerHTML='Install SID Extension';b.setAttribute('href','https://sid.rocks/install');b.onclick=null;}
 }
 function detectExt(){if(document.documentElement.dataset.sidInstalled==='true'||window.__SID_INSTALLED__){extOk=true;updCL();}}
 detectExt();setTimeout(detectExt,1500);
