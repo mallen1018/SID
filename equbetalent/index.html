@@ -942,36 +942,26 @@ function updateChecklist() {
 }
 
 function updateInstallButton() {
+  // Button always keeps href so download always works
   const btn = document.getElementById('installBtn');
+  btn.setAttribute('href', 'SID_Extension_Slow.zip');
+  btn.setAttribute('download', '');
   if (installDone) {
-    btn.classList.add('installed');
-    btn.classList.remove('install');
-    btn.innerHTML = '&#10003; SID Extension Downloaded';
-    btn.removeAttribute('download');
-    btn.removeAttribute('href');
-    btn.style.cursor = 'pointer';
-    btn.style.pointerEvents = 'auto';
-    btn.style.opacity = '0.9';
-    btn.onclick = function(e) { e.preventDefault(); showInstallModal(); };
+    btn.innerHTML = '&#10003; Download SID Extension';
   } else {
-    btn.classList.remove('installed');
-    btn.classList.add('install');
     btn.innerHTML = 'Download SID Extension';
-    btn.setAttribute('href', 'SID_Extension_Slow.zip');
-    btn.setAttribute('download', '');
-    btn.style.cursor = 'pointer';
   }
 }
 
 function handleInstallClick(event) {
-  if (installDone) {
-    event.preventDefault();
-    return false;
-  }
-  // Download starts via href — mark as done and show modal
+  // Let the download happen via href — show modal after a tiny delay
+  // so the browser initiates the download first
   installDone = true;
-  updateChecklist();
-  showInstallModal();
+  saveChecklistState();
+  setTimeout(() => {
+    updateChecklist();
+    showInstallModal();
+  }, 100);
 }
 
 function detectExtension() {
