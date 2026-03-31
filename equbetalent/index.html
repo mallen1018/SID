@@ -1,0 +1,1197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Eqube Talent - SID Vendor Portal</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M38 12Q36 2 32 5Q34 10 38 14Z' fill='%237a5c3a'/%3E%3Cpath d='M50 8Q50-2 46 2Q48 7 50 12Z' fill='%237a5c3a'/%3E%3Cpath d='M62 12Q64 2 68 5Q66 10 62 14Z' fill='%237a5c3a'/%3E%3Cellipse cx='50' cy='52' rx='38' ry='40' fill='%23d4a96a'/%3E%3Cellipse cx='50' cy='58' rx='28' ry='28' fill='%23e8c88a'/%3E%3Cellipse cx='38' cy='46' rx='10' ry='11' fill='white'/%3E%3Cellipse cx='62' cy='46' rx='10' ry='11' fill='white'/%3E%3Ccircle cx='39' cy='46' r='6' fill='%233b8ed0'/%3E%3Ccircle cx='63' cy='46' r='6' fill='%233b8ed0'/%3E%3Ccircle cx='40' cy='45' r='3' fill='%231a1a2e'/%3E%3Ccircle cx='64' cy='45' r='3' fill='%231a1a2e'/%3E%3Ccircle cx='41' cy='43' r='1.5' fill='white'/%3E%3Ccircle cx='65' cy='43' r='1.5' fill='white'/%3E%3Cellipse cx='50' cy='60' rx='8' ry='6' fill='%238b6baa'/%3E%3Cpath d='M43 68Q50 76 57 68' stroke='%237a5c3a' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3Cellipse cx='18' cy='38' rx='8' ry='10' fill='%23d4a96a'/%3E%3Cellipse cx='82' cy='38' rx='8' ry='10' fill='%23d4a96a'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  /* Color Variables - Light/Dark Mode Support */
+  :root {
+    --bg-gradient-1: #faf8fd;
+    --bg-gradient-2: #f0ecf6;
+    --bg-gradient-3: #e8f0fa;
+    --bg-gradient-4: #f8fafc;
+    --card-bg: #fff;
+    --card-border: #ece8f4;
+    --card-shadow-1: rgba(120,96,168,0.10);
+    --card-shadow-2: rgba(0,0,0,0.04);
+    --text-primary: #1a1a2e;
+    --text-secondary: #64748b;
+    --text-muted: #94a3b8;
+    --accent: #9b7ed8;
+    --divider: #ece8f4;
+    --footer-text: #b0a8c0;
+    --help-link: #7860a8;
+    --checklist-bg: #f8f6fc;
+    --checklist-border: #ece8f4;
+    --check-done: #5cb88a;
+    --check-pending: #d0d5dd;
+  }
+
+  html.dark {
+    --bg-gradient-1: #1a1a2e;
+    --bg-gradient-2: #1e1e35;
+    --bg-gradient-3: #1a2235;
+    --bg-gradient-4: #1a1a2e;
+    --card-bg: #252540;
+    --card-border: #3a3a5c;
+    --card-shadow-1: rgba(0,0,0,0.30);
+    --card-shadow-2: rgba(0,0,0,0.15);
+    --text-primary: #e8e6f0;
+    --text-secondary: #a0a8bc;
+    --text-muted: #7a8296;
+    --accent: #b89ae8;
+    --divider: #3a3a5c;
+    --footer-text: #6a6a8c;
+    --help-link: #b89ae8;
+    --checklist-bg: #2a2a48;
+    --checklist-border: #3a3a5c;
+    --check-done: #5cb88a;
+    --check-pending: #4a4a6c;
+  }
+
+  /* Reset & Base Styles */
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    font-family: 'DM Sans', 'Segoe UI', system-ui, sans-serif;
+    color: var(--text-primary);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(160deg, var(--bg-gradient-1) 0%, var(--bg-gradient-2) 30%, var(--bg-gradient-3) 70%, var(--bg-gradient-4) 100%);
+    padding: 40px 20px;
+    transition: background 0.3s, color 0.3s;
+  }
+
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
+
+  /* Announcement Banner */
+  .announcement {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(135deg, #7860a8, #9b7ed8);
+    color: #fff;
+    text-align: center;
+    padding: 10px 40px;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    z-index: 100;
+    transform: translateY(-100%);
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .announcement.visible {
+    transform: translateY(0);
+  }
+
+  .announcement .close-btn {
+    position: absolute;
+    right: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: rgba(255,255,255,0.7);
+    font-size: 18px;
+    cursor: pointer;
+    padding: 4px 8px;
+    transition: color 0.2s;
+  }
+
+  .announcement .close-btn:hover {
+    color: #fff;
+  }
+
+  /* Dark Mode Toggle */
+  .dark-toggle {
+    position: fixed;
+    top: 14px;
+    right: 14px;
+    z-index: 101;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 50%;
+    width: 38px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 18px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    transition: all 0.3s;
+  }
+
+  .dark-toggle:hover {
+    transform: scale(1.1);
+  }
+
+  /* Main Card Container */
+  .card {
+    background: var(--card-bg);
+    border-radius: 24px;
+    padding: 48px 40px;
+    max-width: 480px;
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 8px 40px var(--card-shadow-1), 0 2px 12px var(--card-shadow-2);
+    border: 1px solid var(--card-border);
+    transition: background 0.3s, border-color 0.3s, box-shadow 0.3s;
+  }
+
+  /* SID Mascot */
+  .sid-face {
+    margin-bottom: 20px;
+    display: inline-block;
+  }
+
+  .sid-svg .blink-group {
+    animation: blink 4s ease-in-out infinite;
+    transform-origin: center;
+  }
+
+  .sid-svg .blink-group:nth-child(2) {
+    animation-delay: 0.05s;
+  }
+
+  @keyframes blink {
+    0%, 90%, 100% { transform: scaleY(1); }
+    95% { transform: scaleY(0.05); }
+  }
+
+  /* Header Text */
+  .welcome {
+    font-size: 13px;
+    color: var(--accent);
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  h1 {
+    font-family: 'Outfit', sans-serif;
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+    letter-spacing: 0.04em;
+    transition: color 0.3s;
+  }
+
+  .subtitle {
+    font-size: 15px;
+    color: var(--text-secondary);
+    margin-bottom: 28px;
+    line-height: 1.7;
+    transition: color 0.3s;
+  }
+
+  /* Checklist Card */
+  .checklist {
+    background: var(--checklist-bg);
+    border: 1px solid var(--checklist-border);
+    border-radius: 14px;
+    padding: 18px 20px;
+    margin-bottom: 24px;
+    text-align: left;
+    transition: background 0.3s, border-color 0.3s;
+  }
+
+  .checklist-title {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--accent);
+    margin-bottom: 12px;
+  }
+
+  .checklist-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 6px 0;
+    font-size: 13px;
+    color: var(--text-secondary);
+    transition: color 0.3s;
+  }
+
+  .checklist-item.done {
+    color: var(--check-done);
+  }
+
+  .checklist-item .check {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 2px solid var(--check-pending);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: all 0.3s;
+  }
+
+  .checklist-item.done .check {
+    background: var(--check-done);
+    border-color: var(--check-done);
+  }
+
+  .checklist-item.done .check::after {
+    content: '\2713';
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+  }
+
+  .checklist-item.done .label {
+    text-decoration: line-through;
+    opacity: 0.7;
+  }
+
+  .progress-bar {
+    height: 4px;
+    background: var(--check-pending);
+    border-radius: 2px;
+    margin-top: 12px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--check-done));
+    border-radius: 2px;
+    transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .checklist.completed {
+    animation: checklistDone 0.6s 1.2s forwards;
+  }
+
+  @keyframes checklistDone {
+    0% { opacity: 1; max-height: 200px; margin-bottom: 24px; padding: 18px 20px; }
+    100% { opacity: 0; max-height: 0; margin-bottom: 0; padding: 0 20px; overflow: hidden; }
+  }
+
+  .checklist.hidden {
+    display: none;
+  }
+
+  /* Action Buttons */
+  .action {
+    display: block;
+    width: 100%;
+    padding: 16px 24px;
+    border-radius: 14px;
+    font-size: 14px;
+    font-weight: 700;
+    font-family: 'DM Sans', sans-serif;
+    letter-spacing: 0.5px;
+    transition: all 0.2s;
+    cursor: pointer;
+    border: none;
+    margin-bottom: 14px;
+  }
+
+  .action.upload {
+    background: linear-gradient(135deg, #78cca0, #64bc90);
+    color: #fff;
+  }
+
+  .action.upload:hover {
+    box-shadow: 0 6px 24px rgba(120,204,160,0.35);
+    transform: translateY(-2px);
+  }
+
+  .action.guide {
+    background: linear-gradient(135deg, #9b7ed8, #b89ae8);
+    color: #fff;
+  }
+
+  .action.guide:hover {
+    box-shadow: 0 6px 24px rgba(155,126,216,0.35);
+    transform: translateY(-2px);
+  }
+
+  .action.install {
+    background: linear-gradient(135deg, #6a9cd8, #5b8dcf);
+    color: #fff;
+  }
+
+  .action.install:hover {
+    box-shadow: 0 6px 24px rgba(106,156,216,0.35);
+    transform: translateY(-2px);
+  }
+
+  .action.installed {
+    background: linear-gradient(135deg, #6a9cd8, #5b8dcf);
+    color: #fff;
+    cursor: default;
+    pointer-events: none;
+    opacity: 0.9;
+  }
+
+  /* Bulletin Board / Tasks Card */
+  .bulletin-board {
+    background: var(--checklist-bg);
+    border: 1px solid var(--checklist-border);
+    border-radius: 14px;
+    padding: 18px 20px;
+    margin-bottom: 24px;
+    text-align: left;
+    transition: background 0.3s, border-color 0.3s;
+  }
+
+  .bulletin-board.hidden {
+    display: none;
+  }
+
+  .bulletin-date {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-bottom: 12px;
+    font-weight: 500;
+  }
+
+  .task-list {
+    list-style: none;
+  }
+
+  .task-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 6px 0;
+    font-size: 13px;
+    color: var(--text-secondary);
+    transition: color 0.3s;
+    cursor: pointer;
+  }
+
+  .task-item:hover {
+    color: var(--text-primary);
+  }
+
+  .task-item.completed {
+    color: var(--check-done);
+  }
+
+  .task-item .task-check {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 2px solid var(--check-pending);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: all 0.3s;
+  }
+
+  .task-item.completed .task-check {
+    background: var(--check-done);
+    border-color: var(--check-done);
+  }
+
+  .task-item.completed .task-check::after {
+    content: '\2713';
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+  }
+
+  .task-item.completed .task-label {
+    text-decoration: line-through;
+    opacity: 0.7;
+  }
+
+  .bulletin-notes {
+    font-size: 12px;
+    color: var(--text-muted);
+    font-style: italic;
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid var(--checklist-border);
+  }
+
+  /* Divider & Help Text */
+  .divider {
+    height: 1px;
+    background: var(--divider);
+    margin: 24px 0;
+    transition: background 0.3s;
+  }
+
+  .help-text {
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.7;
+    transition: color 0.3s;
+  }
+
+  .help-text a {
+    color: var(--help-link);
+    font-weight: 600;
+    transition: color 0.3s;
+  }
+
+  /* Footer */
+  .footer {
+    margin-top: 32px;
+    font-size: 12px;
+    color: var(--footer-text);
+    transition: color 0.3s;
+  }
+
+  .footer a {
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  /* Install Instructions Modal */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 200;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    backdrop-filter: blur(4px);
+    animation: fadeIn 0.2s ease;
+  }
+
+  .modal-overlay.visible {
+    display: flex;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  .modal-card {
+    background: var(--card-bg);
+    border-radius: 20px;
+    padding: 36px 32px;
+    max-width: 520px;
+    width: 100%;
+    max-height: 85vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+    border: 1px solid var(--card-border);
+    position: relative;
+    animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .modal-close {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    background: none;
+    border: none;
+    font-size: 22px;
+    color: var(--text-muted);
+    cursor: pointer;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+  }
+
+  .modal-close:hover {
+    background: var(--checklist-bg);
+    color: var(--text-primary);
+  }
+
+  .modal-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 6px;
+  }
+
+  .modal-subtitle {
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin-bottom: 24px;
+    line-height: 1.6;
+  }
+
+  .modal-download-btn {
+    display: block;
+    width: 100%;
+    padding: 14px 24px;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 700;
+    font-family: 'DM Sans', sans-serif;
+    letter-spacing: 0.5px;
+    text-align: center;
+    background: linear-gradient(135deg, #6a9cd8, #5b8dcf);
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    margin-bottom: 24px;
+    transition: all 0.2s;
+  }
+
+  .modal-download-btn:hover {
+    box-shadow: 0 6px 24px rgba(106,156,216,0.35);
+    transform: translateY(-1px);
+  }
+
+  .install-steps {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 20px 0;
+  }
+
+  .install-step {
+    display: flex;
+    gap: 12px;
+    padding: 10px 0;
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+  }
+
+  .install-step:not(:last-child) {
+    border-bottom: 1px solid var(--divider);
+  }
+
+  .step-number {
+    width: 26px;
+    height: 26px;
+    min-width: 26px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent), #b89ae8);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 1px;
+  }
+
+  .step-content {
+    flex: 1;
+  }
+
+  .step-content strong {
+    color: var(--text-primary);
+  }
+
+  .step-content code {
+    background: var(--checklist-bg);
+    padding: 2px 7px;
+    border-radius: 5px;
+    font-size: 12px;
+    color: var(--accent);
+    font-weight: 600;
+    border: 1px solid var(--checklist-border);
+  }
+
+  .browser-tabs {
+    display: flex;
+    gap: 0;
+    margin-bottom: 20px;
+  }
+
+  .browser-tab {
+    flex: 1;
+    padding: 10px 16px;
+    font-size: 13px;
+    font-weight: 600;
+    text-align: center;
+    cursor: pointer;
+    border: 1px solid var(--checklist-border);
+    background: var(--checklist-bg);
+    color: var(--text-muted);
+    transition: all 0.2s;
+  }
+
+  .browser-tab:first-child {
+    border-radius: 10px 0 0 10px;
+  }
+
+  .browser-tab:last-child {
+    border-radius: 0 10px 10px 0;
+  }
+
+  .browser-tab.active {
+    background: var(--accent);
+    color: #fff;
+    border-color: var(--accent);
+  }
+
+  .browser-section {
+    display: none;
+  }
+
+  .browser-section.active {
+    display: block;
+  }
+</style>
+</head>
+<body>
+<!-- Announcement Banner -->
+<div class="announcement" id="announcement">
+  <span id="announcement-text"></span>
+  <button class="close-btn" id="closeAnn">&times;</button>
+</div>
+
+<!-- Dark Mode Toggle -->
+<div class="dark-toggle" id="darkToggle" title="Toggle dark mode">🌙</div>
+
+<!-- Main Portal Card -->
+<div class="card">
+  <!-- SID Mascot -->
+  <div class="sid-face">
+    <svg class="sid-svg" width="80" height="80" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+      <path d="M38 12Q36 2 32 5Q34 10 38 14Z" fill="#7a5c3a"/>
+      <path d="M50 8Q50-2 46 2Q48 7 50 12Z" fill="#7a5c3a"/>
+      <path d="M62 12Q64 2 68 5Q66 10 62 14Z" fill="#7a5c3a"/>
+      <ellipse cx="50" cy="52" rx="38" ry="40" fill="#d4a96a"/>
+      <ellipse cx="50" cy="58" rx="28" ry="28" fill="#e8c88a"/>
+      <ellipse cx="18" cy="38" rx="8" ry="10" fill="#d4a96a"/>
+      <ellipse cx="82" cy="38" rx="8" ry="10" fill="#d4a96a"/>
+      <g class="blink-group" style="transform-origin: 38px 46px">
+        <ellipse cx="38" cy="46" rx="10" ry="11" fill="white"/>
+        <circle class="pupil-l" cx="39" cy="46" r="6" fill="#3b8ed0"/>
+        <circle class="iris-l" cx="40" cy="45" r="3" fill="#1a1a2e"/>
+        <circle cx="41" cy="43" r="1.5" fill="white"/>
+      </g>
+      <g class="blink-group" style="transform-origin: 62px 46px">
+        <ellipse cx="62" cy="46" rx="10" ry="11" fill="white"/>
+        <circle class="pupil-r" cx="63" cy="46" r="6" fill="#3b8ed0"/>
+        <circle class="iris-r" cx="64" cy="45" r="3" fill="#1a1a2e"/>
+        <circle cx="65" cy="43" r="1.5" fill="white"/>
+      </g>
+      <ellipse cx="50" cy="60" rx="8" ry="6" fill="#8b6baa"/>
+      <path d="M43 68Q50 76 57 68" stroke="#7a5c3a" stroke-width="2" fill="none" stroke-linecap="round"/>
+    </svg>
+  </div>
+
+  <!-- Welcome Header -->
+  <div class="welcome">Welcome</div>
+  <h1>Eqube Talent</h1>
+  <p class="subtitle">Your SID vendor portal. Install the extension, read the guide, and upload your files.</p>
+
+  <!-- Onboarding Checklist -->
+  <div class="checklist" id="checklist">
+    <div class="checklist-title">Getting Started</div>
+    <div class="checklist-item" id="check-install"><div class="check"></div><span class="label">Install the SID extension</span></div>
+    <div class="checklist-item" id="check-guide"><div class="check"></div><span class="label">Read the vendor guide</span></div>
+    <div class="checklist-item" id="check-upload"><div class="check"></div><span class="label">Upload your first ZIP file</span></div>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width: 0%"></div></div>
+  </div>
+
+  <!-- Action Buttons -->
+  <a href="SID_Extension_Slow.zip" download id="installBtn" class="action install" onclick="handleInstallClick(event);">
+    Download SID Extension
+  </a>
+  <a href="guide_direct.html" target="_blank" class="action guide" id="guideBtn">
+    Open SID Guide
+  </a>
+  <a href="https://jobosaurus-my.sharepoint.com/:f:/g/personal/mallen_wallstjobs_com/IgD7BLG45895SqPsWCkzudRTAUiPbv_ijA7NVixntDSmfQE" target="_blank" class="action upload" id="uploadBtn">
+    Upload ZIP Files
+  </a>
+
+  <!-- Bulletin Board / Today's Tasks -->
+  <div class="bulletin-board hidden" id="bulletinBoard">
+    <div class="checklist-title">Today's Tasks</div>
+    <div class="bulletin-date" id="bulletinDate"></div>
+    <ul class="task-list" id="taskList"></ul>
+    <div class="bulletin-notes hidden" id="bulletinNotes"></div>
+  </div>
+
+  <!-- Divider -->
+  <div class="divider"></div>
+
+  <!-- Help Text -->
+  <p class="help-text">
+    No sign-in needed to upload. Just click, select your ZIP file, and you're done.<br>
+    Questions? Email <a href="mailto:mallen@wallstjobs.com?subject=SID%20Portal%20-%20Question">Melissa</a>.
+  </p>
+</div>
+
+<!-- Install Instructions Modal -->
+<div class="modal-overlay" id="installModal">
+  <div class="modal-card">
+    <button class="modal-close" id="modalClose">&times;</button>
+    <div class="modal-title">Install SID Extension</div>
+    <div class="modal-subtitle">Your download has started. Follow the steps below to install the extension in your browser.</div>
+
+    <a href="SID_Extension_Slow.zip" download class="modal-download-btn" id="modalDownloadBtn">
+      Download Again
+    </a>
+
+    <div class="browser-tabs">
+      <div class="browser-tab active" data-browser="chrome">Chrome</div>
+      <div class="browser-tab" data-browser="edge">Edge</div>
+    </div>
+
+    <div class="browser-section active" id="section-chrome">
+      <ol class="install-steps">
+        <li class="install-step">
+          <div class="step-number">1</div>
+          <div class="step-content"><strong>Unzip</strong> the downloaded file. You should see a folder called <strong>SID_Extension_Slow</strong>.</div>
+        </li>
+        <li class="install-step">
+          <div class="step-number">2</div>
+          <div class="step-content">Open Chrome and go to <code>chrome://extensions</code> (type it into the address bar).</div>
+        </li>
+        <li class="install-step">
+          <div class="step-number">3</div>
+          <div class="step-content">Turn on <strong>Developer mode</strong> using the toggle in the top-right corner.</div>
+        </li>
+        <li class="install-step">
+          <div class="step-number">4</div>
+          <div class="step-content">Click <strong>Load unpacked</strong> and select the unzipped <strong>SID_Extension_Slow</strong> folder.</div>
+        </li>
+        <li class="install-step">
+          <div class="step-number">5</div>
+          <div class="step-content">Click the <strong>puzzle piece</strong> icon in Chrome's toolbar and <strong>pin SID</strong> so it's always visible.</div>
+        </li>
+      </ol>
+    </div>
+
+    <div class="browser-section" id="section-edge">
+      <ol class="install-steps">
+        <li class="install-step">
+          <div class="step-number">1</div>
+          <div class="step-content"><strong>Unzip</strong> the downloaded file. You should see a folder called <strong>SID_Extension_Slow</strong>.</div>
+        </li>
+        <li class="install-step">
+          <div class="step-number">2</div>
+          <div class="step-content">Open Edge and go to <code>edge://extensions</code> (type it into the address bar).</div>
+        </li>
+        <li class="install-step">
+          <div class="step-number">3</div>
+          <div class="step-content">Turn on <strong>Developer mode</strong> using the toggle in the bottom-left corner.</div>
+        </li>
+        <li class="install-step">
+          <div class="step-number">4</div>
+          <div class="step-content">Click <strong>Load unpacked</strong> and select the unzipped <strong>SID_Extension_Slow</strong> folder.</div>
+        </li>
+        <li class="install-step">
+          <div class="step-number">5</div>
+          <div class="step-content">Click the <strong>puzzle piece</strong> icon in Edge's toolbar and <strong>pin SID</strong> so it's always visible.</div>
+        </li>
+      </ol>
+    </div>
+  </div>
+</div>
+
+<!-- Footer -->
+<div class="footer">Powered by <a href="https://sid.rocks">sid.rocks</a></div>
+
+<script>
+/* ============================================================================
+   DARK MODE
+   ========================================================================== */
+const darkToggle = document.getElementById('darkToggle');
+let darkMode = false;
+
+try {
+  darkMode = localStorage.getItem('sid_dark') === '1';
+} catch (e) {
+  // localStorage may not be available
+}
+
+if (darkMode) {
+  document.documentElement.classList.add('dark');
+  darkToggle.textContent = '☀️';
+}
+
+darkToggle.addEventListener('click', () => {
+  darkMode = !darkMode;
+  document.documentElement.classList.toggle('dark', darkMode);
+  darkToggle.textContent = darkMode ? '☀️' : '🌙';
+  try {
+    localStorage.setItem('sid_dark', darkMode ? '1' : '0');
+  } catch (e) {
+    // localStorage may not be available
+  }
+});
+
+/* ============================================================================
+   EYE TRACKING
+   ========================================================================== */
+const svg = document.querySelector('.sid-svg');
+const pupilL = svg.querySelector('.pupil-l');
+const irisL = svg.querySelector('.iris-l');
+const pupilR = svg.querySelector('.pupil-r');
+const irisR = svg.querySelector('.iris-r');
+
+document.addEventListener('mousemove', (e) => {
+  const rect = svg.getBoundingClientRect();
+  const dx = e.clientX - (rect.left + rect.width / 2);
+  const dy = e.clientY - (rect.top + rect.height / 2);
+  const distance = Math.sqrt(dx * dx + dy * dy);
+  const factor = Math.min(distance / 200, 1) * 2.5;
+  const angle = Math.atan2(dy, dx);
+  const moveX = Math.cos(angle) * factor;
+  const moveY = Math.sin(angle) * factor;
+
+  pupilL.setAttribute('cx', 39 + moveX);
+  pupilL.setAttribute('cy', 46 + moveY);
+  irisL.setAttribute('cx', 40 + moveX);
+  irisL.setAttribute('cy', 45 + moveY);
+
+  pupilR.setAttribute('cx', 63 + moveX);
+  pupilR.setAttribute('cy', 46 + moveY);
+  irisR.setAttribute('cx', 64 + moveX);
+  irisR.setAttribute('cy', 45 + moveY);
+});
+
+/* ============================================================================
+   CHECKLIST
+   ========================================================================== */
+const CHECKLIST_STORAGE_KEY = 'sid_checklist_EqubeTalent';
+let savedState = {};
+
+try {
+  savedState = JSON.parse(localStorage.getItem(CHECKLIST_STORAGE_KEY) || '{}');
+} catch (e) {
+  // localStorage may not be available
+}
+
+let installDone = savedState.install || false;
+let guideDone = savedState.guide || false;
+let uploadDone = savedState.upload || false;
+let checklistCompleted = savedState.completed || false;
+
+function saveChecklistState() {
+  try {
+    localStorage.setItem(CHECKLIST_STORAGE_KEY, JSON.stringify({
+      install: installDone,
+      guide: guideDone,
+      upload: uploadDone,
+      completed: checklistCompleted
+    }));
+  } catch (e) {
+    // localStorage may not be available
+  }
+}
+
+function updateChecklist() {
+  const checklistEl = document.getElementById('checklist');
+  const items = [installDone, guideDone, uploadDone];
+  const completedCount = items.filter(Boolean).length;
+  const percentComplete = Math.round(completedCount / 3 * 100);
+
+  if (checklistCompleted) {
+    checklistEl.classList.add('hidden');
+    updateInstallButton();
+    return;
+  }
+
+  document.getElementById('check-install').classList.toggle('done', installDone);
+  document.getElementById('check-guide').classList.toggle('done', guideDone);
+  document.getElementById('check-upload').classList.toggle('done', uploadDone);
+  document.getElementById('progressFill').style.width = percentComplete + '%';
+
+  updateInstallButton();
+
+  if (completedCount === 3) {
+    checklistCompleted = true;
+    saveChecklistState();
+    checklistEl.classList.add('completed');
+    checklistEl.addEventListener('animationend', () => {
+      checklistEl.classList.add('hidden');
+    }, { once: true });
+  }
+
+  saveChecklistState();
+}
+
+function updateInstallButton() {
+  const btn = document.getElementById('installBtn');
+  if (installDone) {
+    btn.classList.add('installed');
+    btn.classList.remove('install');
+    btn.innerHTML = '&#10003; SID Extension Downloaded';
+    btn.removeAttribute('download');
+    btn.removeAttribute('href');
+    btn.style.cursor = 'pointer';
+    btn.style.pointerEvents = 'auto';
+    btn.style.opacity = '0.9';
+    btn.onclick = function(e) { e.preventDefault(); showInstallModal(); };
+  } else {
+    btn.classList.remove('installed');
+    btn.classList.add('install');
+    btn.innerHTML = 'Download SID Extension';
+    btn.setAttribute('href', 'SID_Extension_Slow.zip');
+    btn.setAttribute('download', '');
+    btn.style.cursor = 'pointer';
+  }
+}
+
+function handleInstallClick(event) {
+  if (installDone) {
+    event.preventDefault();
+    return false;
+  }
+  // Download starts via href — mark as done and show modal
+  installDone = true;
+  updateChecklist();
+  showInstallModal();
+}
+
+function detectExtension() {
+  if (document.documentElement.dataset.sidInstalled === 'true' || window.__SID_INSTALLED__) {
+    installDone = true;
+    updateChecklist();
+  }
+}
+
+// Detect extension on load and after delay
+detectExtension();
+setTimeout(detectExtension, 1500);
+
+// Guide button listener
+document.getElementById('guideBtn').addEventListener('click', () => {
+  if (!guideDone) {
+    guideDone = true;
+    updateChecklist();
+  }
+});
+
+// Upload button listener
+document.getElementById('uploadBtn').addEventListener('click', () => {
+  if (!uploadDone) {
+    uploadDone = true;
+    updateChecklist();
+  }
+});
+
+// Initialize checklist display
+updateChecklist();
+
+/* ============================================================================
+   BULLETIN BOARD / TODAY'S TASKS
+   ========================================================================== */
+function formatDate(dateString) {
+  const options = { year: 'numeric', month: 'long', day: 'numeric' };
+  return new Date(dateString + 'T00:00:00').toLocaleDateString('en-US', options);
+}
+
+function getTodayString() {
+  const now = new Date();
+  return now.getFullYear() + '-' +
+         String(now.getMonth() + 1).padStart(2, '0') + '-' +
+         String(now.getDate()).padStart(2, '0');
+}
+
+function getTaskStorageKey(dateString) {
+  return 'sid_tasks_EqubeTalent_' + dateString;
+}
+
+function loadBulletinBoard() {
+  const today = getTodayString();
+  const cachebusters = Date.now();
+
+  fetch('https://sid.rocks/bulletin_EqubeTalent.json?' + cachebusters)
+    .then(response => response.json())
+    .then(data => {
+      if (data.date && data.tasks && Array.isArray(data.tasks) && data.tasks.length > 0) {
+        // Check if tasks are for today
+        if (data.date === today) {
+          displayBulletinBoard(data, today);
+        } else {
+          // Different date - hide bulletin board
+          document.getElementById('bulletinBoard').classList.add('hidden');
+        }
+      } else {
+        // No tasks - hide bulletin board
+        document.getElementById('bulletinBoard').classList.add('hidden');
+      }
+    })
+    .catch(() => {
+      // Fetch failed - hide bulletin board
+      document.getElementById('bulletinBoard').classList.add('hidden');
+    });
+}
+
+function displayBulletinBoard(data, today) {
+  const bulletinEl = document.getElementById('bulletinBoard');
+  const dateEl = document.getElementById('bulletinDate');
+  const taskListEl = document.getElementById('taskList');
+  const notesEl = document.getElementById('bulletinNotes');
+
+  // Set date
+  dateEl.textContent = formatDate(data.date);
+
+  // Clear and build task list
+  taskListEl.innerHTML = '';
+  const storageKey = getTaskStorageKey(today);
+  let taskStates = {};
+
+  try {
+    taskStates = JSON.parse(localStorage.getItem(storageKey) || '{}');
+  } catch (e) {
+    // localStorage may not be available
+  }
+
+  data.tasks.forEach((task, index) => {
+    const isCompleted = taskStates[index] === true;
+    const li = document.createElement('li');
+    li.className = 'task-item' + (isCompleted ? ' completed' : '');
+
+    const checkDiv = document.createElement('div');
+    checkDiv.className = 'task-check';
+    li.appendChild(checkDiv);
+
+    const labelSpan = document.createElement('span');
+    labelSpan.className = 'task-label';
+    labelSpan.textContent = task;
+    li.appendChild(labelSpan);
+
+    li.addEventListener('click', () => {
+      const wasDone = taskStates[index] === true;
+      taskStates[index] = !wasDone;
+      try {
+        localStorage.setItem(storageKey, JSON.stringify(taskStates));
+      } catch (e) {
+        // localStorage may not be available
+      }
+      li.classList.toggle('completed');
+    });
+
+    taskListEl.appendChild(li);
+  });
+
+  // Set notes if present
+  if (data.notes && data.notes.trim()) {
+    notesEl.textContent = data.notes;
+    notesEl.classList.remove('hidden');
+  } else {
+    notesEl.classList.add('hidden');
+  }
+
+  // Show bulletin board
+  bulletinEl.classList.remove('hidden');
+}
+
+loadBulletinBoard();
+
+/* ============================================================================
+   ANNOUNCEMENT
+   ========================================================================== */
+function showAnnouncement(message, announcementId) {
+  const storageKey = 'sid_dismissed_' + (announcementId || 'default');
+
+  try {
+    if (localStorage.getItem(storageKey)) {
+      return; // Already dismissed
+    }
+  } catch (e) {
+    // localStorage may not be available
+  }
+
+  const announcementEl = document.getElementById('announcement');
+  document.getElementById('announcement-text').textContent = message;
+  announcementEl.classList.add('visible');
+  document.body.style.paddingTop = '52px';
+
+  document.getElementById('closeAnn').onclick = () => {
+    announcementEl.classList.remove('visible');
+    document.body.style.paddingTop = '';
+    try {
+      localStorage.setItem(storageKey, '1');
+    } catch (e) {
+      // localStorage may not be available
+    }
+  };
+}
+
+/* ============================================================================
+   INSTALL INSTRUCTIONS MODAL
+   ========================================================================== */
+const installModal = document.getElementById('installModal');
+const modalCloseBtn = document.getElementById('modalClose');
+const browserTabs = document.querySelectorAll('.browser-tab');
+
+function showInstallModal() {
+  installModal.classList.add('visible');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeInstallModal() {
+  installModal.classList.remove('visible');
+  document.body.style.overflow = '';
+}
+
+modalCloseBtn.addEventListener('click', closeInstallModal);
+
+installModal.addEventListener('click', (e) => {
+  if (e.target === installModal) {
+    closeInstallModal();
+  }
+});
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && installModal.classList.contains('visible')) {
+    closeInstallModal();
+  }
+});
+
+browserTabs.forEach(tab => {
+  tab.addEventListener('click', () => {
+    browserTabs.forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    document.querySelectorAll('.browser-section').forEach(s => s.classList.remove('active'));
+    document.getElementById('section-' + tab.dataset.browser).classList.add('active');
+  });
+});
+
+// Fetch announcements
+fetch('https://sid.rocks/announcements.json?' + Date.now())
+  .then(response => response.json())
+  .then(data => {
+    if (data.message) {
+      showAnnouncement(data.message, data.id);
+    }
+  })
+  .catch(() => {
+    // Fetch failed - silently continue
+  });
+</script>
+</body>
+</html>
