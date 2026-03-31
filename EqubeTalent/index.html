@@ -434,74 +434,6 @@
     border-top: 1px solid var(--checklist-border);
   }
 
-  /* Upload History / Collapsible Section */
-  .upload-history {
-    margin-bottom: 24px;
-  }
-
-  .upload-history-header {
-    background: var(--checklist-bg);
-    border: 1px solid var(--checklist-border);
-    border-radius: 14px;
-    padding: 16px 20px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    transition: background 0.3s, border-color 0.3s;
-    user-select: none;
-  }
-
-  .upload-history-header:hover {
-    background: var(--card-bg);
-  }
-
-  .upload-history-arrow {
-    font-size: 14px;
-    transition: transform 0.3s ease;
-    flex-shrink: 0;
-  }
-
-  .upload-history-arrow.expanded {
-    transform: rotate(90deg);
-  }
-
-  .upload-history-title {
-    font-size: 12px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-    color: var(--accent);
-    flex: 1;
-    text-align: left;
-  }
-
-  .upload-history-content {
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.3s ease, padding 0.3s ease;
-  }
-
-  .upload-history-content.expanded {
-    max-height: 500px;
-    padding-top: 16px;
-  }
-
-  .upload-history-body {
-    background: var(--checklist-bg);
-    border: 1px solid var(--checklist-border);
-    border-top: none;
-    border-radius: 0 0 14px 14px;
-    padding: 16px 20px;
-    text-align: left;
-  }
-
-  .upload-placeholder {
-    font-size: 13px;
-    color: var(--text-muted);
-    line-height: 1.6;
-  }
-
   /* Divider & Help Text */
   .divider {
     height: 1px;
@@ -806,19 +738,6 @@
     <div class="bulletin-date" id="bulletinDate"></div>
     <ul class="task-list" id="taskList"></ul>
     <div class="bulletin-notes hidden" id="bulletinNotes"></div>
-  </div>
-
-  <!-- Upload History (Collapsible) -->
-  <div class="upload-history">
-    <div class="upload-history-header" id="uploadHistoryHeader">
-      <span class="upload-history-arrow" id="uploadHistoryArrow">▶</span>
-      <div class="upload-history-title">Recent Uploads</div>
-    </div>
-    <div class="upload-history-content" id="uploadHistoryContent">
-      <div class="upload-history-body">
-        <p class="upload-placeholder">Upload tracking coming soon — check your OneDrive folder directly.</p>
-      </div>
-    </div>
   </div>
 
   <!-- Divider -->
@@ -1191,18 +1110,6 @@ function displayBulletinBoard(data, today) {
 }
 
 loadBulletinBoard();
-
-/* ============================================================================
-   UPLOAD HISTORY COLLAPSIBLE
-   ========================================================================== */
-const uploadHistoryHeader = document.getElementById('uploadHistoryHeader');
-const uploadHistoryContent = document.getElementById('uploadHistoryContent');
-const uploadHistoryArrow = document.getElementById('uploadHistoryArrow');
-
-uploadHistoryHeader.addEventListener('click', () => {
-  uploadHistoryContent.classList.toggle('expanded');
-  uploadHistoryArrow.classList.toggle('expanded');
-});
 
 /* ============================================================================
    ANNOUNCEMENT
