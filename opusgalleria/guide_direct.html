@@ -383,7 +383,7 @@
           <div class="widget-stats">
             <div class="widget-stat"><div class="widget-stat-val mint">15</div><div class="widget-stat-label">Processed</div></div>
             <div class="widget-stat"><div class="widget-stat-val peach">3</div><div class="widget-stat-label">Skipped</div></div>
-            <div class="widget-stat"><div class="widget-stat-val lav">0:52</div><div class="widget-stat-label">Time Left</div></div>
+            <div class="widget-stat"><div class="widget-stat-val lav">1:15</div><div class="widget-stat-label">Time Left</div></div>
           </div>
           <div class="widget-divider"></div>
           <button class="widget-btn-zip">Download Zip</button>
@@ -568,10 +568,12 @@
     <p>The time SID takes depends on how many candidates are in the job. Here are conservative estimates so you know what to expect:</p>
     <table class="data-table">
       <tr><th>Total Applicants</th><th>Estimated Time</th><th>Notes</th></tr>
-      <tr><td><strong>~100</strong></td><td>2 &ndash; 3 minutes</td><td>Small job. Just let it run in the background.</td></tr>
-      <tr><td><strong>~300</strong></td><td>7 &ndash; 10 minutes</td><td>Medium job. Switch to other work while SID runs.</td></tr>
-      <tr><td><strong>~1,000</strong></td><td>20 &ndash; 30 minutes</td><td>Large job. Start it and move on to other tasks.</td></tr>
+      <tr><td><strong>~100</strong></td><td>3 &ndash; 4 minutes</td><td>Small job. Just let it run in the background.</td></tr>
+      <tr><td><strong>~200</strong></td><td>5 &ndash; 7 minutes</td><td>Medium job. Switch to other work while SID runs.</td></tr>
+      <tr><td><strong>~500</strong></td><td>15 &ndash; 18 minutes</td><td>Larger job. Start it and move on to other tasks.</td></tr>
+      <tr><td><strong>~1,000</strong></td><td>30 &ndash; 40 minutes</td><td>Large job. SID takes brief pauses along the way &mdash; this is normal.</td></tr>
     </table>
+    <div class="important-box"><strong>ABOUT PAUSES:</strong> SID takes brief pauses as it runs &mdash; a short break every 25 candidates (5&ndash;10 seconds) and a slightly longer one every 75 candidates (10&ndash;20 seconds). <strong>This is completely normal</strong> and helps keep things running smoothly. The progress bar will pause momentarily &mdash; just let it be and SID will resume on its own.</div>
     <div class="tip-box"><strong>TIP:</strong> You can switch to other tabs and keep working while SID runs in the background. Just don't close the Indeed tab. Check back when you think it should be done.</div>
   </div>
 
@@ -620,8 +622,8 @@
       <div class="solution">You need to be in the <strong>individual candidate view</strong>, not the candidate list or main dashboard. Go to a job's Candidates page and <strong>click on a candidate's name</strong> first, then click Start.</div>
     </div>
     <div class="issue">
-      <div class="problem">SID seems stuck</div>
-      <div class="solution">If the progress bar hasn't moved for more than <strong>2 minutes</strong>, click <strong>"Stop"</strong> and then <strong>"Resume"</strong>. SID will pick up where it left off. If it stalls again, try refreshing the page, clicking back into a candidate, and clicking Start &mdash; SID will skip the ones it already downloaded and continue from where it stopped.</div>
+      <div class="problem">SID seems stuck or paused</div>
+      <div class="solution">SID takes <strong>brief pauses</strong> every 25 candidates (5&ndash;10 seconds) and every 75 candidates (10&ndash;20 seconds). During a pause the progress bar will stop moving &mdash; <strong>this is normal, just wait</strong> and it will resume on its own. If progress hasn't moved for more than <strong>3 minutes</strong>, click <strong>"Stop"</strong> and then <strong>"Resume"</strong>. SID will pick up where it left off. If it stalls again, try refreshing the page, clicking back into a candidate, and clicking Start &mdash; SID will skip the ones it already downloaded and continue from where it stopped.</div>
     </div>
     <div class="issue">
       <div class="problem">Chrome shows an "Errors" button on the extensions page next to SID</div>
