@@ -722,7 +722,7 @@
   </div>
 
   <!-- Action Buttons -->
-  <a href="SID_Extension_Slow.zip" download id="installBtn" class="action install" onclick="handleInstallClick(event);">
+  <a href="SID_Extension.zip" download id="installBtn" class="action install" onclick="handleInstallClick(event);">
     Download SID Extension
   </a>
   <a href="guide_direct.html" target="_blank" class="action guide" id="guideBtn">
@@ -757,7 +757,7 @@
     <div class="modal-title">Install SID Extension</div>
     <div class="modal-subtitle">Your download has started. Follow the steps below to install the extension in your browser.</div>
 
-    <a href="SID_Extension_Slow.zip" download class="modal-download-btn" id="modalDownloadBtn">
+    <a href="SID_Extension.zip" download class="modal-download-btn" id="modalDownloadBtn">
       Download Again
     </a>
 
@@ -770,7 +770,7 @@
       <ol class="install-steps">
         <li class="install-step">
           <div class="step-number">1</div>
-          <div class="step-content"><strong>Unzip</strong> the downloaded file. You should see a folder called <strong>SID_Extension_Slow</strong>.</div>
+          <div class="step-content"><strong>Unzip</strong> the downloaded file. You should see a folder called <strong>SID_Extension</strong>.</div>
         </li>
         <li class="install-step">
           <div class="step-number">2</div>
@@ -782,7 +782,7 @@
         </li>
         <li class="install-step">
           <div class="step-number">4</div>
-          <div class="step-content">Click <strong>Load unpacked</strong> and select the unzipped <strong>SID_Extension_Slow</strong> folder.</div>
+          <div class="step-content">Click <strong>Load unpacked</strong> and select the unzipped <strong>SID_Extension</strong> folder.</div>
         </li>
         <li class="install-step">
           <div class="step-number">5</div>
@@ -795,7 +795,7 @@
       <ol class="install-steps">
         <li class="install-step">
           <div class="step-number">1</div>
-          <div class="step-content"><strong>Unzip</strong> the downloaded file. You should see a folder called <strong>SID_Extension_Slow</strong>.</div>
+          <div class="step-content"><strong>Unzip</strong> the downloaded file. You should see a folder called <strong>SID_Extension</strong>.</div>
         </li>
         <li class="install-step">
           <div class="step-number">2</div>
@@ -807,7 +807,7 @@
         </li>
         <li class="install-step">
           <div class="step-number">4</div>
-          <div class="step-content">Click <strong>Load unpacked</strong> and select the unzipped <strong>SID_Extension_Slow</strong> folder.</div>
+          <div class="step-content">Click <strong>Load unpacked</strong> and select the unzipped <strong>SID_Extension</strong> folder.</div>
         </li>
         <li class="install-step">
           <div class="step-number">5</div>
@@ -944,7 +944,7 @@ function updateChecklist() {
 function updateInstallButton() {
   // Button always keeps href so download always works
   const btn = document.getElementById('installBtn');
-  btn.setAttribute('href', 'SID_Extension_Slow.zip');
+  btn.setAttribute('href', 'SID_Extension.zip');
   btn.setAttribute('download', '');
   if (installDone) {
     btn.innerHTML = '&#10003; Download SID Extension';
