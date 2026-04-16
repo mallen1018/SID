@@ -62,3 +62,9 @@ __pycache__/
 # Keep the Spawner .app OUT of git (it's a binary app, edit source separately)
 # Actually — keep it for now; comment out if unwanted
 # *.app/
+
+# Local server config (contains API keys) — never track
+server_config.json
+
+# Tampermonkey userscripts belong outside this repo
+*.user.js
