@@ -1,0 +1,6 @@
+{
+  "ai_provider": "anthropic",
+  "anthropic_api_key": "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",
+  "openai_api_key": "",
+  "default_prompt": "We are a recruiting/staffing firm posting on behalf of our clients \u2014 never name the client, use phrases like 'a fast-growing organization' or 'our partner company.' These are performance-based roles, NOT fixed salary \u2014 compensation is tied to results with uncapped earning potential. Frame pay as 'earning potential' or 'OTE' ranges, never as a guaranteed salary. All roles are entry-level friendly \u2014 no experience required, full training and mentorship provided, warm leads supplied. Write in a creative, conversational tone that stands out from generic job boards \u2014 avoid corporate buzzwords and AI-sounding fluff like 'dynamic environment' or 'synergy.' Be specific enough that candidates understand the work but creatively vague about the exact product/service \u2014 imply sales and relationship-building without saying 'cold calling' or 'commission only.' Emphasize growth trajectory, real earning examples, and the human side of the work. Structure for Indeed SEO: use clear section headers, bullet points, and keep it 200-350 words. Every posting should feel like it was written by a real person, not a template."
+}

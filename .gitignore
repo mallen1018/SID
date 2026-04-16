@@ -1,0 +1,64 @@
+# macOS cruft
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+
+# Node
+node_modules/
+*.log
+
+# Claude/session cruft
+.auto-memory/
+.claude/
+.remote-plugins/
+
+# ===== PRIVATE — never push =====
+# Candidate/user uploads (PII)
+uploads/
+
+# Internal vendor config
+vendor_accounts.json
+
+# Local Spawner activity/state
+activity/
+alerts/
+assignments/
+announcements.json
+bulletin_*.json
+postings_*.json
+.fbspl_template/
+
+# Temporary discovery/deploy scripts (these are local-only)
+find_repo*.command
+find_repo*.txt
+find_gh_repo*.command
+find_gh_repo*.txt
+find_auth*.command
+find_auth*.txt
+push_pending.command
+DEPLOY.command
+FIX_HISTORY.command
+deploy_log.txt
+
+# Abandoned rewrite branch
+sid-v2/
+
+# Large zips that shouldn't be in git
+SID_SLOW.zip
+SID_v*.zip
+
+# Dev scratch
+test.html
+__pycache__/
+*.pyw
+
+# Keep the Spawner .app OUT of git (it's a binary app, edit source separately)
+# Actually — keep it for now; comment out if unwanted
+# *.app/

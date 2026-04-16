@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Font Comparison — SID Portal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=Outfit:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&family=Comfortaa:wght@400;500;600;700&family=Fredoka:wght@400;500;600;700&family=Varela+Round&family=Baloo+2:wght@400;500;600;700;800&family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@0.344.0/dist/umd/lucide.min.js"></script>
+    <style>
+        :root {
+            --color-primary: #9b7ed8;
+            --color-bg: #f6f3fb;
+            --color-bg-secondary: #eee9f5;
+            --color-text: #362f50;
+            --color-text-secondary: #524d6b;
+            --color-text-muted: #7a7494;
+            --color-border: #ece8f4;
+            --pastel-purple: #c4b0f0;
+            --pastel-pink: #f0b4d4;
+            --pastel-mint: #98dcd4;
+            --pastel-sky: #a0cef0;
+            --vivid-purple: #a78bdf;
+            --vivid-pink: #dc8ab8;
+            --vivid-mint: #3cb8a8;
+            --vivid-sky: #5ea8d8;
+            --vivid-lavender: #a888d0;
+            --vivid-rose: #d88a9e;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: #e8e4f0;
+            -webkit-font-smoothing: antialiased;
+            padding: 32px;
+        }
+
+        h1.page-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 28px; font-weight: 700;
+            color: var(--color-text); text-align: center;
+            margin-bottom: 8px;
+        }
+        p.page-sub {
+            font-family: 'Outfit', sans-serif;
+            font-size: 14px; color: var(--color-text-muted);
+            text-align: center; margin-bottom: 40px;
+        }
+
+        /* ═══ EACH FONT DEMO ═══ */
+        .font-demo {
+            background: var(--color-bg);
+            border-radius: 20px;
+            overflow: hidden;
+            margin-bottom: 32px;
+            box-shadow: 0 4px 24px rgba(155,126,216,0.1);
+            border: 2px solid transparent;
+            transition: border-color 0.3s;
+        }
+        .font-demo:hover { border-color: var(--vivid-purple); }
+
+        .font-label {
+            background: var(--vivid-purple);
+            color: #fff;
+            padding: 10px 24px;
+            font-family: 'Outfit', sans-serif;
+            font-size: 16px; font-weight: 700;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .font-label span.tag {
+            font-size: 11px; font-weight: 600;
+            background: rgba(255,255,255,0.2);
+            padding: 3px 10px; border-radius: 8px;
+        }
+
+        .demo-inner {
+            display: flex; min-height: 320px;
+        }
+
+        /* Sidebar mini */
+        .demo-sidebar {
+            width: 200px;
+            background: linear-gradient(180deg, rgba(196,176,240,0.1) 0%, rgba(240,180,212,0.06) 40%, rgba(152,220,212,0.06) 100%);
+            border-right: 1px solid var(--color-border);
+            padding: 18px 10px;
+            display: flex; flex-direction: column; gap: 20px;
+        }
+        .demo-brand {
+            display: flex; align-items: center; gap: 8px;
+            padding-bottom: 14px; border-bottom: 1px solid var(--color-border);
+        }
+        .demo-brand-mark {
+            width: 30px; height: 30px; background: var(--vivid-purple);
+            border-radius: 8px; display: flex; align-items: center; justify-content: center;
+            color: #fff; font-size: 12px; font-weight: 800; font-family: 'Outfit', sans-serif;
+        }
+        .demo-brand-name { font-weight: 700; font-size: 14px; }
+        .demo-brand-sub {
+            font-size: 9px; color: var(--color-text-muted);
+            text-transform: uppercase; letter-spacing: 1.5px; font-weight: 700;
+        }
+
+        .demo-nav { display: flex; flex-direction: column; gap: 3px; }
+        .demo-nav-item {
+            padding: 9px 12px; border-radius: 8px;
+            font-size: 13px; font-weight: 600;
+            color: var(--color-text-secondary);
+            display: flex; align-items: center; gap: 8px;
+        }
+        .demo-nav-item.active {
+            background: rgba(160,206,240,0.12);
+            color: var(--vivid-lavender); font-weight: 700;
+        }
+        .demo-nav-item svg { width: 16px; height: 16px; }
+        .demo-nav-badge {
+            margin-left: auto; background: var(--vivid-rose);
+            color: #fff; font-size: 9px; font-weight: 700;
+            padding: 1px 6px; border-radius: 8px;
+        }
+
+        /* Main area */
+        .demo-main { flex: 1; display: flex; flex-direction: column; }
+
+        .demo-header {
+            padding: 14px 24px;
+            border-bottom: 1px solid rgba(196,176,240,0.15);
+            background: linear-gradient(135deg, rgba(196,176,240,0.1) 0%, rgba(240,180,212,0.07) 25%, rgba(152,220,212,0.06) 50%, rgba(160,206,240,0.08) 75%, rgba(196,176,240,0.06) 100%);
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        .demo-header-left { display: flex; align-items: center; gap: 14px; }
+        .demo-mascot { width: 56px; height: 56px; filter: drop-shadow(0 3px 8px rgba(212,169,106,0.25)); }
+        .demo-welcome { font-size: 20px; font-weight: 700; }
+        .demo-date { font-size: 12px; color: var(--color-text-secondary); font-weight: 500; }
+        .demo-time {
+            font-size: 11px; font-weight: 600; color: var(--color-text-secondary);
+            padding: 5px 12px; border: 1px solid var(--color-border);
+            border-radius: 16px; background: rgba(155,126,216,0.05);
+        }
+
+        .demo-content { flex: 1; padding: 18px 24px; }
+
+        /* Stats */
+        .demo-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 14px; }
+        .demo-stat {
+            display: flex; align-items: center; gap: 10px;
+            background: rgba(255,255,255,0.8);
+            border: 1px solid rgba(255,255,255,0.5);
+            border-radius: 12px; padding: 12px;
+        }
+        .demo-stat.mint { border-left: 3px solid var(--pastel-mint); }
+        .demo-stat.purple { border-left: 3px solid var(--pastel-purple); }
+        .demo-stat.pink { border-left: 3px solid var(--pastel-pink); }
+        .demo-stat.sky { border-left: 3px solid var(--pastel-sky); }
+        .demo-stat-icon {
+            width: 32px; height: 32px; border-radius: 8px;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .demo-stat-icon svg { width: 14px; height: 14px; }
+        .demo-stat-num { font-size: 22px; font-weight: 700; font-family: 'Outfit', sans-serif; line-height: 1; }
+        .demo-stat.mint .demo-stat-num { color: var(--vivid-mint); }
+        .demo-stat.purple .demo-stat-num { color: var(--vivid-purple); }
+        .demo-stat.pink .demo-stat-num { color: var(--vivid-pink); }
+        .demo-stat.sky .demo-stat-num { color: var(--vivid-sky); }
+        .demo-stat-label {
+            font-size: 10px; font-weight: 700; color: var(--color-text-secondary);
+            text-transform: uppercase; letter-spacing: 0.5px; margin-top: 1px;
+        }
+
+        /* Card */
+        .demo-card {
+            background: rgba(255,255,255,0.85);
+            border: 1px solid rgba(255,255,255,0.5);
+            border-radius: 14px; padding: 16px;
+        }
+        .demo-card-title {
+            font-weight: 700; font-size: 13px;
+            margin-bottom: 12px;
+            display: flex; align-items: center; gap: 7px;
+        }
+        .demo-card-title svg { width: 15px; height: 15px; color: var(--vivid-lavender); }
+
+        /* Quick actions inline */
+        .demo-qa { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+        .demo-qa-btn {
+            display: flex; align-items: center; gap: 8px;
+            padding: 10px 12px; border: 1px solid var(--color-border);
+            border-radius: 8px; font-size: 12px; font-weight: 600;
+            color: var(--color-text);
+        }
+        .demo-qa-icon {
+            width: 26px; height: 26px; border-radius: 7px;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .demo-qa-icon svg { width: 13px; height: 13px; }
+    </style>
+</head>
+<body>
+    <h1 class="page-title">Font Comparison — Pick Your Favorite</h1>
+    <p class="page-sub">Each block uses a different font. Same layout, same colors. Just scroll and see which one feels right.</p>
+
+    <script>
+        const fonts = [
+            { name: 'Quicksand', family: "'Quicksand', sans-serif", tag: 'Currently on portal' },
+            { name: 'Poppins', family: "'Poppins', sans-serif", tag: 'Geometric, modern' },
+            { name: 'Outfit', family: "'Outfit', sans-serif", tag: 'Clean, techy' },
+            { name: 'Comfortaa', family: "'Comfortaa', sans-serif", tag: 'Very rounded' },
+            { name: 'Fredoka', family: "'Fredoka', sans-serif", tag: 'Bubbly, playful' },
+            { name: 'Baloo 2', family: "'Baloo 2', sans-serif", tag: 'Cartoonish, fun' },
+            { name: 'Varela Round', family: "'Varela Round', sans-serif", tag: 'Soft geometric' },
+            { name: 'Nunito', family: "'Nunito', sans-serif", tag: 'Round, neutral' },
+        ];
+
+        const mascotSvg = `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <path d="M38 12Q36 2 32 5Q34 10 38 14Z" fill="#7a5c3a"/>
+            <path d="M50 8Q50-2 46 2Q48 7 50 12Z" fill="#7a5c3a"/>
+            <path d="M62 12Q64 2 68 5Q66 10 62 14Z" fill="#7a5c3a"/>
+            <ellipse cx="50" cy="52" rx="38" ry="40" fill="#d4a96a"/>
+            <ellipse cx="50" cy="58" rx="28" ry="28" fill="#e8c88a"/>
+            <ellipse cx="18" cy="38" rx="8" ry="10" fill="#d4a96a"/>
+            <ellipse cx="82" cy="38" rx="8" ry="10" fill="#d4a96a"/>
+            <g><ellipse cx="38" cy="46" rx="10" ry="11" fill="white"/><circle cx="39" cy="46" r="6" fill="#3b8ed0"/><circle cx="40" cy="45" r="3" fill="#1a1a2e"/><circle cx="41" cy="43" r="1.5" fill="white"/></g>
+            <g><ellipse cx="62" cy="46" rx="10" ry="11" fill="white"/><circle cx="63" cy="46" r="6" fill="#3b8ed0"/><circle cx="64" cy="45" r="3" fill="#1a1a2e"/><circle cx="65" cy="43" r="1.5" fill="white"/></g>
+            <ellipse cx="50" cy="60" rx="8" ry="6" fill="#8b6baa"/>
+            <path d="M43 68Q50 76 57 68" stroke="#7a5c3a" stroke-width="2" fill="none" stroke-linecap="round"/>
+        </svg>`;
+
+        fonts.forEach(f => {
+            const html = `
+            <div class="font-demo">
+                <div class="font-label">
+                    ${f.name}
+                    <span class="tag">${f.tag}</span>
+                </div>
+                <div class="demo-inner" style="font-family: ${f.family};">
+                    <div class="demo-sidebar">
+                        <div class="demo-brand">
+                            <div class="demo-brand-mark">SID</div>
+                            <div>
+                                <div class="demo-brand-name" style="font-family:${f.family}">Sid Portal</div>
+                                <div class="demo-brand-sub">Vendor Hub</div>
+                            </div>
+                        </div>
+                        <div class="demo-nav">
+                            <div class="demo-nav-item active"><i data-lucide="layout-dashboard"></i> Dashboard</div>
+                            <div class="demo-nav-item"><i data-lucide="briefcase"></i> Job Postings <span class="demo-nav-badge">7</span></div>
+                            <div class="demo-nav-item"><i data-lucide="upload"></i> Uploads</div>
+                        </div>
+                    </div>
+                    <div class="demo-main">
+                        <div class="demo-header">
+                            <div class="demo-header-left">
+                                <div class="demo-mascot">${mascotSvg}</div>
+                                <div>
+                                    <div class="demo-welcome" style="font-family:${f.family}">Welcome, Elevate Reach</div>
+                                    <div class="demo-date">Saturday, March 28, 2026</div>
+                                </div>
+                            </div>
+                            <div class="demo-time">6:52 PM</div>
+                        </div>
+                        <div class="demo-content">
+                            <div class="demo-stats">
+                                <div class="demo-stat mint">
+                                    <div class="demo-stat-icon" style="background:rgba(152,220,212,0.18);color:var(--vivid-mint);"><i data-lucide="send"></i></div>
+                                    <div><div class="demo-stat-num">0</div><div class="demo-stat-label">To Post</div></div>
+                                </div>
+                                <div class="demo-stat purple">
+                                    <div class="demo-stat-icon" style="background:rgba(196,176,240,0.18);color:var(--vivid-purple);"><i data-lucide="radio"></i></div>
+                                    <div><div class="demo-stat-num">8</div><div class="demo-stat-label">Active</div></div>
+                                </div>
+                                <div class="demo-stat pink">
+                                    <div class="demo-stat-icon" style="background:rgba(240,180,212,0.18);color:var(--vivid-pink);"><i data-lucide="clock"></i></div>
+                                    <div><div class="demo-stat-num">7</div><div class="demo-stat-label">Close Today</div></div>
+                                </div>
+                                <div class="demo-stat sky">
+                                    <div class="demo-stat-icon" style="background:rgba(160,206,240,0.18);color:var(--vivid-sky);"><i data-lucide="upload"></i></div>
+                                    <div><div class="demo-stat-num">0<span style="font-size:12px;color:var(--color-text-muted);">/3</span></div><div class="demo-stat-label">Uploaded</div></div>
+                                </div>
+                            </div>
+                            <div class="demo-card">
+                                <div class="demo-card-title"><i data-lucide="zap"></i> Quick Actions</div>
+                                <div class="demo-qa">
+                                    <div class="demo-qa-btn"><div class="demo-qa-icon" style="background:rgba(196,176,240,0.1);color:var(--vivid-purple);"><i data-lucide="briefcase"></i></div> Workstation</div>
+                                    <div class="demo-qa-btn"><div class="demo-qa-icon" style="background:rgba(160,206,240,0.1);color:var(--vivid-sky);"><i data-lucide="camera"></i></div> Screenshots</div>
+                                    <div class="demo-qa-btn"><div class="demo-qa-icon" style="background:rgba(152,220,212,0.1);color:var(--vivid-mint);"><i data-lucide="package"></i></div> Resume Zip</div>
+                                    <div class="demo-qa-btn"><div class="demo-qa-icon" style="background:rgba(240,180,212,0.1);color:var(--vivid-pink);"><i data-lucide="folder-open"></i></div> All Uploads</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>`;
+            document.body.insertAdjacentHTML('beforeend', html);
+        });
+    </script>
+    <script>lucide.createIcons();</script>
+</body>
+</html>

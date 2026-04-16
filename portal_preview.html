@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FBSPL - SID Vendor Portal (Theme Preview)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{--bg1:#faf8fd;--bg2:#f0ecf6;--bg3:#e8f0fa;--bg4:#f8fafc;--cbg:#fff;--cbr:#ece8f4;--cs1:rgba(120,96,168,.10);--cs2:rgba(0,0,0,.04);--tp:#1a1a2e;--ts:#64748b;--tm:#94a3b8;--ac:#9b7ed8;--dv:#ece8f4;--ft:#b0a8c0;--hl:#7860a8;--clbg:#f8f6fc;--clbr:#ece8f4;--cd:#5cb88a;--cp:#d0d5dd;--uh:#f8f6fc}
+  html.dark{--bg1:#1a1a2e;--bg2:#1e1e35;--bg3:#1a2235;--bg4:#1a1a2e;--cbg:#252540;--cbr:#3a3a5c;--cs1:rgba(0,0,0,.30);--cs2:rgba(0,0,0,.15);--tp:#e8e6f0;--ts:#a0a8bc;--tm:#7a8296;--ac:#b89ae8;--dv:#3a3a5c;--ft:#6a6a8c;--hl:#b89ae8;--clbg:#2a2a48;--clbr:#3a3a5c;--cd:#5cb88a;--cp:#4a4a6c;--uh:#2e2e4c}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'DM Sans','Segoe UI',system-ui,sans-serif;color:var(--tp);line-height:1.6;-webkit-font-smoothing:antialiased;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;background:linear-gradient(160deg,var(--bg1) 0%,var(--bg2) 30%,var(--bg3) 70%,var(--bg4) 100%);padding:40px 20px;transition:background .5s,color .3s;overflow-x:hidden}
+  a{text-decoration:none;color:inherit}
+  #particleCanvas{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0}
+  .side-deco{position:fixed;z-index:1;pointer-events:none;transition:opacity .6s,transform .6s}
+  .side-deco.hidden{opacity:0;transform:scale(.8)}
+  .deco-left-side{left:40px;bottom:80px}.deco-right-side{right:40px;bottom:80px}
+  @media(max-width:900px){.side-deco{display:none}}
+  .dark-toggle{position:fixed;top:14px;right:14px;z-index:101;background:var(--cbg);border:1px solid var(--cbr);border-radius:50%;width:38px;height:38px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:18px;box-shadow:0 2px 8px rgba(0,0,0,.08);transition:all .3s}
+  .dark-toggle:hover{transform:scale(1.1)}
+  .card{background:var(--cbg);border-radius:24px;padding:48px 40px;max-width:480px;width:100%;text-align:center;box-shadow:0 8px 40px var(--cs1),0 2px 12px var(--cs2);border:1px solid var(--cbr);transition:background .3s,border-color .3s,box-shadow .3s;position:relative;z-index:10}
+  .sid-face{margin-bottom:20px;display:inline-block}
+  .welcome{font-size:13px;color:var(--ac);font-weight:600;letter-spacing:2px;text-transform:uppercase;margin-bottom:8px}
+  h1{font-family:'Outfit',sans-serif;font-size:28px;font-weight:700;color:var(--tp);margin-bottom:8px;letter-spacing:.04em}
+  .subtitle{font-size:15px;color:var(--ts);margin-bottom:28px;line-height:1.7}
+  .checklist{background:var(--clbg);border:1px solid var(--clbr);border-radius:14px;padding:18px 20px;margin-bottom:24px;text-align:left}
+  .checklist-title{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--ac);margin-bottom:12px}
+  .cl-item{display:flex;align-items:center;gap:10px;padding:6px 0;font-size:13px;color:var(--ts)}
+  .cl-item.done{color:var(--cd)}
+  .cl-item .chk{width:20px;height:20px;border-radius:50%;border:2px solid var(--cp);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .3s}
+  .cl-item.done .chk{background:var(--cd);border-color:var(--cd)}
+  .cl-item.done .chk::after{content:'\2713';color:#fff;font-size:12px;font-weight:700}
+  .cl-item.done .lb{text-decoration:line-through;opacity:.7}
+  .pbar{height:4px;background:var(--cp);border-radius:2px;margin-top:12px;overflow:hidden}
+  .pfill{height:100%;background:linear-gradient(90deg,var(--ac),var(--cd));border-radius:2px}
+  .action{display:block;width:100%;padding:16px 24px;border-radius:14px;font-size:14px;font-weight:700;font-family:'DM Sans',sans-serif;letter-spacing:.5px;transition:all .2s;cursor:pointer;border:none;margin-bottom:14px}
+  .action.upload{background:linear-gradient(135deg,#78cca0,#64bc90);color:#fff}
+  .action.upload:hover{box-shadow:0 6px 24px rgba(120,204,160,.35);transform:translateY(-2px)}
+  .action.guide{background:linear-gradient(135deg,#9b7ed8,#b89ae8);color:#fff}
+  .action.guide:hover{box-shadow:0 6px 24px rgba(155,126,216,.35);transform:translateY(-2px)}
+  .action.install{background:linear-gradient(135deg,#6a9cd8,#5b8dcf);color:#fff}
+  .action.install:hover{box-shadow:0 6px 24px rgba(106,156,216,.35);transform:translateY(-2px)}
+  .divider{height:1px;background:var(--dv);margin:24px 0}
+  .uh{text-align:left;margin-top:4px}
+  .uh-hdr{display:flex;align-items:center;justify-content:space-between;cursor:pointer;padding:4px 0;user-select:none}
+  .uh-left{display:flex;align-items:center;gap:8px}
+  .uh-title{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--ac)}
+  .uh-count{font-size:10px;font-weight:600;color:var(--tm);background:var(--clbg);border:1px solid var(--clbr);padding:2px 8px;border-radius:20px}
+  .uh-chev{font-size:14px;color:var(--tm);transition:transform .3s}
+  .uh-chev.collapsed{transform:rotate(-90deg)}
+  .uh-body{overflow:hidden;transition:max-height .4s cubic-bezier(.16,1,.3,1),opacity .3s;max-height:500px;opacity:1}
+  .uh-body.collapsed{max-height:0;opacity:0}
+  .ul{list-style:none;margin-top:12px}
+  .ui{display:flex;align-items:center;gap:14px;padding:10px 12px;border-radius:12px;transition:background .2s;border-bottom:1px solid var(--dv);cursor:pointer}
+  .ui:last-child{border-bottom:none}
+  .ui:hover{background:var(--uh)}
+  .uic{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+  .uic.z{background:rgba(106,156,216,.12)}.uic.p{background:rgba(220,72,72,.12)}.uic.x{background:rgba(76,175,80,.12)}
+  .uin{flex:1;min-width:0}
+  .uin-name{font-size:13px;font-weight:600;color:var(--tp);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .ui:hover .uin-name{color:var(--ac)}
+  .uin-meta{font-size:11px;color:var(--tm);margin-top:1px;display:flex;gap:8px}
+  .uin-meta .dot{color:var(--cp)}
+  .ui-time{font-size:11px;color:var(--tm);white-space:nowrap;flex-shrink:0}
+  .help-text{font-size:13px;color:var(--tm);line-height:1.7}
+  .help-text a{color:var(--hl);font-weight:600}
+  .footer{margin-top:32px;font-size:12px;color:var(--ft);position:relative;z-index:10}
+  .footer a{color:var(--ac);font-weight:600}
+  @keyframes blink{0%,90%,100%{transform:scaleY(1)}95%{transform:scaleY(.05)}}
+  .sid-svg .blink-group{animation:blink 4s ease-in-out infinite}
+  .sid-svg .blink-group:nth-child(2){animation-delay:.05s}
+  .sid-hat{display:none}.sid-hat.active{display:block}
+  .demo-bar{position:fixed;bottom:0;left:0;right:0;background:#1a1a2e;color:#e0e0e0;padding:10px 16px;z-index:200;font-family:'DM Sans',sans-serif}
+  .demo-row{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:5px}
+  .demo-row:last-child{margin-bottom:0}
+  .demo-label{font-size:10px;font-weight:700;color:#b89ae8;text-transform:uppercase;letter-spacing:1px;margin-right:4px;width:55px;flex-shrink:0}
+  .demo-btn{background:#3a3a5c;border:1px solid #4a4a6c;color:#e0e0e0;padding:4px 10px;border-radius:6px;font-size:10px;font-weight:600;cursor:pointer;transition:all .2s;font-family:inherit}
+  .demo-btn:hover{background:#4a4a6c}
+  .demo-btn.active{background:#7860a8;border-color:#9b7ed8;color:#fff}
+</style>
+</head>
+<body>
+<canvas id="particleCanvas"></canvas>
+<div class="side-deco deco-left-side hidden" id="decoLeft"></div>
+<div class="side-deco deco-right-side hidden" id="decoRight"></div>
+<div class="dark-toggle" id="darkToggle" title="Toggle dark mode">&#x1F319;</div>
+<div class="card">
+  <div class="sid-face">
+    <svg class="sid-svg" width="80" height="80" viewBox="-10 -30 120 130" xmlns="http://www.w3.org/2000/svg">
+      <!-- HATS -->
+      <!-- Santa hat -->
+      <g class="sid-hat" id="hatSanta"><path d="M22 18 Q50-28 78 18" fill="#cc2233"/><ellipse cx="54" cy="-10" rx="9" ry="9" fill="#cc2233"/><circle cx="54" cy="-14" r="6" fill="white"/><rect x="18" y="14" width="64" height="8" rx="4" fill="white"/></g>
+      <!-- Party hat -->
+      <g class="sid-hat" id="hatParty"><polygon points="50,-20 28,18 72,18" fill="#ffd700" stroke="#ff6b35" stroke-width="1.5"/><circle cx="50" cy="-20" r="5" fill="#ff6b35"/><circle cx="40" cy="4" r="2.5" fill="#9b7ed8"/><circle cx="55" cy="0" r="2.5" fill="#5cb88a"/><circle cx="48" cy="10" r="2.5" fill="#6a9cd8"/><rect x="26" y="15" width="48" height="6" rx="3" fill="#ff6b35"/></g>
+      <!-- Sunglasses - drawn OVER the eyes so viewBox doesn't matter -->
+      <g class="sid-hat" id="hatSunglasses">
+        <rect x="26" y="39" width="20" height="15" rx="4" fill="#1a1a2e" opacity=".88"/>
+        <rect x="54" y="39" width="20" height="15" rx="4" fill="#1a1a2e" opacity=".88"/>
+        <rect x="46" y="44" width="8" height="3" rx="1.5" fill="#1a1a2e" opacity=".88"/>
+        <line x1="26" y1="45" x2="18" y2="41" stroke="#1a1a2e" stroke-width="2.5" stroke-linecap="round" opacity=".88"/>
+        <line x1="74" y1="45" x2="82" y2="41" stroke="#1a1a2e" stroke-width="2.5" stroke-linecap="round" opacity=".88"/>
+        <!-- lens glare -->
+        <rect x="28" y="41" width="7" height="4" rx="1.5" fill="#4488ff" opacity=".2"/>
+        <rect x="56" y="41" width="7" height="4" rx="1.5" fill="#4488ff" opacity=".2"/>
+      </g>
+      <!-- Crown -->
+      <g class="sid-hat" id="hatCrown"><polygon points="24,20 28,2 36,14 44,-2 50,14 56,-2 64,14 72,2 76,20" fill="#ffd700" stroke="#daa520" stroke-width="1"/><circle cx="28" cy="4" r="2.5" fill="#ff4444"/><circle cx="50" cy="-1" r="2.5" fill="#4488ff"/><circle cx="72" cy="4" r="2.5" fill="#44bb44"/></g>
+      <!-- Umbrella (rain) -->
+      <g class="sid-hat" id="hatUmbrella">
+        <line x1="72" y1="-22" x2="72" y2="50" stroke="#6b4423" stroke-width="2.5" stroke-linecap="round"/>
+        <path d="M40,-22 Q42,-46 72,-46 Q102,-46 104,-22Z" fill="#5b8dcf"/>
+        <path d="M56,-22 Q58,-38 72,-38 Q86,-38 88,-22" fill="#4a7abf"/>
+        <path d="M48,-22 Q50,-32 58,-32" fill="none" stroke="rgba(255,255,255,.2)" stroke-width="1.5"/>
+        <path d="M72,48 Q72,55 66,55" fill="none" stroke="#6b4423" stroke-width="2.5" stroke-linecap="round"/>
+      </g>
+      <!-- Headphones (music) -->
+      <g class="sid-hat" id="hatHeadphones">
+        <path d="M20 42 Q20 10 50 10 Q80 10 80 42" fill="none" stroke="#2a2a2a" stroke-width="5" stroke-linecap="round"/>
+        <rect x="13" y="36" width="12" height="18" rx="5" fill="#2a2a2a"/>
+        <rect x="75" y="36" width="12" height="18" rx="5" fill="#2a2a2a"/>
+        <rect x="15" y="38" width="8" height="14" rx="4" fill="#444"/>
+        <rect x="77" y="38" width="8" height="14" rx="4" fill="#444"/>
+      </g>
+      <!-- Astronaut helmet (space) -->
+      <g class="sid-hat" id="hatAstronaut">
+        <ellipse cx="50" cy="45" rx="40" ry="42" fill="none" stroke="#ccc" stroke-width="3"/>
+        <ellipse cx="50" cy="45" rx="38" ry="40" fill="rgba(200,220,255,.15)" stroke="rgba(255,255,255,.3)" stroke-width="1"/>
+        <path d="M14 35 Q8 35 8 45 Q8 55 14 55" fill="#888" stroke="#aaa" stroke-width="1"/>
+        <path d="M86 35 Q92 35 92 45 Q92 55 86 55" fill="#888" stroke="#aaa" stroke-width="1"/>
+        <ellipse cx="30" cy="32" rx="8" ry="5" fill="rgba(255,255,255,.12)" transform="rotate(-20 30 32)"/>
+      </g>
+      <!-- Snorkel (ocean) -->
+      <g class="sid-hat" id="hatSnorkel">
+        <ellipse cx="38" cy="46" rx="14" ry="13" fill="none" stroke="#22ccaa" stroke-width="3"/>
+        <ellipse cx="62" cy="46" rx="14" ry="13" fill="none" stroke="#22ccaa" stroke-width="3"/>
+        <rect x="46" y="43" width="8" height="6" rx="2" fill="#22ccaa"/>
+        <rect x="38" y="42" width="24" height="2" rx="1" fill="#22ccaa" opacity=".5"/>
+        <line x1="26" y1="45" x2="16" y2="40" stroke="#22ccaa" stroke-width="2.5" stroke-linecap="round"/>
+        <!-- snorkel tube -->
+        <path d="M82 42 Q88 42 88 30 Q88 10 82 4" fill="none" stroke="#22ccaa" stroke-width="3" stroke-linecap="round"/>
+        <ellipse cx="82" cy="2" rx="4" ry="3" fill="#ff6b35"/>
+      </g>
+      <!-- Diwali light crown -->
+      <g class="sid-hat" id="hatDiwali">
+        <circle cx="50" cy="6" r="14" fill="none" stroke="#ffd700" stroke-width="2"/>
+        <circle cx="50" cy="6" r="10" fill="none" stroke="#ff8c00" stroke-width="1.5"/>
+        <circle cx="50" cy="-8" r="3" fill="#ffd700"><animate attributeName="opacity" values="1;.5;1" dur=".8s" repeatCount="indefinite"/></circle>
+        <circle cx="38" cy="0" r="2.5" fill="#ff6b35"><animate attributeName="opacity" values=".5;1;.5" dur=".7s" repeatCount="indefinite"/></circle>
+        <circle cx="62" cy="0" r="2.5" fill="#ff6b35"><animate attributeName="opacity" values=".7;1;.7" dur=".9s" repeatCount="indefinite"/></circle>
+        <circle cx="36" cy="12" r="2" fill="#ffd700"><animate attributeName="opacity" values="1;.4;1" dur="1s" repeatCount="indefinite"/></circle>
+        <circle cx="64" cy="12" r="2" fill="#ffd700"><animate attributeName="opacity" values=".4;1;.4" dur=".85s" repeatCount="indefinite"/></circle>
+      </g>
+      <!-- Holi color splashes on face -->
+      <g class="sid-hat" id="hatHoli">
+        <circle cx="30" cy="30" r="8" fill="#ff3366" opacity=".45"/>
+        <circle cx="70" cy="28" r="7" fill="#22ccff" opacity=".45"/>
+        <circle cx="50" cy="15" r="9" fill="#ffcc00" opacity=".4"/>
+        <circle cx="40" cy="22" r="6" fill="#44dd44" opacity=".35"/>
+        <circle cx="62" cy="18" r="5" fill="#ff6633" opacity=".4"/>
+        <circle cx="35" cy="10" r="4" fill="#cc44ff" opacity=".35"/>
+      </g>
+      <!-- Flower crown -->
+      <g class="sid-hat" id="hatFlowers">
+        <circle cx="30" cy="18" r="5" fill="#ff9ecd"/><circle cx="30" cy="18" r="2" fill="#ffd700"/>
+        <circle cx="42" cy="12" r="5" fill="#bde0fe"/><circle cx="42" cy="12" r="2" fill="#ffd700"/>
+        <circle cx="54" cy="10" r="5.5" fill="#ff9ecd"/><circle cx="54" cy="10" r="2" fill="#ffd700"/>
+        <circle cx="66" cy="14" r="5" fill="#cdb4db"/><circle cx="66" cy="14" r="2" fill="#ffd700"/>
+        <circle cx="36" cy="14" r="3" fill="#98d8c8"/>
+        <circle cx="48" cy="10" r="2.5" fill="#98d8c8"/>
+        <circle cx="60" cy="11" r="3" fill="#98d8c8"/>
+      </g>
+      <!-- Scarf (cozy) -->
+      <g class="sid-hat" id="hatScarf">
+        <path d="M15 70 Q20 65 30 68 Q40 72 50 70 Q60 68 70 72 Q80 65 85 70 Q85 80 80 82 Q70 78 60 80 Q50 82 40 80 Q30 78 20 82 Q15 80 15 70Z" fill="#cc2233"/>
+        <path d="M75 75 Q78 85 76 100 Q74 108 70 110" fill="#cc2233" stroke="#aa1a2a" stroke-width="1"/>
+        <line x1="70" y1="108" x2="72" y2="112" stroke="#aa1a2a" stroke-width="2"/>
+        <line x1="73" y1="107" x2="75" y2="111" stroke="#aa1a2a" stroke-width="2"/>
+        <line x1="76" y1="105" x2="78" y2="109" stroke="#aa1a2a" stroke-width="2"/>
+        <path d="M25 72 Q28 70 35 72" fill="none" stroke="#aa1a2a" stroke-width="1"/>
+        <path d="M45 70 Q52 68 60 71" fill="none" stroke="#aa1a2a" stroke-width="1"/>
+      </g>
+      <!-- SID BODY -->
+      <path d="M38 12Q36 2 32 5Q34 10 38 14Z" fill="#7a5c3a"/>
+      <path d="M50 8Q50-2 46 2Q48 7 50 12Z" fill="#7a5c3a"/>
+      <path d="M62 12Q64 2 68 5Q66 10 62 14Z" fill="#7a5c3a"/>
+      <ellipse cx="50" cy="52" rx="38" ry="40" fill="#d4a96a"/>
+      <ellipse cx="50" cy="58" rx="28" ry="28" fill="#e8c88a"/>
+      <ellipse cx="18" cy="38" rx="8" ry="10" fill="#d4a96a"/>
+      <ellipse cx="82" cy="38" rx="8" ry="10" fill="#d4a96a"/>
+      <g class="blink-group" style="transform-origin:38px 46px">
+        <ellipse cx="38" cy="46" rx="10" ry="11" fill="white"/>
+        <circle class="pupil-l" cx="39" cy="46" r="6" fill="#3b8ed0"/>
+        <circle class="iris-l" cx="40" cy="45" r="3" fill="#1a1a2e"/>
+        <circle cx="41" cy="43" r="1.5" fill="white"/>
+      </g>
+      <g class="blink-group" style="transform-origin:62px 46px">
+        <ellipse cx="62" cy="46" rx="10" ry="11" fill="white"/>
+        <circle class="pupil-r" cx="63" cy="46" r="6" fill="#3b8ed0"/>
+        <circle class="iris-r" cx="64" cy="45" r="3" fill="#1a1a2e"/>
+        <circle cx="65" cy="43" r="1.5" fill="white"/>
+      </g>
+      <ellipse cx="50" cy="60" rx="8" ry="6" fill="#8b6baa"/>
+      <path d="M43 68Q50 76 57 68" stroke="#7a5c3a" stroke-width="2" fill="none" stroke-linecap="round"/>
+    </svg>
+  </div>
+  <div class="welcome">Welcome</div>
+  <h1>FBSPL</h1>
+  <p class="subtitle">Your SID vendor portal. Install the extension, read the guide, and upload your files.</p>
+  <div class="checklist">
+    <div class="checklist-title">Getting Started</div>
+    <div class="cl-item done"><div class="chk"></div><span class="lb">Install the SID extension</span></div>
+    <div class="cl-item done"><div class="chk"></div><span class="lb">Read the vendor guide</span></div>
+    <div class="cl-item"><div class="chk"></div><span class="lb">Upload your first ZIP file</span></div>
+    <div class="pbar"><div class="pfill" style="width:66%"></div></div>
+  </div>
+  <a href="#" class="action install">Install SID Extension</a>
+  <a href="#" class="action guide">Open SID Guide</a>
+  <a href="#" class="action upload">Upload ZIP Files</a>
+  <div class="divider"></div>
+  <div class="uh">
+    <div class="uh-hdr" id="uhHdr">
+      <div class="uh-left"><div class="uh-title">Recent Uploads</div><div class="uh-count">5 files</div></div>
+      <div class="uh-chev collapsed" id="uhChev">&#9660;</div>
+    </div>
+    <div class="uh-body collapsed" id="uhBody">
+      <ul class="ul">
+        <li class="ui"><div class="uic z">&#128230;</div><div class="uin"><div class="uin-name">FBSPL_Resumes_Batch12.zip</div><div class="uin-meta"><span>2.4 MB</span><span class="dot">&middot;</span><span>ZIP</span></div></div><div class="ui-time">2 hrs ago</div></li>
+        <li class="ui"><div class="uic p">&#128196;</div><div class="uin"><div class="uin-name">Invoice_March_2026.pdf</div><div class="uin-meta"><span>340 KB</span><span class="dot">&middot;</span><span>PDF</span></div></div><div class="ui-time">1 day ago</div></li>
+        <li class="ui"><div class="uic z">&#128230;</div><div class="uin"><div class="uin-name">FBSPL_Resumes_Batch11.zip</div><div class="uin-meta"><span>3.1 MB</span><span class="dot">&middot;</span><span>ZIP</span></div></div><div class="ui-time">3 days ago</div></li>
+        <li class="ui"><div class="uic x">&#128202;</div><div class="uin"><div class="uin-name">Candidate_Tracking_Q1.xlsx</div><div class="uin-meta"><span>156 KB</span><span class="dot">&middot;</span><span>XLSX</span></div></div><div class="ui-time">5 days ago</div></li>
+        <li class="ui"><div class="uic z">&#128230;</div><div class="uin"><div class="uin-name">FBSPL_Resumes_Batch10.zip</div><div class="uin-meta"><span>2.8 MB</span><span class="dot">&middot;</span><span>ZIP</span></div></div><div class="ui-time">1 week ago</div></li>
+      </ul>
+    </div>
+  </div>
+  <div class="divider"></div>
+  <p class="help-text">No sign-in needed to upload. Just click, select your ZIP file, and you're done.<br>Questions? Email <a href="mailto:mallen@wallstjobs.com?subject=SID%20Portal%20-%20Question">Melissa</a>.</p>
+</div>
+<div class="footer">Powered by <a href="https://sid.rocks">sid.rocks</a></div>
+
+<div class="demo-bar">
+  <div class="demo-row">
+    <span class="demo-label">Season</span>
+    <button class="demo-btn active" data-theme="none">None</button>
+    <button class="demo-btn" data-theme="snow">Snow</button>
+    <button class="demo-btn" data-theme="rain">Rain</button>
+    <button class="demo-btn" data-theme="summer">Summer</button>
+  </div>
+  <div class="demo-row">
+    <span class="demo-label">Vibes</span>
+    <button class="demo-btn" data-theme="fireflies">Fireflies</button>
+    <button class="demo-btn" data-theme="aurora">Aurora</button>
+    <button class="demo-btn" data-theme="starry">Starry Night</button>
+    <button class="demo-btn" data-theme="sparkle">Sparkle</button>
+    <button class="demo-btn" data-theme="confetti">Confetti</button>
+    <button class="demo-btn" data-theme="music">Music</button>
+    <button class="demo-btn" data-theme="cozy">Cozy</button>
+    <button class="demo-btn" data-theme="ocean">Ocean</button>
+    <button class="demo-btn" data-theme="space">Space</button>
+    <button class="demo-btn" data-theme="garden">Garden</button>
+  </div>
+  <div class="demo-row">
+    <span class="demo-label">Holiday</span>
+    <button class="demo-btn" data-theme="diwali">Diwali</button>
+    <button class="demo-btn" data-theme="holi">Holi</button>
+    <button class="demo-btn" data-theme="christmas">Christmas</button>
+    <button class="demo-btn" data-theme="newyear">New Year</button>
+    <button class="demo-btn" id="demoToggleDark" style="margin-left:auto">Toggle Dark</button>
+  </div>
+</div>
+
+<script>
+const dtoggle=document.getElementById('darkToggle');
+let dm=false,userDark=false;
+function setDark(on){dm=on;document.documentElement.classList.toggle('dark',dm);dtoggle.textContent=dm?'\u2600\uFE0F':'\uD83C\uDF19';}
+dtoggle.addEventListener('click',()=>{userDark=!dm;setDark(!dm);});
+document.getElementById('demoToggleDark').addEventListener('click',()=>{userDark=!dm;setDark(!dm);});
+
+// Eye tracking
+const svg=document.querySelector('.sid-svg'),
+  pL=svg.querySelector('.pupil-l'),iL=svg.querySelector('.iris-l'),
+  pR=svg.querySelector('.pupil-r'),iR=svg.querySelector('.iris-r');
+document.addEventListener('mousemove',e=>{
+  const r=svg.getBoundingClientRect(),dx=e.clientX-(r.left+r.width/2),dy=e.clientY-(r.top+r.height/2),
+    d=Math.sqrt(dx*dx+dy*dy),f=Math.min(d/200,1)*2.5,a=Math.atan2(dy,dx),mx=Math.cos(a)*f,my=Math.sin(a)*f;
+  pL.setAttribute('cx',39+mx);pL.setAttribute('cy',46+my);iL.setAttribute('cx',40+mx);iL.setAttribute('cy',45+my);
+  pR.setAttribute('cx',63+mx);pR.setAttribute('cy',46+my);iR.setAttribute('cx',64+mx);iR.setAttribute('cy',45+my);
+});
+
+// Upload toggle
+let uExp=false;
+document.getElementById('uhHdr').addEventListener('click',()=>{
+  uExp=!uExp;document.getElementById('uhBody').classList.toggle('collapsed',!uExp);
+  document.getElementById('uhChev').classList.toggle('collapsed',!uExp);
+});
+
+// ═══════ PARTICLE ENGINE ═══════
+const C=document.getElementById('particleCanvas'),X=C.getContext('2d');
+let pts=[],curTheme='none';
+function rsz(){C.width=innerWidth;C.height=innerHeight;}addEventListener('resize',rsz);rsz();
+
+class P{
+  constructor(o){Object.assign(this,{x:0,y:0,vx:0,vy:0,sz:4,col:'#fff',op:1,rot:0,rs:0,wb:0,ws:0,wp:Math.random()*6.28,gv:0,dr:1,life:1/0,ml:1/0,fo:false,sh:'circle'},o);this.ml=this.life;}
+  upd(){this.vy+=this.gv;this.vx*=this.dr;this.vy*=this.dr;this.x+=this.vx+Math.sin(this.wp)*this.wb;this.y+=this.vy;this.rot+=this.rs;this.wp+=this.ws;
+    if(this.life!==1/0){this.life--;if(this.fo)this.op=Math.max(0,this.life/this.ml);}
+    return this.y<C.height+50&&this.y>-50&&this.x>-50&&this.x<C.width+50&&this.life>0;}
+  drw(){
+    X.save();X.translate(this.x,this.y);X.rotate(this.rot);X.globalAlpha=this.op;X.fillStyle=this.col;
+    const s=this.sz;
+    switch(this.sh){
+      case'circle':X.beginPath();X.arc(0,0,s,0,6.28);X.fill();break;
+      case'rect':X.fillRect(-s/2,-s/3,s,s*.6);break;
+      case'snowflake':X.strokeStyle=this.col;X.lineWidth=1;for(let i=0;i<6;i++){const a=i*Math.PI/3;X.beginPath();X.moveTo(0,0);X.lineTo(Math.cos(a)*s,Math.sin(a)*s);X.moveTo(Math.cos(a)*s*.5,Math.sin(a)*s*.5);X.lineTo(Math.cos(a+.4)*s*.65,Math.sin(a+.4)*s*.65);X.moveTo(Math.cos(a)*s*.5,Math.sin(a)*s*.5);X.lineTo(Math.cos(a-.4)*s*.65,Math.sin(a-.4)*s*.65);X.stroke();}break;
+      case'star':X.beginPath();for(let i=0;i<5;i++){const a1=(i*4*Math.PI/5)-Math.PI/2;X[i===0?'moveTo':'lineTo'](Math.cos(a1)*s,Math.sin(a1)*s);const a2=a1+2*Math.PI/5;X.lineTo(Math.cos(a2)*s*.4,Math.sin(a2)*s*.4);}X.closePath();X.fill();break;
+      case'glow':{const g=X.createRadialGradient(0,0,0,0,0,s);g.addColorStop(0,this.col);g.addColorStop(1,'rgba(0,0,0,0)');X.fillStyle=g;X.beginPath();X.arc(0,0,s,0,6.28);X.fill();}break;
+      case'raindrop':X.beginPath();X.moveTo(0,-s);X.bezierCurveTo(s*.6,0,s*.3,s,0,s);X.bezierCurveTo(-s*.3,s,-s*.6,0,0,-s);X.fill();break;
+      case'splash':X.globalAlpha=this.op*.4;X.beginPath();X.ellipse(0,0,s,s*.2,0,0,6.28);X.fill();break;
+      case'firework':X.beginPath();X.arc(0,0,s,0,6.28);X.fill();X.globalAlpha=this.op*.2;X.beginPath();X.arc(0,0,s*2.5,0,6.28);X.fill();break;
+      case'diya':X.fillStyle='#ff8c00';X.beginPath();X.ellipse(0,s*.3,s*.8,s*.3,0,0,Math.PI);X.fill();X.fillStyle=this.col;X.beginPath();X.moveTo(0,-s);X.bezierCurveTo(s*.5,-s*.2,s*.3,s*.2,0,s*.3);X.bezierCurveTo(-s*.3,s*.2,-s*.5,-s*.2,0,-s);X.fill();X.fillStyle='#fff';X.globalAlpha=this.op*.5;X.beginPath();X.ellipse(0,-s*.3,s*.15,s*.3,0,0,6.28);X.fill();break;
+      case'powder':X.globalAlpha=this.op*.5;X.beginPath();X.arc(0,0,s,0,6.28);X.fill();X.globalAlpha=this.op*.2;X.beginPath();X.arc(0,0,s*1.8,0,6.28);X.fill();break;
+      case'note':X.fillStyle=this.col;X.beginPath();X.ellipse(0,0,s*.7,s*.5,-.3,0,6.28);X.fill();X.fillRect(s*.5,-s*2,s*.2,s*2);if(Math.random()>.5){X.beginPath();X.moveTo(s*.7,-s*2);X.quadTo(s*1.5,-s*1.5,s*.7,-s*1);X.fill();}break;
+      case'fish':X.fillStyle=this.col;X.beginPath();X.ellipse(0,0,s,s*.5,0,0,6.28);X.fill();const tx=this.vx>0?s*.8:-s*.8;X.beginPath();X.moveTo(tx,0);X.lineTo(tx+s*.5,-s*.4);X.lineTo(tx+s*.5,s*.4);X.closePath();X.fill();X.fillStyle='#fff';X.beginPath();X.arc(this.vx>0?-s*.3:s*.3,-s*.1,s*.15,0,6.28);X.fill();X.fillStyle='#1a1a2e';X.beginPath();X.arc(this.vx>0?-s*.25:s*.25,-s*.1,s*.08,0,6.28);X.fill();break;
+      case'wave':X.strokeStyle=this.col;X.lineWidth=1.5;X.globalAlpha=this.op*.3;X.beginPath();for(let i=0;i<s*2;i++){X.lineTo(i-s,Math.sin(i*.15+this.wp)*4);}X.stroke();break;
+      case'planet':X.beginPath();X.arc(0,0,s,0,6.28);X.fill();if(this.ring){X.strokeStyle=this.col;X.lineWidth=1.5;X.globalAlpha=this.op*.4;X.beginPath();X.ellipse(0,0,s*1.8,s*.4,.3,0,6.28);X.stroke();}break;
+      case'butterfly':
+        X.fillStyle=this.col;
+        const flap=Math.sin(Date.now()*.008+this.wp)*0.4+0.6;
+        X.save();X.scale(flap,1);X.beginPath();X.ellipse(-s*.5,0,s*.8,s*.5,-.2,0,6.28);X.fill();X.restore();
+        X.save();X.scale(flap,1);X.beginPath();X.ellipse(s*.5,0,s*.8,s*.5,.2,0,6.28);X.fill();X.restore();
+        X.fillStyle='#2a2a2a';X.fillRect(-s*.05,-s*.3,s*.1,s*.6);break;
+      case'steam':
+        X.globalAlpha=this.op*.3;
+        const sg=X.createRadialGradient(0,0,0,0,0,s);
+        sg.addColorStop(0,'rgba(200,200,200,.3)');sg.addColorStop(1,'rgba(200,200,200,0)');
+        X.fillStyle=sg;X.beginPath();X.arc(0,0,s,0,6.28);X.fill();break;
+    }
+    X.restore();
+  }
+}
+
+// ─── Side deco builders ───
+function xmasTree(){return `<svg width="120" height="200" viewBox="0 0 120 200"><polygon points="60,10 30,70 90,70" fill="#2d7a3a"/><polygon points="60,35 22,100 98,100" fill="#257a32"/><polygon points="60,60 15,135 105,135" fill="#1e6b2a"/><rect x="48" y="135" width="24" height="25" rx="3" fill="#6b4423"/><polygon points="60,5 63,15 73,15 65,21 68,31 60,25 52,31 55,21 47,15 57,15" fill="#ffd700"><animate attributeName="opacity" values="1;.5;1" dur="2s" repeatCount="indefinite"/></polygon><circle cx="45" cy="55" r="4" fill="#ff4444"><animate attributeName="opacity" values="1;.4;1" dur="1.5s" repeatCount="indefinite"/></circle><circle cx="72" cy="50" r="4" fill="#4488ff"><animate attributeName="opacity" values=".4;1;.4" dur="1.8s" repeatCount="indefinite"/></circle><circle cx="38" cy="85" r="4" fill="#ffd700"><animate attributeName="opacity" values="1;.4;1" dur="2.1s" repeatCount="indefinite"/></circle><circle cx="78" cy="80" r="4" fill="#ff44ff"><animate attributeName="opacity" values=".4;1;.4" dur="1.3s" repeatCount="indefinite"/></circle><circle cx="55" cy="95" r="4" fill="#44ff44"><animate attributeName="opacity" values="1;.5;1" dur="1.7s" repeatCount="indefinite"/></circle><circle cx="30" cy="115" r="4" fill="#ff8844"><animate attributeName="opacity" values=".5;1;.5" dur="2s" repeatCount="indefinite"/></circle><circle cx="68" cy="118" r="4" fill="#ff4444"><animate attributeName="opacity" values="1;.4;1" dur="1.6s" repeatCount="indefinite"/></circle><circle cx="88" cy="110" r="4" fill="#44ddff"><animate attributeName="opacity" values=".4;1;.4" dur="1.9s" repeatCount="indefinite"/></circle><path d="M38 55Q52 48 70 55" stroke="rgba(255,215,0,.4)" stroke-width="1.5" fill="none"/><path d="M30 85Q55 75 80 85" stroke="rgba(255,215,0,.4)" stroke-width="1.5" fill="none"/><path d="M24 115Q55 102 92 115" stroke="rgba(255,215,0,.4)" stroke-width="1.5" fill="none"/><rect x="20" y="162" width="22" height="18" rx="2" fill="#ff4444"/><line x1="31" y1="162" x2="31" y2="180" stroke="#ffd700" stroke-width="2"/><rect x="50" y="166" width="18" height="14" rx="2" fill="#4488ff"/><rect x="76" y="164" width="20" height="16" rx="2" fill="#44bb44"/></svg>`;}
+function xmasSanta(){return `<svg width="100" height="165" viewBox="0 0 100 165"><ellipse cx="50" cy="112" rx="32" ry="35" fill="#cc2233"/><rect x="18" y="104" width="64" height="10" rx="2" fill="#2a2a2a"/><rect x="42" y="102" width="16" height="14" rx="2" fill="#ffd700"/><rect x="46" y="105" width="8" height="8" rx="1" fill="#2a2a2a"/><circle cx="50" cy="55" r="22" fill="#fdd8b0"/><circle cx="42" cy="52" r="2.5" fill="#2a2a2a"/><circle cx="58" cy="52" r="2.5" fill="#2a2a2a"/><circle cx="50" cy="58" r="3.5" fill="#e8a080"/><path d="M42 64Q50 72 58 64" stroke="#c4846a" stroke-width="2" fill="none" stroke-linecap="round"/><circle cx="36" cy="60" r="4" fill="rgba(255,120,120,.3)"/><circle cx="64" cy="60" r="4" fill="rgba(255,120,120,.3)"/><path d="M28 56Q30 90 50 92Q70 90 72 56" fill="white"/><circle cx="32" cy="65" r="6" fill="white"/><circle cx="68" cy="65" r="6" fill="white"/><circle cx="40" cy="82" r="5" fill="white"/><circle cx="60" cy="82" r="5" fill="white"/><circle cx="50" cy="88" r="5" fill="white"/><path d="M26 45Q50-5 74 45" fill="#cc2233"/><ellipse cx="68" cy="8" rx="10" ry="10" fill="#cc2233"/><circle cx="72" cy="2" r="7" fill="white"/><rect x="22" y="40" width="56" height="10" rx="5" fill="white"/><ellipse cx="18" cy="102" rx="10" ry="18" fill="#cc2233" transform="rotate(-15 18 102)"/><ellipse cx="82" cy="102" rx="10" ry="18" fill="#cc2233" transform="rotate(15 82 102)"/><circle cx="12" cy="116" r="7" fill="white"/><circle cx="88" cy="116" r="7" fill="white"><animateTransform attributeName="transform" type="rotate" values="0 88 100;-12 88 100;0 88 100;12 88 100;0 88 100" dur="2s" repeatCount="indefinite"/></circle><ellipse cx="38" cy="150" rx="12" ry="8" fill="#2a2a2a"/><ellipse cx="62" cy="150" rx="12" ry="8" fill="#2a2a2a"/></svg>`;}
+function diyaLamp(){return `<svg width="100" height="180" viewBox="0 0 100 180"><g transform="translate(50,30)"><ellipse cx="0" cy="12" rx="14" ry="5" fill="#c66a2a"/><path d="M-14,12Q-16,0-10,-5L10,-5Q16,0 14,12Z" fill="#d4822a"/><ellipse cx="0" cy="-5" rx="4" ry="10" fill="#ff8c00" opacity=".9"><animate attributeName="ry" values="10;12;10;9;10" dur=".8s" repeatCount="indefinite"/></ellipse><ellipse cx="0" cy="-8" rx="2" ry="6" fill="#ffd700" opacity=".8"/><circle cx="0" cy="-12" r="3" fill="#fff" opacity=".4"><animate attributeName="opacity" values=".4;.7;.4" dur=".7s" repeatCount="indefinite"/></circle></g><g transform="translate(25,80)"><ellipse cx="0" cy="12" rx="12" ry="4.5" fill="#c66a2a"/><path d="M-12,12Q-14,0-8,-5L8,-5Q14,0 12,12Z" fill="#d4822a"/><ellipse cx="0" cy="-5" rx="3.5" ry="9" fill="#ff8c00" opacity=".9"><animate attributeName="ry" values="9;11;9" dur=".9s" repeatCount="indefinite"/></ellipse><circle cx="0" cy="-11" r="2.5" fill="#fff" opacity=".4"><animate attributeName="opacity" values=".3;.6;.3" dur=".8s" repeatCount="indefinite"/></circle></g><g transform="translate(75,80)"><ellipse cx="0" cy="12" rx="12" ry="4.5" fill="#c66a2a"/><path d="M-12,12Q-14,0-8,-5L8,-5Q14,0 12,12Z" fill="#d4822a"/><ellipse cx="0" cy="-5" rx="3.5" ry="9" fill="#ff8c00" opacity=".9"><animate attributeName="ry" values="9;10;8;9" dur=".75s" repeatCount="indefinite"/></ellipse><circle cx="0" cy="-11" r="2.5" fill="#fff" opacity=".4"><animate attributeName="opacity" values=".5;.8;.5" dur=".65s" repeatCount="indefinite"/></circle></g><g transform="translate(50,140)"><circle cx="0" cy="0" r="25" fill="none" stroke="#ff6b35" stroke-width="2" opacity=".6"/><circle cx="0" cy="0" r="18" fill="none" stroke="#ffd700" stroke-width="1.5" opacity=".5"/><circle cx="0" cy="0" r="8" fill="#ff3366" opacity=".4"/>${[0,1,2,3,4,5,6,7].map(i=>{const a=i*Math.PI/4,x=Math.cos(a)*22,y=Math.sin(a)*22,c=['#ff3366','#ffd700','#22ccff','#44dd44','#ff6b35','#cc44ff','#ff3366','#ffd700'][i];return`<circle cx="${x}" cy="${y}" r="3.5" fill="${c}" opacity=".6"><animate attributeName="opacity" values=".4;.8;.4" dur="${1+i*.2}s" repeatCount="indefinite"/></circle>`;}).join('')}</g></svg>`;}
+
+// ─── THEMES ───
+const T={
+  none:{spawn:null,hat:null,dk:null,deco:false},
+
+  snow:{hat:null,dk:null,deco:false,spawn(){if(Math.random()<.2){const f=Math.random()>.75;pts.push(new P({x:Math.random()*C.width,y:-10,vx:(Math.random()-.5)*.4,vy:Math.random()*1+.4,sz:f?Math.random()*5+4:Math.random()*3+1.5,col:dm?'rgba(200,220,255,.7)':'rgba(160,180,220,.5)',sh:f?'snowflake':'circle',rot:Math.random()*6.28,rs:(Math.random()-.5)*.015,wb:Math.random()*1.2,ws:.02+Math.random()*.02}));}}},
+
+  rain:{hat:'hatUmbrella',dk:true,deco:false,spawn(){for(let i=0;i<3;i++){if(Math.random()<.4){pts.push(new P({x:Math.random()*C.width,y:-20,vx:1.5,vy:8+Math.random()*4,sz:Math.random()*3+2,col:'rgba(150,180,220,.35)',sh:'raindrop'}));}}if(Math.random()<.1){pts.push(new P({x:Math.random()*C.width,y:C.height-20+Math.random()*15,sz:Math.random()*8+4,col:'rgba(150,180,220,.3)',sh:'splash',life:15,fo:true,vx:0,vy:0}));}}},
+
+  summer:{hat:'hatSunglasses',dk:false,deco:false,spawn(){
+    // Heat shimmer
+    if(Math.random()<.04){pts.push(new P({x:Math.random()*C.width,y:C.height+10,vx:(Math.random()-.5)*.3,vy:-(Math.random()*.4+.15),sz:Math.random()*4+2,col:'rgba(255,200,50,.2)',sh:'glow',life:150,fo:true,wb:.8,ws:.03}));}
+    // Sparkle sun glints
+    if(Math.random()<.03){pts.push(new P({x:Math.random()*C.width,y:Math.random()*C.height,sz:Math.random()*2+1,col:'#ffd700',sh:'star',life:30,fo:true,rs:.1,vx:0,vy:0}));}
+    // Floating beach elements (subtle)
+    if(Math.random()<.005){const shapes=['circle'];const colors=['#ff6b6b','#ffa94d','#ffd93d','#87ceeb'];pts.push(new P({x:Math.random()*C.width,y:C.height+5,vx:(Math.random()-.5)*.2,vy:-(Math.random()*.15+.05),sz:Math.random()*2+1,col:colors[Math.floor(Math.random()*colors.length)],sh:'circle',life:200,fo:true}));}
+  }},
+
+  fireflies:{hat:null,dk:true,deco:false,spawn(){if(Math.random()<.04){const c=['#ffd700','#ffe44d','#ffcc00','#aae050'];pts.push(new P({x:Math.random()*C.width,y:Math.random()*C.height,vx:(Math.random()-.5)*.8,vy:(Math.random()-.5)*.8,sz:Math.random()*5+3,col:c[Math.floor(Math.random()*c.length)],sh:'glow',life:100+Math.random()*100,fo:true,wb:1.5,ws:.04}));}}},
+
+  aurora:{hat:null,dk:true,deco:false,spawn(){if(Math.random()<.12){const c=['rgba(0,255,128,.06)','rgba(0,200,255,.06)','rgba(128,0,255,.05)','rgba(0,255,200,.05)'];pts.push(new P({x:Math.random()*C.width,y:Math.random()*C.height*.4,vx:(Math.random()-.5)*.3,vy:(Math.random()-.5)*.1,sz:Math.random()*60+30,col:c[Math.floor(Math.random()*c.length)],sh:'glow',life:200+Math.random()*100,fo:true,wb:2,ws:.01}));}if(Math.random()<.04){pts.push(new P({x:Math.random()*C.width,y:Math.random()*C.height*.5,sz:Math.random()*2+.5,col:'#fff',sh:'circle',life:30+Math.random()*30,fo:true,vx:0,vy:0}));}}},
+
+  starry:{hat:null,dk:true,deco:false,spawn(){if(Math.random()<.06){pts.push(new P({x:Math.random()*C.width,y:Math.random()*C.height,sz:Math.random()*2+.8,col:'#fff',sh:'circle',life:50+Math.random()*50,fo:true,op:.3+Math.random()*.7,vx:0,vy:0}));}if(Math.random()<.003){const x=Math.random()*C.width*.8,y=Math.random()*C.height*.3;for(let i=0;i<10;i++){pts.push(new P({x:x-i*6,y:y-i*3,vx:5+Math.random()*3,vy:2.5+Math.random()*1.5,sz:2-i*.15,col:i===0?'#fff':'rgba(255,255,255,.4)',sh:'circle',life:25-i*2,fo:true}));}}}},
+
+  sparkle:{hat:'hatCrown',dk:null,deco:false,spawn(){if(Math.random()<.1){const c=dm?['#ffd700','#b89ae8','#5cb88a','#6a9cd8']:['#9b7ed8','#ffd700','#ff8fa3','#78cca0'];pts.push(new P({x:Math.random()*C.width,y:Math.random()*C.height,sz:Math.random()*3+1.5,col:c[Math.floor(Math.random()*c.length)],sh:'star',rs:.08,life:40+Math.random()*30,fo:true,vx:0,vy:0}));}}},
+
+  confetti:{hat:'hatParty',dk:null,deco:false,spawn(){if(Math.random()<.25){const c=['#ff6b6b','#ffd93d','#6bcb77','#4d96ff','#9b7ed8','#ff8fa3','#ffa94d'];pts.push(new P({x:Math.random()*C.width,y:-10,vx:(Math.random()-.5)*2,vy:Math.random()*2+1,sz:Math.random()*6+3,col:c[Math.floor(Math.random()*c.length)],sh:Math.random()>.5?'rect':'circle',rot:Math.random()*6.28,rs:(Math.random()-.5)*.12,wb:Math.random()*1.5,ws:.05+Math.random()*.05}));}}},
+
+  music:{hat:'hatHeadphones',dk:null,deco:false,spawn(){if(Math.random()<.06){const c=['#9b7ed8','#6a9cd8','#ff8fa3','#ffd700','#78cca0'];pts.push(new P({x:Math.random()*C.width,y:C.height+10,vx:(Math.random()-.5)*1,vy:-(Math.random()*1+.5),sz:Math.random()*5+4,col:c[Math.floor(Math.random()*c.length)],sh:'note',rot:(Math.random()-.5)*.5,rs:(Math.random()-.5)*.02,wb:1.2,ws:.03,life:150,fo:true}));}}},
+
+  cozy:{hat:'hatScarf',dk:true,deco:false,spawn(){
+    // Steam/warmth rising
+    if(Math.random()<.04){pts.push(new P({x:C.width*.3+Math.random()*C.width*.4,y:C.height+5,vx:(Math.random()-.5)*.3,vy:-(Math.random()*.3+.15),sz:Math.random()*12+8,col:'rgba(180,160,140,.15)',sh:'steam',life:180,fo:true,wb:1,ws:.02}));}
+    // Warm sparkles
+    if(Math.random()<.03){pts.push(new P({x:Math.random()*C.width,y:Math.random()*C.height,sz:Math.random()*2+1,col:Math.random()>.5?'#ffa94d':'#ffd700',sh:'star',life:35,fo:true,rs:.05,vx:0,vy:0}));}
+  }},
+
+  ocean:{hat:'hatSnorkel',dk:null,deco:false,spawn(){
+    // Fish
+    if(Math.random()<.008){const c=['#ff6b6b','#ffd93d','#6bcb77','#4d96ff','#ff8fa3','#ffa94d'];const side=Math.random()>.5;pts.push(new P({x:side?-20:C.width+20,y:Math.random()*C.height*.6+C.height*.2,vx:side?(Math.random()*1.5+.5):-(Math.random()*1.5+.5),vy:(Math.random()-.5)*.3,sz:Math.random()*6+5,col:c[Math.floor(Math.random()*c.length)],sh:'fish',wb:.8,ws:.04}));}
+    // Bubbles rising
+    if(Math.random()<.04){pts.push(new P({x:Math.random()*C.width,y:C.height+5,vx:(Math.random()-.5)*.3,vy:-(Math.random()*.8+.3),sz:Math.random()*5+2,col:dm?'rgba(150,200,255,.3)':'rgba(80,160,220,.25)',sh:'circle',wb:.5,ws:.04}));}
+    // Waves at bottom
+    if(Math.random()<.02){pts.push(new P({x:-30,y:C.height-30-Math.random()*20,vx:.8+Math.random()*.5,vy:0,sz:40+Math.random()*30,col:dm?'rgba(60,120,180,.15)':'rgba(80,160,220,.1)',sh:'wave',life:120,fo:true}));}
+  }},
+
+  space:{hat:'hatAstronaut',dk:true,deco:false,spawn(){
+    // Stars
+    if(Math.random()<.06){pts.push(new P({x:Math.random()*C.width,y:Math.random()*C.height,sz:Math.random()*1.5+.5,col:'#fff',sh:'circle',life:60+Math.random()*60,fo:true,op:.3+Math.random()*.7,vx:0,vy:0}));}
+    // Drifting planets
+    if(Math.random()<.003){const c=['#ff6b6b','#4d96ff','#ffd93d','#78cca0','#ffa94d','#9b7ed8'];const p=new P({x:Math.random()>.5?-30:C.width+30,y:Math.random()*C.height*.6+C.height*.1,vx:(Math.random()-.5)*.4,vy:(Math.random()-.5)*.15,sz:Math.random()*8+5,col:c[Math.floor(Math.random()*c.length)],sh:'planet'});p.ring=Math.random()>.5;pts.push(p);}
+    // Shooting star
+    if(Math.random()<.004){const x=Math.random()*C.width*.7;for(let i=0;i<8;i++){pts.push(new P({x:x-i*5,y:Math.random()*C.height*.2-i*2,vx:4+Math.random()*2,vy:1.5+Math.random(),sz:1.8-i*.15,col:i===0?'#fff':'rgba(180,200,255,.4)',sh:'circle',life:22-i*2,fo:true}));}}
+  }},
+
+  garden:{hat:'hatFlowers',dk:false,deco:false,spawn(){
+    // Butterflies
+    if(Math.random()<.008){const c=['#ff9ecd','#bde0fe','#cdb4db','#ffd93d','#ff8fa3','#a2d2ff'];pts.push(new P({x:Math.random()>.5?-20:C.width+20,y:Math.random()*C.height*.6+C.height*.1,vx:(Math.random()-.5)*1.5,vy:(Math.random()-.5)*.5,sz:Math.random()*5+5,col:c[Math.floor(Math.random()*c.length)],sh:'butterfly',wb:2,ws:.04}));}
+    // Floating sparkles / pollen
+    if(Math.random()<.05){pts.push(new P({x:Math.random()*C.width,y:Math.random()*C.height,vx:(Math.random()-.5)*.3,vy:-(Math.random()*.2+.05),sz:Math.random()*2+1,col:Math.random()>.5?'#ffd700':'#98d8c8',sh:'circle',life:80+Math.random()*60,fo:true,wb:.5,ws:.03}));}
+  }},
+
+  // ── HOLIDAYS ──
+  diwali:{hat:'hatDiwali',dk:true,deco:true,decoLeft:diyaLamp,decoRight:diyaLamp,spawn(){if(Math.random()<.04){pts.push(new P({x:Math.random()*C.width,y:C.height+10,vx:(Math.random()-.5)*.5,vy:-(Math.random()*.6+.3),sz:Math.random()*5+4,col:Math.random()>.5?'#ffd700':'#ff8c00',sh:'diya',life:180+Math.random()*80,fo:true,wb:.8,ws:.03}));}if(Math.random()<.06){const c=['#ff3366','#ffd700','#22ccff','#44dd44','#ff6b35','#cc44ff'];pts.push(new P({x:Math.random()*C.width,y:Math.random()*C.height,sz:Math.random()*2.5+1,col:c[Math.floor(Math.random()*c.length)],sh:'star',life:35+Math.random()*25,fo:true,rs:.06,vx:0,vy:0}));}if(Math.random()<.008){const cx=Math.random()*C.width,cy=Math.random()*C.height*.4;const c=['#ffd700','#ff6b35','#ff3366','#44dd44','#22ccff'][Math.floor(Math.random()*5)];for(let i=0;i<20;i++){const a=Math.random()*6.28,sp=Math.random()*2.5+.5;pts.push(new P({x:cx,y:cy,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp,sz:Math.random()*2+1,col:c,sh:'firework',gv:.02,dr:.98,life:45+Math.random()*20,fo:true}));}}}},
+
+  holi:{hat:'hatHoli',dk:false,deco:false,spawn(){if(Math.random()<.03){const cx=Math.random()*C.width,cy=Math.random()*C.height*.7+C.height*.1;const c=['#ff3366','#22ccff','#ffcc00','#44dd44','#ff6633','#cc44ff','#ff8fa3','#00ccaa'][Math.floor(Math.random()*8)];for(let i=0;i<12;i++){const a=Math.random()*6.28,sp=Math.random()*2+.5;pts.push(new P({x:cx,y:cy,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp-.5,sz:Math.random()*10+6,col:c,sh:'powder',gv:.01,dr:.98,life:60+Math.random()*40,fo:true}));}}if(Math.random()<.15){const c=['#ff3366','#22ccff','#ffcc00','#44dd44','#ff6633','#cc44ff'];pts.push(new P({x:Math.random()*C.width,y:-10,vx:(Math.random()-.5)*1.5,vy:Math.random()*1.5+.5,sz:Math.random()*4+2,col:c[Math.floor(Math.random()*c.length)],sh:'circle',op:.5+Math.random()*.3,wb:1,ws:.04}));}}},
+
+  christmas:{hat:'hatSanta',dk:true,deco:true,decoLeft:xmasTree,decoRight:xmasSanta,spawn(){if(Math.random()<.12){pts.push(new P({x:Math.random()*C.width,y:-10,vx:(Math.random()-.5)*.3,vy:Math.random()*.7+.3,sz:Math.random()*3+1,col:'rgba(255,255,255,.6)',sh:'circle',wb:.6,ws:.025}));}if(Math.random()<.03){const c=['#ffd700','#ff4444','#44ff44','#4488ff'];pts.push(new P({x:Math.random()*C.width,y:Math.random()*C.height,sz:Math.random()*2.5+1,col:c[Math.floor(Math.random()*c.length)],sh:'star',life:35,fo:true,rs:.06,vx:0,vy:0}));}}},
+
+  newyear:{hat:'hatParty',dk:true,deco:false,spawn(){if(Math.random()<.012){const cx=Math.random()*C.width,cy=Math.random()*C.height*.4+C.height*.05;const c=['#ffd700','#ff6b6b','#6bcb77','#4d96ff','#ff8fa3','#9b7ed8','#fff','#ffa94d'][Math.floor(Math.random()*8)];for(let i=0;i<35;i++){const a=Math.random()*6.28,sp=Math.random()*3.5+.8;pts.push(new P({x:cx,y:cy,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp,sz:Math.random()*2.5+1,col:c,sh:'firework',gv:.025,dr:.98,life:55+Math.random()*25,fo:true}));}}if(Math.random()<.1){pts.push(new P({x:Math.random()*C.width,y:-5,vx:(Math.random()-.5)*.3,vy:Math.random()*1.5+.8,sz:Math.random()*2+1,col:'#ffd700',sh:'star',rs:.08,life:120,fo:true}));}}}
+};
+
+function applyTheme(n){
+  curTheme=n;const t=T[n]||T.none;pts=[];
+  document.querySelectorAll('.sid-hat').forEach(h=>h.classList.remove('active'));
+  if(t.hat){const el=document.getElementById(t.hat);if(el)el.classList.add('active');}
+  if(t.dk===true&&!dm)setDark(true);
+  else if(t.dk===false&&dm&&!userDark)setDark(false);
+  else if(t.dk===null&&n==='none')setDark(userDark);
+  const dL=document.getElementById('decoLeft'),dR=document.getElementById('decoRight');
+  if(t.deco){if(t.decoLeft)dL.innerHTML=t.decoLeft();if(t.decoRight)dR.innerHTML=t.decoRight();dL.classList.remove('hidden');dR.classList.remove('hidden');}
+  else{dL.classList.add('hidden');dR.classList.add('hidden');setTimeout(()=>{dL.innerHTML='';dR.innerHTML='';},600);}
+  document.querySelectorAll('[data-theme]').forEach(b=>b.classList.toggle('active',b.dataset.theme===n));
+}
+
+function anim(){X.clearRect(0,0,C.width,C.height);const t=T[curTheme];if(t&&t.spawn)t.spawn();pts=pts.filter(p=>{p.drw();return p.upd();});requestAnimationFrame(anim);}
+anim();
+document.querySelectorAll('[data-theme]').forEach(b=>{b.addEventListener('click',()=>applyTheme(b.dataset.theme));});
+</script>
+</body>
+</html>

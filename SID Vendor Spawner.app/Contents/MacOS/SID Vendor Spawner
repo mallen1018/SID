@@ -1,0 +1,37 @@
+#!/bin/bash
+# Launcher for SID Vendor Spawner.app
+# Finds a usable Python 3 with Tkinter and runs app.py
+
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+RESOURCES="$SCRIPT_DIR/../Resources"
+APP_PY="$RESOURCES/app.py"
+
+# Candidates in order of preference. System Python 3 is last-resort (may lack tkinter fonts).
+CANDIDATES=(
+    "/opt/homebrew/bin/python3.11"
+    "/opt/homebrew/bin/python3.12"
+    "/opt/homebrew/bin/python3.13"
+    "/opt/homebrew/bin/python3"
+    "/usr/local/bin/python3.11"
+    "/usr/local/bin/python3.12"
+    "/usr/local/bin/python3"
+    "/usr/bin/python3"
+)
+
+PYTHON=""
+for p in "${CANDIDATES[@]}"; do
+    if [ -x "$p" ]; then
+        # Verify tkinter is importable
+        if "$p" -c "import tkinter" >/dev/null 2>&1; then
+            PYTHON="$p"
+            break
+        fi
+    fi
+done
+
+if [ -z "$PYTHON" ]; then
+    osascript -e 'display dialog "SID Vendor Spawner could not find a Python 3 install with Tkinter. Install Python 3 from python.org (that build includes Tkinter) and try again." buttons {"OK"} with icon caution with title "SID Vendor Spawner"'
+    exit 1
+fi
+
+exec "$PYTHON" "$APP_PY"

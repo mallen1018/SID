@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SID — Team Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Outfit:wght@500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@0.344.0/dist/umd/lucide.min.js"></script>
+    <script>if(typeof lucide==='undefined'){window.lucide={createIcons:function(){}};console.warn('Lucide CDN unavailable — icons disabled');}</script>
+    <style>
+        :root {
+            --font-body: 'DM Sans', sans-serif;
+            --font-heading: 'Outfit', sans-serif;
+            --color-bg: #fafafa;
+            --color-surface: #ffffff;
+            --color-border: #e8e8ec;
+            --color-text: #1a1a2e;
+            --color-text-secondary: #64648c;
+            --color-text-muted: #9e9eb8;
+            --pastel-purple: #8b5cf6;
+            --pastel-blue: #60a5fa;
+            --pastel-green: #34d399;
+            --pastel-orange: #fb923c;
+            --pastel-pink: #f472b6;
+            --pastel-red: #f87171;
+            --vivid-purple: #7c3aed;
+            --vivid-blue: #3b82f6;
+            --vivid-green: #10b981;
+            --vivid-orange: #f59e0b;
+            --indeed-usd: #2164f3;
+            --indeed-inr: #ff6b2b;
+            --linkedin-color: #0a66c2;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: var(--font-body); background: var(--color-bg); color: var(--color-text); min-height: 100vh; }
+
+        /* ── Header ─────────────────────────────── */
+        .header {
+            background: var(--color-surface);
+            border-bottom: 1px solid var(--color-border);
+            padding: 14px 32px;
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        .header-left { display: flex; align-items: center; gap: 12px; }
+        .header-logo {
+            width: 32px; height: 32px;
+            background: linear-gradient(135deg, var(--pastel-purple), var(--pastel-blue));
+            border-radius: 8px; display: flex; align-items: center; justify-content: center;
+            color: white; font-family: var(--font-heading); font-weight: 700; font-size: 14px;
+        }
+        .header-title { font-family: var(--font-heading); font-size: 18px; font-weight: 600; }
+        .header-subtitle { font-size: 12px; color: var(--color-text-muted); margin-left: 8px; }
+        .header-right { display: flex; align-items: center; gap: 12px; }
+        .date-nav { display: flex; align-items: center; gap: 8px; }
+        .date-nav button {
+            background: none; border: 1px solid var(--color-border); border-radius: 6px;
+            padding: 6px 8px; cursor: pointer; color: var(--color-text-secondary); display: flex; align-items: center;
+        }
+        .date-nav button:hover { background: rgba(139,92,246,0.06); border-color: var(--pastel-purple); color: var(--vivid-purple); }
+        .date-display { font-weight: 600; font-size: 14px; min-width: 160px; text-align: center; }
+        .btn-refresh {
+            background: none; border: 1px solid var(--color-border); border-radius: 8px;
+            padding: 8px 14px; cursor: pointer; color: var(--color-text-secondary);
+            display: flex; align-items: center; gap: 6px; font-size: 12px; font-family: var(--font-body); transition: all 0.2s;
+        }
+        .btn-refresh:hover { background: rgba(139,92,246,0.06); color: var(--vivid-purple); border-color: var(--pastel-purple); }
+        .auto-refresh-label { font-size: 11px; color: var(--color-text-muted); }
+
+        /* ── Main ───────────────────────────────── */
+        .main { max-width: 1200px; margin: 0 auto; padding: 24px 32px; }
+
+        /* ── Summary row ────────────────────────── */
+        .summary-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
+        .summary-card {
+            background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px 20px;
+        }
+        .summary-card-label { font-size: 11px; color: var(--color-text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
+        .summary-card-value { font-family: var(--font-heading); font-size: 28px; font-weight: 700; }
+        .summary-card-sub { font-size: 12px; color: var(--color-text-secondary); margin-top: 4px; }
+        .summary-card-breakdown { margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--color-border); }
+        .summary-card-breakdown .breakdown-row {
+            display: flex; justify-content: space-between; align-items: center;
+            font-size: 12px; color: var(--color-text-secondary); padding: 3px 0;
+        }
+        .breakdown-row .breakdown-val { font-weight: 600; color: var(--color-text); }
+        .breakdown-dot {
+            width: 8px; height: 8px; border-radius: 50%; display: inline-block; margin-right: 6px; vertical-align: middle;
+        }
+
+        /* ── Vendor sections ────────────────────── */
+        .vendor-section {
+            background: var(--color-surface); border: 1px solid var(--color-border);
+            border-radius: 12px; margin-bottom: 20px; overflow: hidden;
+        }
+        .vendor-header {
+            padding: 16px 20px; display: flex; align-items: center; justify-content: space-between;
+            border-bottom: 1px solid var(--color-border); cursor: pointer;
+        }
+        .vendor-header:hover { background: rgba(139,92,246,0.02); }
+        .vendor-name { font-family: var(--font-heading); font-size: 16px; font-weight: 600; display: flex; align-items: center; gap: 8px; }
+        .vendor-header-chevron { transition: transform 0.2s; }
+        .vendor-header-chevron.collapsed { transform: rotate(-90deg); }
+        .vendor-quick-stats { display: flex; gap: 16px; }
+        .vendor-qs { font-size: 12px; color: var(--color-text-secondary); display: flex; align-items: center; gap: 4px; }
+        .vendor-qs strong { color: var(--color-text); }
+        .vendor-body { padding: 0; }
+        .vendor-body.collapsed { display: none; }
+
+        /* ── Subsections inside vendor ──────────── */
+        .vendor-subsection { padding: 16px 20px; border-bottom: 1px solid var(--color-border); }
+        .vendor-subsection:last-child { border-bottom: none; }
+        .subsection-title {
+            font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;
+            color: var(--color-text-muted); margin-bottom: 12px; display: flex; align-items: center; gap: 8px;
+        }
+        .subsection-count {
+            background: rgba(139,92,246,0.08); color: var(--vivid-purple);
+            font-size: 11px; padding: 1px 7px; border-radius: 10px; font-weight: 600;
+        }
+
+        /* ── Account group ──────────────────────── */
+        .account-group { margin-bottom: 14px; }
+        .account-group:last-child { margin-bottom: 0; }
+        .account-label {
+            font-size: 11px; font-weight: 600; color: var(--color-text-secondary);
+            padding: 4px 10px; border-radius: 4px; margin-bottom: 6px; display: inline-flex; align-items: center; gap: 6px;
+        }
+        .account-label .acct-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+
+        /* ── Data table ─────────────────────────── */
+        .data-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+        .data-table th {
+            text-align: left; font-size: 10px; font-weight: 600; text-transform: uppercase;
+            letter-spacing: 0.4px; color: var(--color-text-muted); padding: 6px 10px;
+            border-bottom: 1px solid var(--color-border); background: rgba(0,0,0,0.015);
+        }
+        .data-table td { padding: 8px 10px; border-bottom: 1px solid rgba(0,0,0,0.04); vertical-align: middle; }
+        .data-table tr:last-child td { border-bottom: none; }
+        .data-table tr:hover td { background: rgba(139,92,246,0.02); }
+
+        /* ── Category badge ─────────────────────── */
+        .cat-badge {
+            padding: 2px 8px; border-radius: 4px; font-size: 10px; font-weight: 600;
+            text-transform: uppercase; letter-spacing: 0.3px; display: inline-block;
+        }
+        .cat-badge.SFG { background: rgba(96,165,250,0.12); color: var(--vivid-blue); }
+        .cat-badge.MS { background: rgba(139,92,246,0.12); color: var(--vivid-purple); }
+        .cat-badge.HC { background: rgba(52,211,153,0.12); color: var(--vivid-green); }
+        .cat-badge.IT { background: rgba(251,146,60,0.12); color: var(--vivid-orange); }
+        .cat-badge.FIN { background: rgba(244,114,182,0.12); color: #db2777; }
+        .cat-badge.ADM { background: rgba(148,163,184,0.15); color: #475569; }
+
+        /* ── Platform pill ──────────────────────── */
+        .platform-pill {
+            font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 10px; display: inline-flex; align-items: center; gap: 4px;
+        }
+        .platform-pill.indeed-usd { background: rgba(33,100,243,0.1); color: var(--indeed-usd); }
+        .platform-pill.indeed-inr { background: rgba(255,107,43,0.1); color: var(--indeed-inr); }
+        .platform-pill.linkedin { background: rgba(10,102,194,0.1); color: var(--linkedin-color); }
+
+        /* ── Link button ────────────────────────── */
+        .link-btn {
+            color: var(--vivid-blue); text-decoration: none; font-size: 12px;
+            display: inline-flex; align-items: center; gap: 3px;
+        }
+        .link-btn:hover { text-decoration: underline; }
+
+        /* ── Category summary mini table ────────── */
+        .cat-summary { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+        .cat-chip {
+            display: flex; align-items: center; gap: 6px;
+            padding: 4px 10px; border-radius: 6px; font-size: 12px;
+            border: 1px solid var(--color-border); background: var(--color-surface);
+        }
+        .cat-chip-count { font-weight: 700; font-family: var(--font-heading); }
+
+        /* ── Screenshot grid ────────────────────── */
+        .screenshot-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; }
+        .screenshot-card {
+            border: 1px solid var(--color-border); border-radius: 8px; overflow: hidden; cursor: pointer; transition: all 0.2s;
+        }
+        .screenshot-card:hover { border-color: var(--pastel-purple); box-shadow: 0 2px 8px rgba(139,92,246,0.1); }
+        .screenshot-card img { width: 100%; height: 140px; object-fit: cover; display: block; }
+        .screenshot-card-info { padding: 8px 10px; font-size: 11px; color: var(--color-text-secondary); }
+
+        /* ── Screenshot checklist ───────────────── */
+        .checklist-vendor { margin-bottom: 8px; }
+        .checklist-vendor:last-child { margin-bottom: 0; }
+        .checklist-vendor-name { font-size: 12px; font-weight: 600; margin-bottom: 4px; }
+        .checklist-items { display: flex; gap: 12px; }
+        .checklist-item {
+            font-size: 11px; display: flex; align-items: center; gap: 4px;
+        }
+        .checklist-icon-yes { color: var(--vivid-green); }
+        .checklist-icon-no { color: var(--color-text-muted); }
+
+        /* ── Screenshot comparison ──────────────── */
+        .screenshots-compare {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        .screenshot-column-label {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+            margin-bottom: 8px;
+        }
+
+        /* ── Empty state ────────────────────────── */
+        .empty-state { text-align: center; padding: 48px 20px; color: var(--color-text-muted); }
+        .empty-state-title { font-family: var(--font-heading); font-size: 16px; font-weight: 600; color: var(--color-text-secondary); margin-bottom: 4px; }
+        .empty-state-text { font-size: 13px; }
+
+        /* ── Lightbox ───────────────────────────── */
+        .lightbox {
+            display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.8); z-index: 1000; align-items: center; justify-content: center; cursor: pointer;
+        }
+        .lightbox.active { display: flex; }
+        .lightbox img { max-width: 90%; max-height: 90%; border-radius: 8px; box-shadow: 0 8px 32px rgba(0,0,0,0.3); }
+
+        /* ── Loading ────────────────────────────── */
+        .loading { text-align: center; padding: 40px; color: var(--color-text-muted); font-size: 14px; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .spinner {
+            display: inline-block; width: 20px; height: 20px;
+            border: 2px solid var(--color-border); border-top-color: var(--pastel-purple);
+            border-radius: 50%; animation: spin 0.8s linear infinite; margin-right: 8px; vertical-align: middle;
+        }
+
+        /* ── Totals row in table ────────────────── */
+        .data-table .totals-row td {
+            border-top: 2px solid var(--color-border); font-weight: 600; background: rgba(0,0,0,0.015);
+            padding-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <div class="header-left">
+        <div class="header-logo">S</div>
+        <span class="header-title">SID Team Dashboard</span>
+        <span class="header-subtitle">Daily Vendor Activity</span>
+    </div>
+    <div class="header-right">
+        <div class="date-nav">
+            <button id="prevDay" title="Previous day"><i data-lucide="chevron-left" style="width:16px; height:16px;"></i></button>
+            <span class="date-display" id="dateDisplay"></span>
+            <button id="nextDay" title="Next day"><i data-lucide="chevron-right" style="width:16px; height:16px;"></i></button>
+        </div>
+        <button class="btn-refresh" id="refreshBtn">
+            <i data-lucide="refresh-cw" style="width:14px; height:14px;"></i> Refresh
+        </button>
+        <span class="auto-refresh-label">Auto-refreshes every 60s</span>
+    </div>
+</div>
+
+<div class="main">
+    <!-- Summary cards -->
+    <div class="summary-row">
+        <div class="summary-card">
+            <div class="summary-card-label">Postings Closed</div>
+            <div class="summary-card-value" id="totalClosed">—</div>
+            <div class="summary-card-sub" id="closedSub"></div>
+            <div class="summary-card-breakdown" id="closedBreakdown"></div>
+        </div>
+        <div class="summary-card">
+            <div class="summary-card-label">Jobs Posted</div>
+            <div class="summary-card-value" id="totalPosted">—</div>
+            <div class="summary-card-sub" id="postedSub"></div>
+            <div class="summary-card-breakdown" id="postedBreakdown"></div>
+        </div>
+        <div class="summary-card">
+            <div class="summary-card-label">Total Applicants</div>
+            <div class="summary-card-value" id="totalApplicants">—</div>
+            <div class="summary-card-sub" id="applicantsSub"></div>
+            <div class="summary-card-breakdown" id="applicantsBreakdown"></div>
+        </div>
+        <div class="summary-card">
+            <div class="summary-card-label">Screenshot Checklist</div>
+            <div class="summary-card-breakdown" id="screenshotChecklist" style="margin-top:0; padding-top:0; border-top:none;"></div>
+        </div>
+    </div>
+
+    <!-- Vendor activity -->
+    <div id="vendorContent">
+        <div class="loading"><span class="spinner"></span> Loading activity data...</div>
+    </div>
+</div>
+
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox"><img id="lightboxImg" src="" alt="Screenshot"></div>
+
+<script>
+    const SERVER_URL = window.location.origin;
+    let currentDate = new Date();
+
+    // Account display config
+    const ACCOUNT_CONFIG = {
+        'indeed-usd': { label: 'Indeed (USD)', color: '#2164f3', cssClass: 'indeed-usd' },
+        'indeed-inr': { label: 'Indeed (INR)', color: '#ff6b2b', cssClass: 'indeed-inr' },
+        'linkedin':   { label: 'LinkedIn', color: '#0a66c2', cssClass: 'linkedin' }
+    };
+
+    function formatDate(d) { return d.toISOString().split('T')[0]; }
+
+    function formatDateDisplay(d) {
+        const today = new Date();
+        const ds = formatDate(d), ts = formatDate(today);
+        const y = new Date(today); y.setDate(y.getDate() - 1);
+        const opts = { weekday: 'short', month: 'short', day: 'numeric' };
+        const label = d.toLocaleDateString('en-US', opts);
+        if (ds === ts) return `Today — ${label}`;
+        if (ds === formatDate(y)) return `Yesterday — ${label}`;
+        return label;
+    }
+
+    function updateDateDisplay() {
+        document.getElementById('dateDisplay').textContent = formatDateDisplay(currentDate);
+        document.getElementById('nextDay').disabled = formatDate(currentDate) >= formatDate(new Date());
+    }
+
+    document.getElementById('prevDay').addEventListener('click', () => { currentDate.setDate(currentDate.getDate() - 1); updateDateDisplay(); loadDashboard(); });
+    document.getElementById('nextDay').addEventListener('click', () => { if (formatDate(currentDate) < formatDate(new Date())) { currentDate.setDate(currentDate.getDate() + 1); updateDateDisplay(); loadDashboard(); }});
+    document.getElementById('refreshBtn').addEventListener('click', loadDashboard);
+    document.getElementById('lightbox').addEventListener('click', () => { document.getElementById('lightbox').classList.remove('active'); });
+    function openLightbox(src) { document.getElementById('lightboxImg').src = src; document.getElementById('lightbox').classList.add('active'); }
+
+    // ── Helpers ──
+    function platformPill(account) {
+        const acct = ACCOUNT_CONFIG[account];
+        if (!acct) return `<span class="platform-pill" style="background: rgba(0,0,0,0.05); color: var(--color-text-muted);">${account || '—'}</span>`;
+        return `<span class="platform-pill ${acct.cssClass}"><span class="acct-dot" style="width:6px;height:6px;border-radius:50%;background:${acct.color};display:inline-block;"></span>${acct.label}</span>`;
+    }
+
+    function catBadge(cat) {
+        return `<span class="cat-badge ${cat || ''}">${cat || '—'}</span>`;
+    }
+
+    function groupBy(arr, key) {
+        return arr.reduce((acc, item) => { const k = item[key] || 'Other'; (acc[k] = acc[k] || []).push(item); return acc; }, {});
+    }
+
+    // ── Demo Data (used when server is unreachable) ──
+    const DEMO_ACTIVITY = {
+        fbspl: {
+            closed: [
+                { id: 1, title: 'Senior Financial Analyst', category: 'SFG', applicants: 34, budgetSpent: '$42.50', indeedLink: 'https://indeed.com/jobs/view/senior-financial-analyst', closedAt: '2026-03-27T14:30:00' },
+                { id: 2, title: 'Tax Analyst', category: 'SFG', applicants: 28, budgetSpent: '$35.00', indeedLink: 'https://indeed.com/jobs/view/tax-analyst', closedAt: '2026-03-27T14:45:00' },
+                { id: 3, title: 'Bookkeeper', category: 'SFG', applicants: 51, budgetSpent: '$50.00', indeedLink: 'https://indeed.com/jobs/view/bookkeeper', closedAt: '2026-03-27T15:10:00' },
+                { id: 4, title: 'Medical Coder', category: 'HC', applicants: 19, budgetSpent: '₹920', indeedLink: '', closedAt: '2026-03-27T15:30:00' },
+                { id: 5, title: 'Revenue Cycle Specialist', category: 'HC', applicants: 12, budgetSpent: '₹460', indeedLink: '', closedAt: '2026-03-27T16:00:00' },
+                { id: 6, title: 'Managed Services Coordinator', category: 'MS', applicants: 22, budgetSpent: '$25.00', indeedLink: 'https://indeed.com/jobs/view/ms-coordinator', closedAt: '2026-03-27T16:15:00' },
+            ],
+            posted: [
+                { id: 101, title: 'Tax Analyst', category: 'SFG', account: 'indeed-usd', indeedLink: 'https://indeed.com/jobs/view/tax-analyst-new' },
+                { id: 102, title: 'Senior Accountant', category: 'SFG', account: 'indeed-usd', indeedLink: 'https://indeed.com/jobs/view/senior-accountant' },
+                { id: 103, title: 'Payroll Specialist', category: 'SFG', account: 'indeed-usd', indeedLink: 'https://indeed.com/jobs/view/payroll-specialist' },
+                { id: 104, title: 'Bookkeeper', category: 'SFG', account: 'indeed-inr', indeedLink: 'https://indeed.com/jobs/view/bookkeeper-inr' },
+                { id: 105, title: 'AP/AR Clerk', category: 'SFG', account: 'indeed-inr', indeedLink: 'https://indeed.com/jobs/view/ap-ar-clerk' },
+                { id: 106, title: 'Medical Billing Specialist', category: 'HC', account: 'indeed-usd', indeedLink: 'https://indeed.com/jobs/view/medical-billing' },
+                { id: 107, title: 'RCM Analyst', category: 'HC', account: 'indeed-inr', indeedLink: 'https://indeed.com/jobs/view/rcm-analyst' },
+                { id: 108, title: 'Senior Financial Analyst', category: 'SFG', account: 'linkedin', linkedinLink: 'https://linkedin.com/jobs/view/123456789' },
+                { id: 109, title: 'IT Help Desk Technician', category: 'MS', account: 'linkedin', linkedinLink: 'https://linkedin.com/jobs/view/987654321' },
+                { id: 110, title: 'Network Administrator', category: 'MS', account: 'indeed-usd', indeedLink: 'https://indeed.com/jobs/view/network-admin' },
+            ]
+        },
+        techstaff: {
+            closed: [
+                { id: 201, title: 'Full Stack Developer', category: 'IT', applicants: 67, budgetSpent: '$55.00', indeedLink: 'https://indeed.com/jobs/view/full-stack-dev', closedAt: '2026-03-27T13:00:00' },
+                { id: 202, title: 'DevOps Engineer', category: 'IT', applicants: 41, budgetSpent: '$48.00', indeedLink: 'https://indeed.com/jobs/view/devops-engineer', closedAt: '2026-03-27T13:30:00' },
+                { id: 203, title: 'QA Tester', category: 'IT', applicants: 38, budgetSpent: '$30.00', indeedLink: '', closedAt: '2026-03-27T14:00:00' },
+            ],
+            posted: [
+                { id: 301, title: 'Senior React Developer', category: 'IT', account: 'indeed-usd', indeedLink: 'https://indeed.com/jobs/view/react-dev' },
+                { id: 302, title: 'Backend Python Developer', category: 'IT', account: 'indeed-usd', indeedLink: 'https://indeed.com/jobs/view/python-dev' },
+                { id: 303, title: 'Cloud Architect', category: 'IT', account: 'linkedin', linkedinLink: 'https://linkedin.com/jobs/view/cloud-architect' },
+                { id: 304, title: 'Project Manager', category: 'MS', account: 'indeed-usd', indeedLink: 'https://indeed.com/jobs/view/project-mgr' },
+            ]
+        }
+    };
+
+    const DEMO_UPLOADS = {
+        fbspl: [
+            { name: 'resumes_SID_Download_2026-03-27.zip', size: 2456000, path: '' },
+            { name: 'opening_indeed_dashboard_9am.png', size: 412000, path: '' },
+            { name: 'eod_indeed_dashboard_5pm.png', size: 384000, path: '' },
+        ],
+        techstaff: [
+            { name: 'resumes_daily_export.zip', size: 1890000, path: '' },
+            { name: 'opening_dashboard.png', size: 295000, path: '' },
+            { name: 'eod_dashboard_final.png', size: 318000, path: '' },
+        ]
+    };
+
+    let isDemoMode = false;
+
+    // ── Load ──
+    async function loadDashboard() {
+        const dateStr = formatDate(currentDate);
+        let activityData = {}, uploadsData = {};
+        isDemoMode = false;
+
+        try {
+            const res = await fetch(`${SERVER_URL}/api/activity?date=${dateStr}`);
+            activityData = await res.json();
+        } catch (err) {
+            console.warn('Server unreachable — loading demo data');
+            isDemoMode = true;
+        }
+
+        if (!isDemoMode) {
+            const vendors = Object.keys(activityData);
+            const knownVendors = [...new Set([...vendors, 'fbspl'])];
+
+            await Promise.all(knownVendors.map(async v => {
+                try {
+                    const res = await fetch(`${SERVER_URL}/api/uploads/${v}`);
+                    const data = await res.json();
+                    if (data[dateStr]) uploadsData[v] = data[dateStr];
+                } catch {}
+            }));
+
+            const allVendors = [...new Set([...vendors, ...Object.keys(uploadsData)])];
+
+            // If server returned nothing, fall back to demo
+            if (allVendors.length === 0 || Object.values(activityData).every(a => (!a.closed || a.closed.length === 0) && (!a.posted || a.posted.length === 0))) {
+                isDemoMode = true;
+            } else {
+                renderDashboard(allVendors, activityData, uploadsData, dateStr);
+                return;
+            }
+        }
+
+        // Demo mode
+        activityData = DEMO_ACTIVITY;
+        uploadsData = DEMO_UPLOADS;
+        const allVendors = Object.keys(activityData);
+        renderDashboard(allVendors, activityData, uploadsData, dateStr);
+    }
+
+    // ── Render ──
+    function renderDashboard(vendors, activityData, uploadsData, dateStr) {
+        let gClosed = 0, gPosted = 0, gApplicants = 0;
+        let gOpeningScreenshots = 0, gEodScreenshots = 0, gResumes = 0;
+        const gClosedByCat = {}, gApplicantsByCat = {};
+        const vendorSummaries = {};
+
+        vendors.forEach(v => {
+            const activity = activityData[v] || { closed: [], posted: [] };
+            const uploads = uploadsData[v] || [];
+            const closed = activity.closed || [];
+            const posted = activity.posted || [];
+            const openingFiles = uploads.filter(f => f.name.startsWith('opening_'));
+            const eodFiles = uploads.filter(f => f.name.startsWith('eod_'));
+            const resumeFiles = uploads.filter(f => f.name.startsWith('resumes_'));
+
+            const applicants = closed.reduce((s, c) => s + (parseInt(c.applicants) || 0), 0);
+            gClosed += closed.length;
+            gPosted += posted.length;
+            gApplicants += applicants;
+            gOpeningScreenshots += openingFiles.length;
+            gEodScreenshots += eodFiles.length;
+            gResumes += resumeFiles.length;
+
+            // Aggregate by category
+            closed.forEach(c => {
+                const cat = c.category || 'Other';
+                gClosedByCat[cat] = (gClosedByCat[cat] || 0) + 1;
+                gApplicantsByCat[cat] = (gApplicantsByCat[cat] || 0) + (parseInt(c.applicants) || 0);
+            });
+
+            // Per-vendor posted by account
+            const postedByAcct = {};
+            posted.forEach(p => {
+                const acct = p.account || 'other';
+                postedByAcct[acct] = (postedByAcct[acct] || 0) + 1;
+            });
+
+            vendorSummaries[v] = { closed, posted, openingFiles, eodFiles, resumeFiles, applicants, postedByAcct };
+        });
+
+        // ── Summary cards ──
+        document.getElementById('totalClosed').textContent = gClosed;
+        document.getElementById('closedSub').textContent = `Across ${vendors.length} vendor${vendors.length !== 1 ? 's' : ''}`;
+        const closedBD = document.getElementById('closedBreakdown');
+        closedBD.innerHTML = Object.entries(gClosedByCat).sort((a,b) => b[1]-a[1]).map(([cat, n]) =>
+            `<div class="breakdown-row">${catBadge(cat)} <span class="breakdown-val">${n}</span></div>`
+        ).join('');
+
+        // Posted: total per vendor (account breakdown in vendor detail section)
+        document.getElementById('totalPosted').textContent = gPosted;
+        document.getElementById('postedSub').textContent = gPosted > 0 ? 'Across all vendors' : 'No postings yet';
+        const postedBD = document.getElementById('postedBreakdown');
+        postedBD.innerHTML = vendors.filter(v => vendorSummaries[v].posted.length > 0).map(v => {
+            return `<div class="breakdown-row"><span style="font-weight:500;">${v.toUpperCase()}</span> <span class="breakdown-val">${vendorSummaries[v].posted.length}</span></div>`;
+        }).join('');
+
+        // Applicants: by category, no avg
+        document.getElementById('totalApplicants').textContent = gApplicants;
+        document.getElementById('applicantsSub').textContent = gClosed > 0 ? `From ${gClosed} closed posting${gClosed !== 1 ? 's' : ''}` : '';
+        const appBD = document.getElementById('applicantsBreakdown');
+        appBD.innerHTML = Object.entries(gApplicantsByCat).sort((a,b) => b[1]-a[1]).map(([cat, n]) =>
+            `<div class="breakdown-row">${catBadge(cat)} <span class="breakdown-val">${n}</span></div>`
+        ).join('');
+
+        // Screenshot checklist: per vendor, opening + EOD
+        const checklistEl = document.getElementById('screenshotChecklist');
+        checklistEl.innerHTML = vendors.map(v => {
+            const s = vendorSummaries[v];
+            const hasOpening = s.openingFiles.length > 0;
+            const hasEod = s.eodFiles.length > 0;
+            const check = `<span class="checklist-icon-yes">&#10003;</span>`;
+            const x = `<span class="checklist-icon-no">&#x2013;</span>`;
+            return `<div class="checklist-vendor">
+                <div class="checklist-vendor-name">${v.toUpperCase()}</div>
+                <div class="checklist-items">
+                    <div class="checklist-item">${hasOpening ? check : x} Opening</div>
+                    <div class="checklist-item">${hasEod ? check : x} EOD</div>
+                </div>
+            </div>`;
+        }).join('') || '<div style="font-size:12px; color: var(--color-text-muted);">No vendors yet</div>';
+
+        // ── Vendor sections ──
+        const container = document.getElementById('vendorContent');
+        if (vendors.length === 0) {
+            container.innerHTML = `<div class="empty-state">
+                <div style="margin-bottom:12px"><i data-lucide="inbox" style="width:40px; height:40px; color: var(--color-text-muted);"></i></div>
+                <div class="empty-state-title">No activity yet</div>
+                <div class="empty-state-text">Vendor activity will appear here throughout the day.</div>
+            </div>`;
+            lucide.createIcons();
+            return;
+        }
+
+        container.innerHTML = '';
+
+        // Demo mode banner
+        if (isDemoMode) {
+            const banner = document.createElement('div');
+            banner.style.cssText = 'background: rgba(251,146,60,0.08); border: 1px solid rgba(251,146,60,0.2); border-radius: 8px; padding: 10px 16px; margin-bottom: 16px; font-size: 12px; color: var(--vivid-orange); display: flex; align-items: center; gap: 8px;';
+            banner.innerHTML = `<i data-lucide="info" style="width:14px; height:14px;"></i> <span>Showing sample data — connect to the server for live vendor activity</span>`;
+            container.appendChild(banner);
+        }
+
+        vendors.forEach(v => {
+            const s = vendorSummaries[v];
+            const vendorLabel = v.toUpperCase();
+            const section = document.createElement('div');
+            section.className = 'vendor-section';
+
+            // ── Vendor header ──
+            const header = document.createElement('div');
+            header.className = 'vendor-header';
+            header.innerHTML = `
+                <div class="vendor-name">
+                    <i data-lucide="chevron-down" class="vendor-header-chevron" style="width:16px; height:16px;"></i>
+                    ${vendorLabel}
+                </div>
+                <div class="vendor-quick-stats">
+                    <div class="vendor-qs"><strong>${s.closed.length}</strong> closed</div>
+                    <div class="vendor-qs"><strong>${s.posted.length}</strong> posted</div>
+                    <div class="vendor-qs"><strong>${s.applicants}</strong> applicants</div>
+                    <div class="vendor-qs">${s.openingFiles.length > 0 ? '<span style="color:var(--vivid-blue);">&#10003;</span> Opening' : '<span style="color:var(--color-text-muted);">&#x2013;</span> Opening'}</div>
+                    <div class="vendor-qs">${s.eodFiles.length > 0 ? '<span style="color:var(--vivid-purple);">&#10003;</span> EOD' : '<span style="color:var(--color-text-muted);">&#x2013;</span> EOD'}</div>
+                </div>
+            `;
+
+            const body = document.createElement('div');
+            body.className = 'vendor-body';
+
+            header.addEventListener('click', () => {
+                body.classList.toggle('collapsed');
+                header.querySelector('.vendor-header-chevron').classList.toggle('collapsed');
+            });
+
+            // ── CLOSED POSTINGS subsection ──
+            if (s.closed.length > 0) {
+                const sub = document.createElement('div');
+                sub.className = 'vendor-subsection';
+
+                const closedByCat = groupBy(s.closed, 'category');
+                const catSummary = Object.entries(closedByCat).map(([cat, items]) => {
+                    const apps = items.reduce((sum, c) => sum + (parseInt(c.applicants) || 0), 0);
+                    return { cat, count: items.length, applicants: apps };
+                });
+
+                sub.innerHTML = `
+                    <div class="subsection-title">
+                        <i data-lucide="x-circle" style="width:14px; height:14px; color: var(--pastel-red);"></i>
+                        Closed Postings <span class="subsection-count">${s.closed.length}</span>
+                    </div>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Category</th>
+                                <th>Title</th>
+                                <th style="text-align:right">Applicants</th>
+                                <th style="text-align:right">Budget Spent</th>
+                                <th>Link</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${s.closed.map(c => `
+                                <tr>
+                                    <td>${catBadge(c.category)}</td>
+                                    <td style="font-weight:500;">${c.title || 'Untitled'}</td>
+                                    <td style="text-align:right; font-weight:600;">${c.applicants || 0}</td>
+                                    <td style="text-align:right;">${c.budgetSpent || '—'}</td>
+                                    <td>${c.indeedLink ? `<a href="${c.indeedLink}" target="_blank" class="link-btn"><i data-lucide="external-link" style="width:12px;height:12px;"></i></a>` : '—'}</td>
+                                </tr>
+                            `).join('')}
+                            <tr class="totals-row">
+                                <td colspan="2" style="font-weight:600;">Total</td>
+                                <td style="text-align:right; font-weight:700;">${s.closed.reduce((sum, c) => sum + (parseInt(c.applicants) || 0), 0)}</td>
+                                <td style="text-align:right;">—</td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="cat-summary">
+                        ${catSummary.map(cs => `<div class="cat-chip">${catBadge(cs.cat)} <span class="cat-chip-count">${cs.count}</span> closed · <span class="cat-chip-count">${cs.applicants}</span> applicants</div>`).join('')}
+                    </div>
+                `;
+                body.appendChild(sub);
+            }
+
+            // ── POSTED JOBS subsection ──
+            if (s.posted.length > 0) {
+                const sub = document.createElement('div');
+                sub.className = 'vendor-subsection';
+
+                const postedByAcct = groupBy(s.posted, 'account');
+
+                let acctGroupsHtml = '';
+                Object.entries(postedByAcct).forEach(([acct, items]) => {
+                    const acctConfig = ACCOUNT_CONFIG[acct] || { label: acct, color: '#999', cssClass: '' };
+                    const byCat = groupBy(items, 'category');
+                    const catChips = Object.entries(byCat).map(([cat, arr]) =>
+                        `<div class="cat-chip">${catBadge(cat)} <span class="cat-chip-count">${arr.length}</span></div>`
+                    ).join('');
+
+                    acctGroupsHtml += `
+                        <div class="account-group">
+                            <div class="account-label">
+                                <span class="acct-dot" style="background: ${acctConfig.color};"></span>
+                                ${acctConfig.label} <span style="font-weight:400; color: var(--color-text-muted);">(${items.length} posting${items.length !== 1 ? 's' : ''})</span>
+                            </div>
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Category</th>
+                                        <th>Title</th>
+                                        <th>Link</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    ${items.map(p => {
+                                        const link = p.indeedLink || p.linkedinLink;
+                                        return `<tr>
+                                            <td>${catBadge(p.category)}</td>
+                                            <td style="font-weight:500;">${p.title || 'Untitled'}</td>
+                                            <td>${link ? `<a href="${link}" target="_blank" class="link-btn"><i data-lucide="external-link" style="width:12px;height:12px;"></i> View</a>` : '—'}</td>
+                                        </tr>`;
+                                    }).join('')}
+                                </tbody>
+                            </table>
+                            <div class="cat-summary" style="margin-top:6px;">${catChips}</div>
+                        </div>
+                    `;
+                });
+
+                sub.innerHTML = `
+                    <div class="subsection-title">
+                        <i data-lucide="send" style="width:14px; height:14px; color: var(--pastel-green);"></i>
+                        Posted Today <span class="subsection-count">${s.posted.length}</span>
+                    </div>
+                    ${acctGroupsHtml}
+                `;
+                body.appendChild(sub);
+            }
+
+            // ── DASHBOARD SCREENSHOTS subsection (Opening + EOD side by side) ──
+            if (s.openingFiles.length > 0 || s.eodFiles.length > 0) {
+                const sub = document.createElement('div');
+                sub.className = 'vendor-subsection';
+
+                function renderScreenshotCards(files, prefix, label, color) {
+                    if (files.length === 0) {
+                        return `<div class="screenshot-column">
+                            <div class="screenshot-column-label" style="color:${color};">${label}</div>
+                            <div style="padding:20px; text-align:center; color:var(--color-text-muted); font-size:12px; border:1px dashed var(--color-border); border-radius:8px;">Not uploaded yet</div>
+                        </div>`;
+                    }
+                    return `<div class="screenshot-column">
+                        <div class="screenshot-column-label" style="color:${color};">${label}</div>
+                        ${files.map(f => {
+                            const url = f.path ? SERVER_URL + '/' + f.path : '';
+                            const sizeLabel = f.size < 1048576 ? (f.size/1024).toFixed(0) + ' KB' : (f.size/1048576).toFixed(1) + ' MB';
+                            const cleanName = f.name.replace(prefix, '');
+                            if (!url) {
+                                return '<div class="screenshot-card" style="cursor:default;"><div style="width:100%;height:160px;background:rgba(139,92,246,0.05);display:flex;align-items:center;justify-content:center;color:var(--color-text-muted);"><i data-lucide="image" style="width:28px;height:28px;"></i></div><div class="screenshot-card-info">' + cleanName + ' · ' + sizeLabel + '</div></div>';
+                            }
+                            return '<div class="screenshot-card" onclick="openLightbox(\'' + url + '\')"><img src="' + url + '" alt="' + label + '" loading="lazy"><div class="screenshot-card-info">' + cleanName + ' · ' + sizeLabel + '</div></div>';
+                        }).join('')}
+                    </div>`;
+                }
+
+                sub.innerHTML = `
+                    <div class="subsection-title">
+                        <i data-lucide="camera" style="width:14px; height:14px; color: var(--pastel-purple);"></i>
+                        Dashboard Screenshots
+                    </div>
+                    <div class="screenshots-compare">
+                        ${renderScreenshotCards(s.openingFiles, 'opening_', 'Opening (Before Close)', 'var(--vivid-blue)')}
+                        ${renderScreenshotCards(s.eodFiles, 'eod_', 'End of Day', 'var(--vivid-purple)')}
+                    </div>
+                `;
+                body.appendChild(sub);
+            }
+
+            // ── RESUME UPLOADS subsection ──
+            if (s.resumeFiles.length > 0) {
+                const sub = document.createElement('div');
+                sub.className = 'vendor-subsection';
+                sub.innerHTML = `
+                    <div class="subsection-title">
+                        <i data-lucide="file-archive" style="width:14px; height:14px; color: var(--pastel-orange);"></i>
+                        Resume Uploads <span class="subsection-count">${s.resumeFiles.length}</span>
+                    </div>
+                    <table class="data-table">
+                        <thead><tr><th>File</th><th style="text-align:right">Size</th></tr></thead>
+                        <tbody>
+                            ${s.resumeFiles.map(f => {
+                                const sizeLabel = f.size < 1048576 ? `${(f.size/1024).toFixed(0)} KB` : `${(f.size/1048576).toFixed(1)} MB`;
+                                return `<tr><td>${f.name.replace('resumes_','')}</td><td style="text-align:right;">${sizeLabel}</td></tr>`;
+                            }).join('')}
+                        </tbody>
+                    </table>
+                `;
+                body.appendChild(sub);
+            }
+
+            // ── No activity ──
+            if (s.closed.length === 0 && s.posted.length === 0 && s.openingFiles.length === 0 && s.eodFiles.length === 0 && s.resumeFiles.length === 0) {
+                const sub = document.createElement('div');
+                sub.className = 'vendor-subsection';
+                sub.innerHTML = `<div style="padding: 12px 0; text-align: center; color: var(--color-text-muted); font-size: 13px;">No activity recorded yet.</div>`;
+                body.appendChild(sub);
+            }
+
+            section.appendChild(header);
+            section.appendChild(body);
+            container.appendChild(section);
+        });
+
+        lucide.createIcons();
+    }
+
+    // Init
+    updateDateDisplay();
+    loadDashboard();
+    setInterval(loadDashboard, 60000);
+    lucide.createIcons();
+</script>
+</body>
+</html>

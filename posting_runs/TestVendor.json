@@ -1,0 +1,30 @@
+{
+  "vendor": "TestVendor",
+  "runs": [
+    {
+      "run_id": "TEST-SFG-0-123-run-1",
+      "assignment_uid": "TEST-SFG-0-123",
+      "posting_title": "Insurance Agent",
+      "csv_job_titles": [],
+      "category": "SFG",
+      "account": "indeed-inr",
+      "budget": "460/day",
+      "assigned_date": "",
+      "close_date": "2026-04-01",
+      "status": "active",
+      "description_hash": "bc9a0392449a",
+      "description_snippet": "Test job description for insurance agent role",
+      "candidates_linked": 0,
+      "candidates_us": 0,
+      "candidates_intl": 0,
+      "budget_spent_usd": 0.0,
+      "applicants_from_activity": 0,
+      "cpa_usd": null,
+      "sources": {},
+      "days_active": 0,
+      "closed_at": null,
+      "candidate_ids": []
+    }
+  ],
+  "title_map": {}
+}
