@@ -137,22 +137,44 @@ def detect_vendor_upload_url(vendor_dir: Path) -> str:
 
 def transform_html(
     content: str,
-    vendor_name: str,
+    vendor_slug: str,
+    display_name: str,
     upload_url: str,
     mode: str,  # "download" or "webstore"
 ) -> str:
-    """Apply all per-vendor and per-mode replacements to an HTML file."""
+    """Apply all per-vendor and per-mode replacements to an HTML file.
 
-    # 1) vendor identity: FBSPL → vendor_name (case-sensitive literal).
-    # This covers: <title>, <h1>, localStorage keys, bulletin filename, etc.
-    out = content.replace(TEMPLATE_VENDOR, vendor_name)
+    ``vendor_slug`` is URL/filesystem-safe (e.g. "AlfaRecruit") and is used in
+    URL paths, localStorage keys, and filename references. ``display_name``
+    (e.g. "Alfa Recruit") is the pretty human-facing version used in <title>,
+    <h1>, subtitle copy, etc. If display_name is empty, falls back to the slug.
+    """
+    if not display_name:
+        display_name = vendor_slug
 
-    # 2) upload URL: FBSPL's OneDrive link → the new vendor's link.
+    # 1) slug contexts FIRST — URLs, storage keys, filename refs. These must
+    # stay URL/identifier-safe, so they always use the slug (not display name).
+    slug_replacements = [
+        (f"sid.rocks/{TEMPLATE_VENDOR}", f"sid.rocks/{vendor_slug}"),
+        (f"sid_checklist_{TEMPLATE_VENDOR}", f"sid_checklist_{vendor_slug}"),
+        (f"sid_tasks_{TEMPLATE_VENDOR}", f"sid_tasks_{vendor_slug}"),
+        (f"bulletin_{TEMPLATE_VENDOR}", f"bulletin_{vendor_slug}"),
+        (f"postings_{TEMPLATE_VENDOR}", f"postings_{vendor_slug}"),
+    ]
+    out = content
+    for old, new in slug_replacements:
+        out = out.replace(old, new)
+
+    # 2) Any remaining FBSPL tokens are user-facing (<title>, <h1>, subtitle
+    # copy) — swap them for the display name (may contain spaces).
+    out = out.replace(TEMPLATE_VENDOR, display_name)
+
+    # 3) upload URL: FBSPL's OneDrive link → the new vendor's link.
     # Appears multiple times in guide_direct.html and once in index.html.
     if upload_url:
         out = out.replace(FBSPL_ONEDRIVE_URL, upload_url)
 
-    # 3) mode-specific rewrites (only when the user wants the Chrome Web Store
+    # 4) mode-specific rewrites (only when the user wants the Chrome Web Store
     # flow — for Download mode we leave the FBSPL wiring intact).
     if mode == "webstore":
         out = _rewrite_for_webstore(out)
@@ -302,7 +324,7 @@ def _rewrite_guide_install_section(html: str) -> str:
         '    <div class="tip-box"><strong>TIP:</strong> The same Chrome Web Store link works in '
         '<strong>Microsoft Edge</strong>. Edge will ask if you want to allow extensions from other '
         'stores the first time &mdash; click <strong>Allow</strong>.</div>\n'
-        '  '
+        '  </div>\n\n  '
     )
     return pattern.sub(replacement, html)
 
@@ -315,8 +337,14 @@ def spawn_vendor(
     upload_url: str,
     mode: str,
     log,
+    display_name: str = "",
 ) -> Path:
-    """Create the vendor folder by cloning the template and personalizing it."""
+    """Create the vendor folder by cloning the template and personalizing it.
+
+    ``vendor_name`` is the URL/folder slug (e.g. "AlfaRecruit"). ``display_name``
+    is the pretty, human-facing name (e.g. "Alfa Recruit") shown in <h1>,
+    <title>, and guide copy. If ``display_name`` is empty the slug is used.
+    """
 
     tmpl = get_template_path(root)
     if not tmpl.is_dir():
@@ -343,7 +371,7 @@ def spawn_vendor(
     for fname in ("index.html", "guide.html", "guide_direct.html"):
         fpath = dest / fname
         src = fpath.read_text(encoding="utf-8")
-        out = transform_html(src, vendor_name, upload_url, mode)
+        out = transform_html(src, vendor_name, display_name, upload_url, mode)
         fpath.write_text(out, encoding="utf-8")
         log(f"  ✓ rewrote {fname} ({len(src):,} → {len(out):,} bytes)")
 
@@ -374,6 +402,7 @@ def switch_vendor_mode(
     new_mode: str,
     upload_url: str,
     log,
+    display_name: str = "",
 ) -> Path:
     """Flip an existing vendor folder between Download and Chrome Web Store mode.
 
@@ -430,7 +459,7 @@ def switch_vendor_mode(
             log(f"  ⚠ template missing {fname}, skipping")
             continue
         src = src_path.read_text(encoding="utf-8")
-        out = transform_html(src, vendor_name, upload_url, new_mode)
+        out = transform_html(src, vendor_name, display_name, upload_url, new_mode)
         (dest / fname).write_text(out, encoding="utf-8")
         log(f"  ✓ rewrote {fname} ({len(src):,} → {len(out):,} bytes)")
 
@@ -536,11 +565,10 @@ def git_push(
         # stage the whole repo so we don't have to enumerate every folder here.
         paths = ["."]
     else:
-        paths = [
-            vendor_name,
-            f"bulletin_{vendor_name}.json",
-            f"postings_{vendor_name}.json",
-        ]
+        # bulletin_*.json / postings_*.json are intentionally gitignored — they
+        # accumulate candidate/PII data locally and must never go to GitHub.
+        # Only stage the vendor's portal folder.
+        paths = [vendor_name]
 
     def run(cmd: list[str]) -> subprocess.CompletedProcess:
         return subprocess.run(cmd, cwd=root, capture_output=True, text=True)
@@ -591,6 +619,10 @@ class SpawnerApp(tk.Tk):
 
         # state vars
         self.vendor_var = tk.StringVar()
+        self.display_var = tk.StringVar()
+        # Track whether the user manually edited Display name — if not, we
+        # keep auto-filling it from Vendor name as they type.
+        self._display_edited_by_user = False
         self.upload_var = tk.StringVar()
         # mode values: "download" (new), "webstore_new" (preview), "webstore_switch" (in-place)
         self.mode_var = tk.StringVar(value="download")
@@ -628,18 +660,40 @@ class SpawnerApp(tk.Tk):
         form.columnconfigure(1, weight=1)
 
         ttk.Label(form, text="Vendor name").grid(row=0, column=0, sticky="w", pady=4)
-        ttk.Entry(form, textvariable=self.vendor_var).grid(
-            row=0, column=1, sticky="ew", padx=(8, 0), pady=4
-        )
+        vendor_entry = ttk.Entry(form, textvariable=self.vendor_var)
+        vendor_entry.grid(row=0, column=1, sticky="ew", padx=(8, 0), pady=4)
         ttk.Label(
             form,
-            text="Used as folder name, <h1>, and URL path. Example: FBSPL → sid.rocks/FBSPL",
+            text="Folder + URL slug. Letters/digits only — spaces get stripped. Example: AlfaRecruit → sid.rocks/AlfaRecruit",
             foreground="#777", font=("Helvetica", 11),
         ).grid(row=1, column=1, sticky="w", padx=(8, 0))
 
+        # Display name — pretty, human-facing version. Auto-fills from Vendor
+        # name (with spaces kept) until the user edits it manually.
+        ttk.Label(form, text="Display name").grid(row=2, column=0, sticky="w", pady=(12, 4))
+        display_entry = ttk.Entry(form, textvariable=self.display_var)
+        display_entry.grid(row=2, column=1, sticky="ew", padx=(8, 0), pady=(12, 4))
+        ttk.Label(
+            form,
+            text="Shown on the portal <h1>, <title>, and in the vendor guide. Can have spaces. Example: 'Alfa Recruit'.",
+            foreground="#777", font=("Helvetica", 11),
+        ).grid(row=3, column=1, sticky="w", padx=(8, 0))
+
+        # Auto-fill Display name from Vendor name as the user types, unless
+        # they've manually edited Display name — then leave their edit alone.
+        def _on_vendor_type(*_args: object) -> None:
+            if not self._display_edited_by_user:
+                self.display_var.set(self.vendor_var.get())
+        self.vendor_var.trace_add("write", _on_vendor_type)
+
+        def _on_display_edit(_event: object) -> None:
+            # Any keystroke in the Display entry counts as manual editing.
+            self._display_edited_by_user = True
+        display_entry.bind("<Key>", _on_display_edit)
+
         # OneDrive URL label row — label on left, "How do I get this?" help link on right
         url_label_row = ttk.Frame(form)
-        url_label_row.grid(row=2, column=0, columnspan=2, sticky="ew", pady=(12, 4))
+        url_label_row.grid(row=4, column=0, columnspan=2, sticky="ew", pady=(12, 4))
         url_label_row.columnconfigure(1, weight=1)
         ttk.Label(url_label_row, text="OneDrive upload URL").grid(
             row=0, column=0, sticky="w"
@@ -655,14 +709,14 @@ class SpawnerApp(tk.Tk):
         help_link.bind("<Button-1>", lambda _e: self._show_onedrive_help())
 
         ttk.Entry(form, textvariable=self.upload_var).grid(
-            row=3, column=0, columnspan=2, sticky="ew", pady=(0, 4)
+            row=5, column=0, columnspan=2, sticky="ew", pady=(0, 4)
         )
         self.upload_hint = ttk.Label(
             form,
             text="Paste the SharePoint/OneDrive folder share link for this vendor's uploads.",
             foreground="#777", font=("Helvetica", 11),
         )
-        self.upload_hint.grid(row=4, column=0, columnspan=2, sticky="w")
+        self.upload_hint.grid(row=6, column=0, columnspan=2, sticky="w")
 
         # Mode
         mode_box = ttk.LabelFrame(self, text="What do you want to do?")
@@ -844,6 +898,7 @@ class SpawnerApp(tk.Tk):
 
     def _on_spawn(self) -> None:
         vendor = sanitize_folder_name(self.vendor_var.get())
+        display = self.display_var.get().strip() or vendor
         upload = self.upload_var.get().strip()
         mode = self.mode_var.get()
         push = self.push_var.get()
@@ -891,12 +946,19 @@ class SpawnerApp(tk.Tk):
         self.go_btn.configure(state="disabled")
         t = threading.Thread(
             target=self._spawn_worker,
-            args=(vendor, upload, mode, push),
+            args=(vendor, display, upload, mode, push),
             daemon=True,
         )
         t.start()
 
-    def _spawn_worker(self, vendor: str, upload: str, mode: str, push: bool) -> None:
+    def _spawn_worker(
+        self,
+        vendor: str,
+        display: str,
+        upload: str,
+        mode: str,
+        push: bool,
+    ) -> None:
         stamp = datetime.now().strftime("%H:%M:%S")
 
         # Map the UI mode onto the underlying install-mode string + action
@@ -921,12 +983,14 @@ class SpawnerApp(tk.Tk):
             root = sid_root()
             if is_switch:
                 dest = switch_vendor_mode(
-                    root, vendor, install_mode, upload, self._log_line
+                    root, vendor, install_mode, upload, self._log_line,
+                    display_name=display,
                 )
                 self._log_line(f"  ✓ {dest} re-wired")
             else:
                 dest = spawn_vendor(
-                    root, vendor, upload, install_mode, self._log_line
+                    root, vendor, upload, install_mode, self._log_line,
+                    display_name=display,
                 )
                 self._log_line(f"  ✓ vendor folder ready: {dest}")
 
@@ -955,9 +1019,8 @@ class SpawnerApp(tk.Tk):
                 else:
                     self._log_line(
                         f"Files created. To publish, run:\n"
-                        f"  cd \"{root}\" && git add {vendor}/ "
-                        f"bulletin_{vendor}.json postings_{vendor}.json "
-                        f"&& git commit -m 'Add {vendor} vendor portal' && git push"
+                        f"  cd \"{root}\" && git add {vendor}/ && "
+                        f"git commit -m 'Add {vendor} vendor portal' && git push"
                     )
         except Exception as e:  # noqa: BLE001
             self._log_line(f"✗ {type(e).__name__}: {e}")
