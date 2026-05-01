@@ -563,6 +563,37 @@ def update_sid_zip(root: Path, new_zip_path: Path, log) -> int:
 
 # ───────────────────────── git push ─────────────────────────────── #
 
+def clear_stale_git_locks(root: Path, log) -> None:
+    """Remove leftover .git lock files before running git operations.
+
+    git creates index.lock / HEAD.lock / refs/heads/<branch>.lock during
+    operations and removes them on completion. If a previous run was
+    interrupted (or any process crashed mid-commit), the locks linger and
+    every subsequent commit/push fails with "fatal: cannot lock ref" or
+    "Unable to create '...index.lock': File exists." This sweeps them up
+    so the next git op can acquire its own fresh locks.
+
+    Safe to call unconditionally — locks only ever exist during an active
+    git operation, and we never run git operations concurrently here, so
+    any lock the Spawner sees at the START of a run is by definition stale.
+    """
+    candidates = [
+        root / ".git" / "index.lock",
+        root / ".git" / "HEAD.lock",
+        root / ".git" / "refs" / "heads" / "main.lock",
+    ]
+    removed = []
+    for p in candidates:
+        if p.exists():
+            try:
+                p.unlink()
+                removed.append(p.name)
+            except OSError as e:
+                log(f"  ⚠ could not remove stale {p.name}: {e}")
+    if removed:
+        log(f"  ✓ cleared stale git lock(s): {', '.join(removed)}")
+
+
 def git_push(
     root: Path,
     vendor_name: str,
@@ -579,6 +610,10 @@ def git_push(
     """
     mode_label = "Chrome Web Store" if mode == "webstore" else "Download SID"
     log(f"Running git add/commit/push in {root} …")
+
+    # Defensive sweep — clean up any lock files left behind by a previous
+    # interrupted run before we try to acquire our own locks.
+    clear_stale_git_locks(root, log)
 
     paths: list[str]
     if action == "update":
