@@ -295,7 +295,7 @@
   <a href="https://sid.rocks/install" target="_blank" class="action install" id="installBtn">
     Install SID Extension
   </a>
-  <a href="https://sid.rocks/ElevateReach/guide.html" target="_blank" class="action guide" id="guideBtn">
+  <a href="https://sid.rocks/elevatereach/guide.html" target="_blank" class="action guide" id="guideBtn">
     Open SID Guide
   </a>
   <a href="#" onclick="alert('Upload link not configured yet. Contact your admin.');return false;" target="_blank" class="action upload" id="uploadBtn">
@@ -357,7 +357,7 @@ document.addEventListener('mousemove', (e) => {
 });
 
 // ── Checklist State (persists in localStorage) ──
-const STORAGE_KEY = 'sid_checklist_ElevateReach';
+const STORAGE_KEY = 'sid_checklist_elevatereach';
 let savedState = {};
 try { savedState = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); } catch(e) {}
 

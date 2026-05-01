@@ -594,7 +594,7 @@
   <a href="#" id="installBtn" class="action install" onclick="handleInstallClick(event); return false;">
     Install SID Extension
   </a>
-  <a href="https://sid.rocks/AppyPie/guide.html" target="_blank" class="action guide" id="guideBtn">
+  <a href="https://sid.rocks/appypie/guide.html" target="_blank" class="action guide" id="guideBtn">
     Open SID Guide
   </a>
   <a href="https://jobosaurus-my.sharepoint.com/:f:/g/personal/mallen_wallstjobs_com/IgCB3NnQGwDLQ4nW80BiFIXTAUpyVwQzPUiDQx7VAsq2XXc" target="_blank" class="action upload" id="uploadBtn">
@@ -697,7 +697,7 @@ document.addEventListener('mousemove', (e) => {
 /* ============================================================================
    CHECKLIST
    ========================================================================== */
-const CHECKLIST_STORAGE_KEY = 'sid_checklist_AppyPie';
+const CHECKLIST_STORAGE_KEY = 'sid_checklist_appypie';
 let savedState = {};
 
 try {
@@ -827,14 +827,14 @@ function getTodayString() {
 }
 
 function getTaskStorageKey(dateString) {
-  return 'sid_tasks_AppyPie_' + dateString;
+  return 'sid_tasks_appypie_' + dateString;
 }
 
 function loadBulletinBoard() {
   const today = getTodayString();
   const cachebusters = Date.now();
 
-  fetch('https://sid.rocks/bulletin_AppyPie.json?' + cachebusters)
+  fetch('https://sid.rocks/bulletin_appypie.json?' + cachebusters)
     .then(response => response.json())
     .then(data => {
       if (data.date && data.tasks && Array.isArray(data.tasks) && data.tasks.length > 0) {

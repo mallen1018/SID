@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Eqube Talent - SID Vendor Portal</title>
+<title>CollarSearch - SID Vendor Portal</title>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M38 12Q36 2 32 5Q34 10 38 14Z' fill='%237a5c3a'/%3E%3Cpath d='M50 8Q50-2 46 2Q48 7 50 12Z' fill='%237a5c3a'/%3E%3Cpath d='M62 12Q64 2 68 5Q66 10 62 14Z' fill='%237a5c3a'/%3E%3Cellipse cx='50' cy='52' rx='38' ry='40' fill='%23d4a96a'/%3E%3Cellipse cx='50' cy='58' rx='28' ry='28' fill='%23e8c88a'/%3E%3Cellipse cx='38' cy='46' rx='10' ry='11' fill='white'/%3E%3Cellipse cx='62' cy='46' rx='10' ry='11' fill='white'/%3E%3Ccircle cx='39' cy='46' r='6' fill='%233b8ed0'/%3E%3Ccircle cx='63' cy='46' r='6' fill='%233b8ed0'/%3E%3Ccircle cx='40' cy='45' r='3' fill='%231a1a2e'/%3E%3Ccircle cx='64' cy='45' r='3' fill='%231a1a2e'/%3E%3Ccircle cx='41' cy='43' r='1.5' fill='white'/%3E%3Ccircle cx='65' cy='43' r='1.5' fill='white'/%3E%3Cellipse cx='50' cy='60' rx='8' ry='6' fill='%238b6baa'/%3E%3Cpath d='M43 68Q50 76 57 68' stroke='%237a5c3a' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3Cellipse cx='18' cy='38' rx='8' ry='10' fill='%23d4a96a'/%3E%3Cellipse cx='82' cy='38' rx='8' ry='10' fill='%23d4a96a'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -709,7 +709,7 @@
 
   <!-- Welcome Header -->
   <div class="welcome">Welcome</div>
-  <h1>Eqube Talent</h1>
+  <h1>CollarSearch</h1>
   <p class="subtitle">Your SID vendor portal. Install the extension, read the guide, and upload your files.</p>
 
   <!-- Onboarding Checklist -->
@@ -728,7 +728,7 @@
   <a href="guide_direct.html" target="_blank" class="action guide" id="guideBtn">
     Open SID Guide
   </a>
-  <a href="https://jobosaurus-my.sharepoint.com/:f:/g/personal/mallen_wallstjobs_com/IgD7BLG45895SqPsWCkzudRTAUiPbv_ijA7NVixntDSmfQE" target="_blank" class="action upload" id="uploadBtn">
+  <a href="https://jobosaurus-my.sharepoint.com/:f:/g/personal/mallen_wallstjobs_com/IgAWKi519aJsTpsVLenWmML4AXLSRQ7JZsiDfvU1338SAko" target="_blank" class="action upload" id="uploadBtn">
     Upload ZIP Files
   </a>
 
@@ -883,7 +883,7 @@ document.addEventListener('mousemove', (e) => {
 /* ============================================================================
    CHECKLIST
    ========================================================================== */
-const CHECKLIST_STORAGE_KEY = 'sid_checklist_EqubeTalent';
+const CHECKLIST_STORAGE_KEY = 'sid_checklist_collarsearch';
 let savedState = {};
 
 try {
@@ -942,14 +942,22 @@ function updateChecklist() {
 }
 
 function updateInstallButton() {
-  // Button always keeps href so download always works
+  // Preserve whatever href the static HTML set (SID.zip for download mode,
+  // chromewebstore.google.com/... for webstore mode). Only remove href when
+  // the install is complete (terminal state — no longer a link).
   const btn = document.getElementById('installBtn');
-  btn.setAttribute('href', 'SID.zip');
-  btn.setAttribute('download', '');
+  if (!btn.dataset.origHref) {
+    btn.dataset.origHref = btn.getAttribute('href') || '';
+    btn.dataset.origText = btn.innerHTML.trim();
+  }
   if (installDone) {
-    btn.innerHTML = '&#10003; Download SID Extension';
+    btn.classList.add('installed');
+    btn.innerHTML = '&#10003; SID Extension Installed';
+    btn.removeAttribute('href');
   } else {
-    btn.innerHTML = 'Download SID Extension';
+    btn.classList.remove('installed');
+    btn.innerHTML = btn.dataset.origText;
+    btn.setAttribute('href', btn.dataset.origHref);
   }
 }
 
@@ -1010,14 +1018,14 @@ function getTodayString() {
 }
 
 function getTaskStorageKey(dateString) {
-  return 'sid_tasks_EqubeTalent_' + dateString;
+  return 'sid_tasks_collarsearch_' + dateString;
 }
 
 function loadBulletinBoard() {
   const today = getTodayString();
   const cachebusters = Date.now();
 
-  fetch('https://sid.rocks/bulletin_EqubeTalent.json?' + cachebusters)
+  fetch('https://sid.rocks/bulletin_collarsearch.json?' + cachebusters)
     .then(response => response.json())
     .then(data => {
       if (data.date && data.tasks && Array.isArray(data.tasks) && data.tasks.length > 0) {

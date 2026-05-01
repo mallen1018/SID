@@ -2,15 +2,19 @@
 """
 SID Vendor Spawner
 -------------------
-GUI for creating a new vendor hub under sid.rocks/<VendorName> by cloning
-the live FBSPL folder and running per-vendor string substitutions.
+GUI for creating a new vendor hub under sid.rocks/<vendorname> by cloning
+the live fbspl folder and running per-vendor string substitutions.
 
-Two output modes:
-  - Download SID (current):   install button downloads bundled SID.zip
-                              + shows the unzip/load-unpacked modal.
-  - Chrome Web Store (future): install button links to the SID extension
-                              listing on the Chrome Web Store; unzip steps
-                              in the guide are replaced with "Add to Chrome".
+Two output modes (both live):
+  - Download SID:       install button downloads bundled SID.zip + shows
+                        the unzip/load-unpacked modal.
+  - Chrome Web Store:   install button links to the SID extension listing
+                        on the Chrome Web Store; unzip steps in the guide
+                        are replaced with "Add to Chrome".
+
+Vendor folder/URL slugs are always lowercase to keep GitHub Pages happy
+(its routing is case-sensitive even though macOS/APFS isn't), so the
+Spawner lowercases the slug before creating the folder.
 
 After creation, optionally runs `git add / commit / push` so sid.rocks
 deploys the new portal automatically.
@@ -33,9 +37,16 @@ from datetime import datetime
 
 # ─────────────────────────── constants ──────────────────────────── #
 
-# Template vendor we clone from. FBSPL is kept as the canonical reference
+# Template vendor we clone from. fbspl is kept as the canonical reference
 # because its folder mirrors what the live portal should look like.
-TEMPLATE_VENDOR = "FBSPL"
+# (Lowercase: GitHub Pages URLs are case-sensitive, so all vendor slugs
+# are lowercased — see sanitize_folder_name.)
+TEMPLATE_VENDOR = "fbspl"
+
+# Display-name token inside the template HTML (used in <title>, <h1>, and
+# subtitle copy). Distinct from TEMPLATE_VENDOR because that's the URL slug
+# (lowercase), whereas the display name is the original brand casing.
+TEMPLATE_DISPLAY = "FBSPL"
 
 # Hard-coded values that live inside FBSPL and need to be replaced per vendor
 FBSPL_ONEDRIVE_URL = (
@@ -43,9 +54,10 @@ FBSPL_ONEDRIVE_URL = (
     "mallen_wallstjobs_com/IgAQAkLWz04gQIx-W-6lgkeSAXisYkAu9c0UU_1ieyVdsgI"
 )
 
-# Chrome Web Store listing for the SID extension. When the pending update is
-# published, this is the URL new vendors should be sent to. Re-publishing the
-# extension does not change the listing ID, so this URL is stable.
+# Chrome Web Store listing for the SID extension. The CWS listing is now
+# live (no longer in preview), so this is the canonical install URL for
+# vendors created in Chrome Web Store mode. Re-publishing the extension
+# does not change the listing ID, so this URL is stable.
 CHROME_WEBSTORE_URL = (
     "https://chromewebstore.google.com/detail/oaejdaekhegedlgoanfkogmoiceelkbc"
 )
@@ -74,9 +86,15 @@ def sid_root() -> Path:
 
 
 def sanitize_folder_name(raw: str) -> str:
-    """Strip characters that are unsafe in folder names / URLs."""
+    """Strip characters that are unsafe in folder names / URLs and lowercase.
+
+    GitHub Pages routing is case-sensitive, so historically having a mix of
+    PascalCase and lowercase vendor folders led to git case-conflict errors
+    (e.g. EqubeTalent/ vs equbetalent/ both ending up tracked). We lowercase
+    here to enforce the single-casing convention going forward.
+    """
     cleaned = re.sub(r"[^A-Za-z0-9_\-]", "", raw.strip())
-    return cleaned
+    return cleaned.lower()
 
 
 def get_template_path(root: Path) -> Path:
@@ -165,9 +183,12 @@ def transform_html(
     for old, new in slug_replacements:
         out = out.replace(old, new)
 
-    # 2) Any remaining FBSPL tokens are user-facing (<title>, <h1>, subtitle
-    # copy) — swap them for the display name (may contain spaces).
-    out = out.replace(TEMPLATE_VENDOR, display_name)
+    # 2) Any remaining brand-name tokens are user-facing (<title>, <h1>,
+    # subtitle copy) — swap them for the new vendor's display name (may
+    # contain spaces). Note: TEMPLATE_DISPLAY ("FBSPL") is used here, not
+    # TEMPLATE_VENDOR ("fbspl"), because the brand label inside the HTML
+    # is uppercase even though the URL slug is lowercase.
+    out = out.replace(TEMPLATE_DISPLAY, display_name)
 
     # 3) upload URL: FBSPL's OneDrive link → the new vendor's link.
     # Appears multiple times in guide_direct.html and once in index.html.
@@ -624,7 +645,8 @@ class SpawnerApp(tk.Tk):
         # keep auto-filling it from Vendor name as they type.
         self._display_edited_by_user = False
         self.upload_var = tk.StringVar()
-        # mode values: "download" (new), "webstore_new" (preview), "webstore_switch" (in-place)
+        # mode values: "download" (new), "webstore_new" (new vendor on CWS),
+        # "webstore_switch" (in-place flip), "download_switch" (revert).
         self.mode_var = tk.StringVar(value="download")
         self.push_var = tk.BooleanVar(value=True)
 
@@ -729,7 +751,7 @@ class SpawnerApp(tk.Tk):
         ).pack(anchor="w", padx=10, pady=(6, 2))
         ttk.Radiobutton(
             mode_box,
-            text="Create new vendor — Chrome Web Store preview   (new folder, different URL)",
+            text="Create new vendor — Chrome Web Store   (installs from the Chrome Web Store)",
             variable=self.mode_var, value="webstore_new",
             command=self._on_mode_change,
         ).pack(anchor="w", padx=10, pady=(2, 2))
@@ -878,10 +900,11 @@ class SpawnerApp(tk.Tk):
                      "vendor's uploads.",
             )
         elif mode == "webstore_new":
-            self.go_btn.configure(text="Spawn Preview Page")
+            self.go_btn.configure(text="Spawn Vendor Page")
             self.upload_hint.configure(
-                text="Paste the OneDrive upload link. Use a distinct vendor "
-                     "name (e.g. FBSPL-preview) so the real URL isn't touched.",
+                text="Paste the SharePoint/OneDrive folder share link for this "
+                     "vendor's uploads. Their portal will install SID directly "
+                     "from the Chrome Web Store.",
             )
         elif mode == "webstore_switch":
             self.go_btn.configure(text="Switch to Chrome Web Store")

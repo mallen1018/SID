@@ -883,7 +883,7 @@ document.addEventListener('mousemove', (e) => {
 /* ============================================================================
    CHECKLIST
    ========================================================================== */
-const CHECKLIST_STORAGE_KEY = 'sid_checklist_EqubeTalent';
+const CHECKLIST_STORAGE_KEY = 'sid_checklist_equbetalent';
 let savedState = {};
 
 try {
@@ -942,14 +942,22 @@ function updateChecklist() {
 }
 
 function updateInstallButton() {
-  // Button always keeps href so download always works
+  // Preserve whatever href the static HTML set (SID.zip for download mode,
+  // chromewebstore.google.com/... for webstore mode). Only remove href when
+  // the install is complete (terminal state — no longer a link).
   const btn = document.getElementById('installBtn');
-  btn.setAttribute('href', 'SID.zip');
-  btn.setAttribute('download', '');
+  if (!btn.dataset.origHref) {
+    btn.dataset.origHref = btn.getAttribute('href') || '';
+    btn.dataset.origText = btn.innerHTML.trim();
+  }
   if (installDone) {
-    btn.innerHTML = '&#10003; Download SID Extension';
+    btn.classList.add('installed');
+    btn.innerHTML = '&#10003; SID Extension Installed';
+    btn.removeAttribute('href');
   } else {
-    btn.innerHTML = 'Download SID Extension';
+    btn.classList.remove('installed');
+    btn.innerHTML = btn.dataset.origText;
+    btn.setAttribute('href', btn.dataset.origHref);
   }
 }
 
@@ -1010,14 +1018,14 @@ function getTodayString() {
 }
 
 function getTaskStorageKey(dateString) {
-  return 'sid_tasks_EqubeTalent_' + dateString;
+  return 'sid_tasks_equbetalent_' + dateString;
 }
 
 function loadBulletinBoard() {
   const today = getTodayString();
   const cachebusters = Date.now();
 
-  fetch('https://sid.rocks/bulletin_EqubeTalent.json?' + cachebusters)
+  fetch('https://sid.rocks/bulletin_equbetalent.json?' + cachebusters)
     .then(response => response.json())
     .then(data => {
       if (data.date && data.tasks && Array.isArray(data.tasks) && data.tasks.length > 0) {
