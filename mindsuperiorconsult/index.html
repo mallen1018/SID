@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mind Superior Consult - SID Vendor Portal</title>
+<title>MindSuperior Consult - SID Vendor Portal</title>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M38 12Q36 2 32 5Q34 10 38 14Z' fill='%237a5c3a'/%3E%3Cpath d='M50 8Q50-2 46 2Q48 7 50 12Z' fill='%237a5c3a'/%3E%3Cpath d='M62 12Q64 2 68 5Q66 10 62 14Z' fill='%237a5c3a'/%3E%3Cellipse cx='50' cy='52' rx='38' ry='40' fill='%23d4a96a'/%3E%3Cellipse cx='50' cy='58' rx='28' ry='28' fill='%23e8c88a'/%3E%3Cellipse cx='38' cy='46' rx='10' ry='11' fill='white'/%3E%3Cellipse cx='62' cy='46' rx='10' ry='11' fill='white'/%3E%3Ccircle cx='39' cy='46' r='6' fill='%233b8ed0'/%3E%3Ccircle cx='63' cy='46' r='6' fill='%233b8ed0'/%3E%3Ccircle cx='40' cy='45' r='3' fill='%231a1a2e'/%3E%3Ccircle cx='64' cy='45' r='3' fill='%231a1a2e'/%3E%3Ccircle cx='41' cy='43' r='1.5' fill='white'/%3E%3Ccircle cx='65' cy='43' r='1.5' fill='white'/%3E%3Cellipse cx='50' cy='60' rx='8' ry='6' fill='%238b6baa'/%3E%3Cpath d='M43 68Q50 76 57 68' stroke='%237a5c3a' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3Cellipse cx='18' cy='38' rx='8' ry='10' fill='%23d4a96a'/%3E%3Cellipse cx='82' cy='38' rx='8' ry='10' fill='%23d4a96a'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -709,7 +709,7 @@
 
   <!-- Welcome Header -->
   <div class="welcome">Welcome</div>
-  <h1>Mind Superior Consult</h1>
+  <h1>MindSuperior Consult</h1>
   <p class="subtitle">Your SID vendor portal. Install the extension, read the guide, and upload your files.</p>
 
   <!-- Onboarding Checklist -->
@@ -722,8 +722,8 @@
   </div>
 
   <!-- Action Buttons -->
-  <a href="SID.zip" download id="installBtn" class="action install" onclick="handleInstallClick(event);">
-    Download SID Extension
+  <a href="https://chromewebstore.google.com/detail/oaejdaekhegedlgoanfkogmoiceelkbc" target="_blank" id="installBtn" class="action install" onclick="handleInstallClick(event);">
+    Install SID Extension
   </a>
   <a href="guide_direct.html" target="_blank" class="action guide" id="guideBtn">
     Open SID Guide
@@ -755,10 +755,10 @@
   <div class="modal-card">
     <button class="modal-close" id="modalClose">&times;</button>
     <div class="modal-title">Install SID Extension</div>
-    <div class="modal-subtitle">Your download has started. Follow the steps below to install the extension in your browser.</div>
+    <div class="modal-subtitle">The Chrome Web Store page is opening. Click "Add to Chrome" to install SID — that's it.</div>
 
-    <a href="SID.zip" download class="modal-download-btn" id="modalDownloadBtn">
-      Download Again
+    <a href="https://chromewebstore.google.com/detail/oaejdaekhegedlgoanfkogmoiceelkbc" target="_blank" class="modal-download-btn" id="modalDownloadBtn">
+      Open Chrome Web Store
     </a>
 
     <div class="browser-tabs">
@@ -768,52 +768,28 @@
 
     <div class="browser-section active" id="section-chrome">
       <ol class="install-steps">
-        <li class="install-step">
+      <li class="install-step">
           <div class="step-number">1</div>
-          <div class="step-content"><strong>Unzip</strong> the downloaded file. You should see a folder called <strong>SID</strong>.</div>
+          <div class="step-content">On the Chrome Web Store page, click <strong>"Add to Chrome"</strong>, then confirm with <strong>"Add extension"</strong>.</div>
         </li>
-        <li class="install-step">
+      <li class="install-step">
           <div class="step-number">2</div>
-          <div class="step-content">Open Chrome and go to <code>chrome://extensions</code> (type it into the address bar).</div>
-        </li>
-        <li class="install-step">
-          <div class="step-number">3</div>
-          <div class="step-content">Turn on <strong>Developer mode</strong> using the toggle in the top-right corner.</div>
-        </li>
-        <li class="install-step">
-          <div class="step-number">4</div>
-          <div class="step-content">Click <strong>Load unpacked</strong> and select the unzipped <strong>SID</strong> folder.</div>
-        </li>
-        <li class="install-step">
-          <div class="step-number">5</div>
           <div class="step-content">Click the <strong>puzzle piece</strong> icon in Chrome's toolbar and <strong>pin SID</strong> so it's always visible.</div>
         </li>
-      </ol>
+    </ol>
     </div>
 
     <div class="browser-section" id="section-edge">
       <ol class="install-steps">
-        <li class="install-step">
+      <li class="install-step">
           <div class="step-number">1</div>
-          <div class="step-content"><strong>Unzip</strong> the downloaded file. You should see a folder called <strong>SID</strong>.</div>
+          <div class="step-content">On the Chrome Web Store page, click <strong>"Add to Chrome"</strong> (Edge prompts "Add extension from another store" — click <strong>Allow</strong>, then <strong>Add extension</strong>).</div>
         </li>
-        <li class="install-step">
+      <li class="install-step">
           <div class="step-number">2</div>
-          <div class="step-content">Open Edge and go to <code>edge://extensions</code> (type it into the address bar).</div>
-        </li>
-        <li class="install-step">
-          <div class="step-number">3</div>
-          <div class="step-content">Turn on <strong>Developer mode</strong> using the toggle in the bottom-left corner.</div>
-        </li>
-        <li class="install-step">
-          <div class="step-number">4</div>
-          <div class="step-content">Click <strong>Load unpacked</strong> and select the unzipped <strong>SID</strong> folder.</div>
-        </li>
-        <li class="install-step">
-          <div class="step-number">5</div>
           <div class="step-content">Click the <strong>puzzle piece</strong> icon in Edge's toolbar and <strong>pin SID</strong> so it's always visible.</div>
         </li>
-      </ol>
+    </ol>
     </div>
   </div>
 </div>
