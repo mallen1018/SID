@@ -897,13 +897,19 @@ let guideDone = savedState.guide || false;
 let uploadDone = savedState.upload || false;
 let checklistCompleted = savedState.completed || false;
 
+// Version gate: if the saved install is for an older extension version
+// (or pre-versioning), re-show the download so vendors get the update.
+const EXT_VERSION = '5.8.12';
+if (savedState.version !== EXT_VERSION) { installDone = false; checklistCompleted = false; }
+
 function saveChecklistState() {
   try {
     localStorage.setItem(CHECKLIST_STORAGE_KEY, JSON.stringify({
       install: installDone,
       guide: guideDone,
       upload: uploadDone,
-      completed: checklistCompleted
+      completed: checklistCompleted,
+      version: EXT_VERSION
     }));
   } catch (e) {
     // localStorage may not be available

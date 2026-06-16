@@ -711,13 +711,19 @@ let guideDone = savedState.guide || false;
 let uploadDone = savedState.upload || false;
 let checklistCompleted = savedState.completed || false;
 
+// Version gate: if the saved install is for an older extension version
+// (or pre-versioning), re-show the download so vendors get the update.
+const EXT_VERSION = '5.8.12';
+if (savedState.version !== EXT_VERSION) { installDone = false; checklistCompleted = false; }
+
 function saveChecklistState() {
   try {
     localStorage.setItem(CHECKLIST_STORAGE_KEY, JSON.stringify({
       install: installDone,
       guide: guideDone,
       upload: uploadDone,
-      completed: checklistCompleted
+      completed: checklistCompleted,
+      version: EXT_VERSION
     }));
   } catch (e) {
     // localStorage may not be available
@@ -756,7 +762,14 @@ function updateChecklist() {
 }
 
 function updateInstallButton() {
+  // Preserve whatever href the static HTML set (SID.zip for download mode,
+  // chromewebstore.google.com/... for webstore mode). Only remove href when
+  // the install is complete (terminal state — no longer a link).
   const btn = document.getElementById('installBtn');
+  if (!btn.dataset.origHref) {
+    btn.dataset.origHref = btn.getAttribute('href') || '';
+    btn.dataset.origText = btn.innerHTML.trim();
+  }
   if (installDone) {
     btn.classList.add('installed');
     btn.classList.remove('install');
@@ -766,8 +779,8 @@ function updateInstallButton() {
   } else {
     btn.classList.remove('installed');
     btn.classList.add('install');
-    btn.innerHTML = 'Install SID Extension';
-    btn.setAttribute('href', '#');
+    btn.innerHTML = btn.dataset.origText;
+    btn.setAttribute('href', btn.dataset.origHref);
     btn.style.cursor = 'pointer';
   }
 }

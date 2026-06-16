@@ -434,74 +434,6 @@
     border-top: 1px solid var(--checklist-border);
   }
 
-  /* Upload History / Collapsible Section */
-  .upload-history {
-    margin-bottom: 24px;
-  }
-
-  .upload-history-header {
-    background: var(--checklist-bg);
-    border: 1px solid var(--checklist-border);
-    border-radius: 14px;
-    padding: 16px 20px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    transition: background 0.3s, border-color 0.3s;
-    user-select: none;
-  }
-
-  .upload-history-header:hover {
-    background: var(--card-bg);
-  }
-
-  .upload-history-arrow {
-    font-size: 14px;
-    transition: transform 0.3s ease;
-    flex-shrink: 0;
-  }
-
-  .upload-history-arrow.expanded {
-    transform: rotate(90deg);
-  }
-
-  .upload-history-title {
-    font-size: 12px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-    color: var(--accent);
-    flex: 1;
-    text-align: left;
-  }
-
-  .upload-history-content {
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.3s ease, padding 0.3s ease;
-  }
-
-  .upload-history-content.expanded {
-    max-height: 500px;
-    padding-top: 16px;
-  }
-
-  .upload-history-body {
-    background: var(--checklist-bg);
-    border: 1px solid var(--checklist-border);
-    border-top: none;
-    border-radius: 0 0 14px 14px;
-    padding: 16px 20px;
-    text-align: left;
-  }
-
-  .upload-placeholder {
-    font-size: 13px;
-    color: var(--text-muted);
-    line-height: 1.6;
-  }
-
   /* Divider & Help Text */
   .divider {
     height: 1px;
@@ -534,6 +466,205 @@
   .footer a {
     color: var(--accent);
     font-weight: 600;
+  }
+
+  /* Install Instructions Modal */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 200;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    backdrop-filter: blur(4px);
+    animation: fadeIn 0.2s ease;
+  }
+
+  .modal-overlay.visible {
+    display: flex;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  .modal-card {
+    background: var(--card-bg);
+    border-radius: 20px;
+    padding: 36px 32px;
+    max-width: 520px;
+    width: 100%;
+    max-height: 85vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+    border: 1px solid var(--card-border);
+    position: relative;
+    animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .modal-close {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    background: none;
+    border: none;
+    font-size: 22px;
+    color: var(--text-muted);
+    cursor: pointer;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+  }
+
+  .modal-close:hover {
+    background: var(--checklist-bg);
+    color: var(--text-primary);
+  }
+
+  .modal-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 6px;
+  }
+
+  .modal-subtitle {
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin-bottom: 24px;
+    line-height: 1.6;
+  }
+
+  .modal-download-btn {
+    display: block;
+    width: 100%;
+    padding: 14px 24px;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 700;
+    font-family: 'DM Sans', sans-serif;
+    letter-spacing: 0.5px;
+    text-align: center;
+    background: linear-gradient(135deg, #6a9cd8, #5b8dcf);
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    margin-bottom: 24px;
+    transition: all 0.2s;
+  }
+
+  .modal-download-btn:hover {
+    box-shadow: 0 6px 24px rgba(106,156,216,0.35);
+    transform: translateY(-1px);
+  }
+
+  .install-steps {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 20px 0;
+  }
+
+  .install-step {
+    display: flex;
+    gap: 12px;
+    padding: 10px 0;
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+  }
+
+  .install-step:not(:last-child) {
+    border-bottom: 1px solid var(--divider);
+  }
+
+  .step-number {
+    width: 26px;
+    height: 26px;
+    min-width: 26px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent), #b89ae8);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 1px;
+  }
+
+  .step-content {
+    flex: 1;
+  }
+
+  .step-content strong {
+    color: var(--text-primary);
+  }
+
+  .step-content code {
+    background: var(--checklist-bg);
+    padding: 2px 7px;
+    border-radius: 5px;
+    font-size: 12px;
+    color: var(--accent);
+    font-weight: 600;
+    border: 1px solid var(--checklist-border);
+  }
+
+  .browser-tabs {
+    display: flex;
+    gap: 0;
+    margin-bottom: 20px;
+  }
+
+  .browser-tab {
+    flex: 1;
+    padding: 10px 16px;
+    font-size: 13px;
+    font-weight: 600;
+    text-align: center;
+    cursor: pointer;
+    border: 1px solid var(--checklist-border);
+    background: var(--checklist-bg);
+    color: var(--text-muted);
+    transition: all 0.2s;
+  }
+
+  .browser-tab:first-child {
+    border-radius: 10px 0 0 10px;
+  }
+
+  .browser-tab:last-child {
+    border-radius: 0 10px 10px 0;
+  }
+
+  .browser-tab.active {
+    background: var(--accent);
+    color: #fff;
+    border-color: var(--accent);
+  }
+
+  .browser-section {
+    display: none;
+  }
+
+  .browser-section.active {
+    display: block;
   }
 </style>
 </head>
@@ -591,10 +722,10 @@
   </div>
 
   <!-- Action Buttons -->
-  <a href="#" id="installBtn" class="action install" onclick="handleInstallClick(event); return false;">
-    Install SID Extension
+  <a href="SID.zip" download id="installBtn" class="action install" onclick="handleInstallClick(event);">
+    Download SID Extension
   </a>
-  <a href="https://sid.rocks/appypie/guide.html" target="_blank" class="action guide" id="guideBtn">
+  <a href="guide.html" target="_blank" class="action guide" id="guideBtn">
     Open SID Guide
   </a>
   <a href="https://jobosaurus-my.sharepoint.com/:f:/g/personal/mallen_wallstjobs_com/IgCB3NnQGwDLQ4nW80BiFIXTAUpyVwQzPUiDQx7VAsq2XXc" target="_blank" class="action upload" id="uploadBtn">
@@ -609,19 +740,6 @@
     <div class="bulletin-notes hidden" id="bulletinNotes"></div>
   </div>
 
-  <!-- Upload History (Collapsible) -->
-  <div class="upload-history">
-    <div class="upload-history-header" id="uploadHistoryHeader">
-      <span class="upload-history-arrow" id="uploadHistoryArrow">▶</span>
-      <div class="upload-history-title">Recent Uploads</div>
-    </div>
-    <div class="upload-history-content" id="uploadHistoryContent">
-      <div class="upload-history-body">
-        <p class="upload-placeholder">Upload tracking coming soon — check your OneDrive folder directly.</p>
-      </div>
-    </div>
-  </div>
-
   <!-- Divider -->
   <div class="divider"></div>
 
@@ -630,6 +748,74 @@
     No sign-in needed to upload. Just click, select your ZIP file, and you're done.<br>
     Questions? Email <a href="mailto:mallen@wallstjobs.com?subject=SID%20Portal%20-%20Question">Melissa</a>.
   </p>
+</div>
+
+<!-- Install Instructions Modal -->
+<div class="modal-overlay" id="installModal">
+  <div class="modal-card">
+    <button class="modal-close" id="modalClose">&times;</button>
+    <div class="modal-title">Install SID Extension</div>
+    <div class="modal-subtitle">Your download has started. Follow the steps below to install the extension in your browser.</div>
+
+    <a href="SID.zip" download class="modal-download-btn" id="modalDownloadBtn">
+      Download Again
+    </a>
+
+    <div class="browser-tabs">
+      <div class="browser-tab active" data-browser="chrome">Chrome</div>
+      <div class="browser-tab" data-browser="edge">Edge</div>
+    </div>
+
+    <div class="browser-section active" id="section-chrome">
+      <ol class="install-steps">
+        <li class="install-step">
+          <div class="step-number">1</div>
+          <div class="step-content"><strong>Unzip</strong> the downloaded file. You should see a folder called <strong>SID</strong>.</div>
+        </li>
+        <li class="install-step">
+          <div class="step-number">2</div>
+          <div class="step-content">Open Chrome and go to <code>chrome://extensions</code> (type it into the address bar).</div>
+        </li>
+        <li class="install-step">
+          <div class="step-number">3</div>
+          <div class="step-content">Turn on <strong>Developer mode</strong> using the toggle in the top-right corner.</div>
+        </li>
+        <li class="install-step">
+          <div class="step-number">4</div>
+          <div class="step-content">Click <strong>Load unpacked</strong> and select the unzipped <strong>SID</strong> folder.</div>
+        </li>
+        <li class="install-step">
+          <div class="step-number">5</div>
+          <div class="step-content">Click the <strong>puzzle piece</strong> icon in Chrome's toolbar and <strong>pin SID</strong> so it's always visible.</div>
+        </li>
+      </ol>
+    </div>
+
+    <div class="browser-section" id="section-edge">
+      <ol class="install-steps">
+        <li class="install-step">
+          <div class="step-number">1</div>
+          <div class="step-content"><strong>Unzip</strong> the downloaded file. You should see a folder called <strong>SID</strong>.</div>
+        </li>
+        <li class="install-step">
+          <div class="step-number">2</div>
+          <div class="step-content">Open Edge and go to <code>edge://extensions</code> (type it into the address bar).</div>
+        </li>
+        <li class="install-step">
+          <div class="step-number">3</div>
+          <div class="step-content">Turn on <strong>Developer mode</strong> using the toggle in the bottom-left corner.</div>
+        </li>
+        <li class="install-step">
+          <div class="step-number">4</div>
+          <div class="step-content">Click <strong>Load unpacked</strong> and select the unzipped <strong>SID</strong> folder.</div>
+        </li>
+        <li class="install-step">
+          <div class="step-number">5</div>
+          <div class="step-content">Click the <strong>puzzle piece</strong> icon in Edge's toolbar and <strong>pin SID</strong> so it's always visible.</div>
+        </li>
+      </ol>
+    </div>
+  </div>
 </div>
 
 <!-- Footer -->
@@ -711,13 +897,19 @@ let guideDone = savedState.guide || false;
 let uploadDone = savedState.upload || false;
 let checklistCompleted = savedState.completed || false;
 
+// Version gate: if the saved install is for an older extension version
+// (or pre-versioning), re-show the download so vendors get the update.
+const EXT_VERSION = '5.8.12';
+if (savedState.version !== EXT_VERSION) { installDone = false; checklistCompleted = false; }
+
 function saveChecklistState() {
   try {
     localStorage.setItem(CHECKLIST_STORAGE_KEY, JSON.stringify({
       install: installDone,
       guide: guideDone,
       upload: uploadDone,
-      completed: checklistCompleted
+      completed: checklistCompleted,
+      version: EXT_VERSION
     }));
   } catch (e) {
     // localStorage may not be available
@@ -756,29 +948,34 @@ function updateChecklist() {
 }
 
 function updateInstallButton() {
+  // Preserve whatever href the static HTML set (SID.zip for download mode,
+  // chromewebstore.google.com/... for webstore mode). Only remove href when
+  // the install is complete (terminal state — no longer a link).
   const btn = document.getElementById('installBtn');
+  if (!btn.dataset.origHref) {
+    btn.dataset.origHref = btn.getAttribute('href') || '';
+    btn.dataset.origText = btn.innerHTML.trim();
+  }
   if (installDone) {
     btn.classList.add('installed');
-    btn.classList.remove('install');
-    btn.innerHTML = '✓ SID Extension Installed';
+    btn.innerHTML = '&#10003; SID Extension Installed';
     btn.removeAttribute('href');
-    btn.style.cursor = 'default';
   } else {
     btn.classList.remove('installed');
-    btn.classList.add('install');
-    btn.innerHTML = 'Install SID Extension';
-    btn.setAttribute('href', '#');
-    btn.style.cursor = 'pointer';
+    btn.innerHTML = btn.dataset.origText;
+    btn.setAttribute('href', btn.dataset.origHref);
   }
 }
 
 function handleInstallClick(event) {
-  if (installDone) {
-    event.preventDefault();
-    return false;
-  }
-  alert('Chrome Web Store link coming soon!');
-  return false;
+  // Let the download happen via href — show modal after a tiny delay
+  // so the browser initiates the download first
+  installDone = true;
+  saveChecklistState();
+  setTimeout(() => {
+    updateChecklist();
+    showInstallModal();
+  }, 100);
 }
 
 function detectExtension() {
@@ -919,18 +1116,6 @@ function displayBulletinBoard(data, today) {
 loadBulletinBoard();
 
 /* ============================================================================
-   UPLOAD HISTORY COLLAPSIBLE
-   ========================================================================== */
-const uploadHistoryHeader = document.getElementById('uploadHistoryHeader');
-const uploadHistoryContent = document.getElementById('uploadHistoryContent');
-const uploadHistoryArrow = document.getElementById('uploadHistoryArrow');
-
-uploadHistoryHeader.addEventListener('click', () => {
-  uploadHistoryContent.classList.toggle('expanded');
-  uploadHistoryArrow.classList.toggle('expanded');
-});
-
-/* ============================================================================
    ANNOUNCEMENT
    ========================================================================== */
 function showAnnouncement(message, announcementId) {
@@ -959,6 +1144,46 @@ function showAnnouncement(message, announcementId) {
     }
   };
 }
+
+/* ============================================================================
+   INSTALL INSTRUCTIONS MODAL
+   ========================================================================== */
+const installModal = document.getElementById('installModal');
+const modalCloseBtn = document.getElementById('modalClose');
+const browserTabs = document.querySelectorAll('.browser-tab');
+
+function showInstallModal() {
+  installModal.classList.add('visible');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeInstallModal() {
+  installModal.classList.remove('visible');
+  document.body.style.overflow = '';
+}
+
+modalCloseBtn.addEventListener('click', closeInstallModal);
+
+installModal.addEventListener('click', (e) => {
+  if (e.target === installModal) {
+    closeInstallModal();
+  }
+});
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && installModal.classList.contains('visible')) {
+    closeInstallModal();
+  }
+});
+
+browserTabs.forEach(tab => {
+  tab.addEventListener('click', () => {
+    browserTabs.forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    document.querySelectorAll('.browser-section').forEach(s => s.classList.remove('active'));
+    document.getElementById('section-' + tab.dataset.browser).classList.add('active');
+  });
+});
 
 // Fetch announcements
 fetch('https://sid.rocks/announcements.json?' + Date.now())

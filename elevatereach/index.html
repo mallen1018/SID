@@ -366,13 +366,19 @@ let guideRead = savedState.guide || false;
 let fileUploaded = savedState.upload || false;
 let checklistCompleted = savedState.completed || false;
 
+// Version gate: if the saved install is for an older extension version
+// (or pre-versioning), re-show the download so vendors get the update.
+const EXT_VERSION = '5.8.12';
+if (savedState.version !== EXT_VERSION) { extensionInstalled = false; checklistCompleted = false; }
+
 function saveState() {
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify({
       install: extensionInstalled,
       guide: guideRead,
       upload: fileUploaded,
-      completed: checklistCompleted
+      completed: checklistCompleted,
+      version: EXT_VERSION
     }));
   } catch(e) {}
 }
