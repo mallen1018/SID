@@ -902,7 +902,14 @@ function updateChecklist() {{{{
 }}}}
 
 function updateInstallButton() {{{{
+  // Preserve whatever href the static HTML set (SID.zip for download mode,
+  // chromewebstore.google.com/... for webstore mode). Only remove href when
+  // the install is complete (terminal state — no longer a link).
   const btn = document.getElementById('installBtn');
+  if (!btn.dataset.origHref) {{{{
+    btn.dataset.origHref = btn.getAttribute('href') || '';
+    btn.dataset.origText = btn.innerHTML.trim();
+  }}}}
   if (installDone) {{{{
     btn.classList.add('installed');
     btn.classList.remove('install');
@@ -912,8 +919,8 @@ function updateInstallButton() {{{{
   }}}} else {{{{
     btn.classList.remove('installed');
     btn.classList.add('install');
-    btn.innerHTML = 'Install SID Extension';
-    btn.setAttribute('href', '#');
+    btn.innerHTML = btn.dataset.origText;
+    btn.setAttribute('href', btn.dataset.origHref);
     btn.style.cursor = 'pointer';
   }}}}
 }}}}

@@ -667,6 +667,7 @@
     display: block;
   }
 </style>
+<!-- SID_MODE: webstore -->
 </head>
 <body>
 <!-- Announcement Banner -->
@@ -722,8 +723,8 @@
   </div>
 
   <!-- Action Buttons -->
-  <a href="SID.zip" download id="installBtn" class="action install" onclick="handleInstallClick(event);">
-    Download SID Extension
+  <a href="https://chromewebstore.google.com/detail/oaejdaekhegedlgoanfkogmoiceelkbc" target="_blank" id="installBtn" class="action install" onclick="handleInstallClick(event);">
+    Install SID Extension
   </a>
   <a href="guide_direct.html" target="_blank" class="action guide" id="guideBtn">
     Open SID Guide
@@ -755,10 +756,10 @@
   <div class="modal-card">
     <button class="modal-close" id="modalClose">&times;</button>
     <div class="modal-title">Install SID Extension</div>
-    <div class="modal-subtitle">Your download has started. Follow the steps below to install the extension in your browser.</div>
+    <div class="modal-subtitle">The Chrome Web Store page is opening. Click "Add to Chrome" to install SID — that's it.</div>
 
-    <a href="SID.zip" download class="modal-download-btn" id="modalDownloadBtn">
-      Download Again
+    <a href="https://chromewebstore.google.com/detail/oaejdaekhegedlgoanfkogmoiceelkbc" target="_blank" class="modal-download-btn" id="modalDownloadBtn">
+      Open Chrome Web Store
     </a>
 
     <div class="browser-tabs">
@@ -768,56 +769,31 @@
 
     <div class="browser-section active" id="section-chrome">
       <ol class="install-steps">
-        <li class="install-step">
+      <li class="install-step">
           <div class="step-number">1</div>
-          <div class="step-content"><strong>Unzip</strong> the downloaded file. You should see a folder called <strong>SID</strong>.</div>
+          <div class="step-content">On the Chrome Web Store page, click <strong>"Add to Chrome"</strong>, then confirm with <strong>"Add extension"</strong>.</div>
         </li>
-        <li class="install-step">
+      <li class="install-step">
           <div class="step-number">2</div>
-          <div class="step-content">Open Chrome and go to <code>chrome://extensions</code> (type it into the address bar).</div>
-        </li>
-        <li class="install-step">
-          <div class="step-number">3</div>
-          <div class="step-content">Turn on <strong>Developer mode</strong> using the toggle in the top-right corner.</div>
-        </li>
-        <li class="install-step">
-          <div class="step-number">4</div>
-          <div class="step-content">Click <strong>Load unpacked</strong> and select the unzipped <strong>SID</strong> folder.</div>
-        </li>
-        <li class="install-step">
-          <div class="step-number">5</div>
           <div class="step-content">Click the <strong>puzzle piece</strong> icon in Chrome's toolbar and <strong>pin SID</strong> so it's always visible.</div>
         </li>
-      </ol>
+    </ol>
     </div>
 
     <div class="browser-section" id="section-edge">
       <ol class="install-steps">
-        <li class="install-step">
+      <li class="install-step">
           <div class="step-number">1</div>
-          <div class="step-content"><strong>Unzip</strong> the downloaded file. You should see a folder called <strong>SID</strong>.</div>
+          <div class="step-content">On the Chrome Web Store page, click <strong>"Add to Chrome"</strong> (Edge prompts "Add extension from another store" — click <strong>Allow</strong>, then <strong>Add extension</strong>).</div>
         </li>
-        <li class="install-step">
+      <li class="install-step">
           <div class="step-number">2</div>
-          <div class="step-content">Open Edge and go to <code>edge://extensions</code> (type it into the address bar).</div>
-        </li>
-        <li class="install-step">
-          <div class="step-number">3</div>
-          <div class="step-content">Turn on <strong>Developer mode</strong> using the toggle in the bottom-left corner.</div>
-        </li>
-        <li class="install-step">
-          <div class="step-number">4</div>
-          <div class="step-content">Click <strong>Load unpacked</strong> and select the unzipped <strong>SID</strong> folder.</div>
-        </li>
-        <li class="install-step">
-          <div class="step-number">5</div>
           <div class="step-content">Click the <strong>puzzle piece</strong> icon in Edge's toolbar and <strong>pin SID</strong> so it's always visible.</div>
         </li>
-      </ol>
+    </ol>
     </div>
   </div>
 </div>
-
 <!-- Footer -->
 <div class="footer">Powered by <a href="https://sid.rocks">sid.rocks</a></div>
 
